@@ -13,7 +13,7 @@ const globalStyles = css`x
   
   h1, h2, h3, h4, p, a {
     margin-top: 0;
-    color: ${colors.dark}
+    color: ${colors.dark};
     font-family: '${garamond}';
     font-display: 'swap';
   }
@@ -30,6 +30,8 @@ const globalStyles = css`x
   }
 
   h3 {
+    margin-top: 40px;
+    margin-bottom: 10px;
     font-weight: normal;
     font-size: 28px;
     line-height: 32px;
@@ -41,7 +43,15 @@ const globalStyles = css`x
     line-height: 36px;
   }
 
+  h5 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
   p {
+    margin-bottom: 5px;
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
@@ -70,6 +80,7 @@ const globalStyles = css`x
 
   img {
     object-fit: contain;
+    width: 100%;
   }
 `
 

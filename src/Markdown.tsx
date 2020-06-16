@@ -10,7 +10,7 @@ export interface Attributes {
 }
 
 function Paragraph({children}) {
-  return <p css={contentStyle}>
+  return <p css={css(contentStyle, {marginBottom: 24})}>
     {children}
   </p>
 }

@@ -13,7 +13,6 @@ Celo allows for multiple stable-value assets where each asset tracks a measurabl
 ![Stable-value Assets <=> CELO & additional cryptoassets](/stability-mech-illo.svg)
 
 [Read the Celo Stability Whitepaper](https://celo.org/papers/stability)
-
 [About the Celo Price Stability Protocol](https://medium.com/celoorg/diving-into-the-celo-price-stability-protocol-d7afd210609e)
 
 ### Reserve Eligible Assets 

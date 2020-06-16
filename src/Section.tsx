@@ -1,17 +1,25 @@
 /** @jsx jsx */
-
+import * as React from 'react'
 import { jsx, css, } from '@emotion/core'
 import Markdown from 'src/Markdown'
 
-export default function Section({title, content}) {
+interface Props {
+  title: string
+  content?: string
+  children?: React.ReactNode
+  titleCSS?: any
+}
+
+export default function Section({title, content, titleCSS, children}: Props) {
   return <section css={rootStyle}>
           <div css={headingAreaStyle}>
-            <h2>
+            <h2 css={titleCSS}>
               {title}
             </h2>
           </div>
           <div css={contentAreaStyle}>
-            <Markdown source={content} />
+            {content && <Markdown source={content} />}
+            {children}
           </div>
   </section>
 }
@@ -22,6 +30,7 @@ const rootStyle = css({
   flex: 1,
   paddingLeft: 16,
   paddingRight: 16,
+  marginBottom: 20
 })
 
 const headingAreaStyle = css({
@@ -30,4 +39,4 @@ const headingAreaStyle = css({
   flexBasis: 230
 })
 
-const contentAreaStyle = css({flex: 1, minWidth: 300})
+const contentAreaStyle = css({flex: 1, minWidth: 320})

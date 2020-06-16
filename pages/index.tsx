@@ -11,6 +11,9 @@ import about from 'src/content/home/about.md'
 import initialTarget from 'src/content/home/initial-target.md'
 import matter from 'front-matter'
 import Section from 'src/Section'
+import ReserveAddresses from 'src/ReserveAddresses'
+import Holdings from 'src/Holdings'
+import TargetGraph from 'src/TargetGraph'
 
 const INTRO = matter<{title: string}>(intro)
 const INITIAL_TARGET = matter<{title: string}>(initialTarget)
@@ -24,9 +27,18 @@ export default function Home() {
       <div css={containerStyle}> 
         <NavBar/>
         <main css={mainStyle}>
-          <Section title={INTRO.attributes.title} content={INTRO.body}  />
-          <Section title={INITIAL_TARGET.attributes.title} content={INITIAL_TARGET.body}  />
-          <Section title={ABOUT.attributes.title} content={ABOUT.body}  />
+          <Section title={INTRO.attributes.title} content={INTRO.body}   />
+          <Section title={"Current Reserve Holdings"}> 
+            <Holdings />
+          </Section>
+          <Section title={"Reserve Addresses"}> 
+            <ReserveAddresses />
+          </Section>
+          <Section title={INITIAL_TARGET.attributes.title} content={INITIAL_TARGET.body}>
+            <TargetGraph />
+          </Section>
+          
+          <Section title={ABOUT.attributes.title} content={ABOUT.body}  titleCSS={titleStyle} />
         </main>
       </div>
      <Footer/>
@@ -50,3 +62,5 @@ const mainStyle = css({
 })
 
 const containerStyle = css(flexCol, {flex: 1, width: '100%', alignItems: 'center'})
+
+const titleStyle = css({marginTop: 40})
