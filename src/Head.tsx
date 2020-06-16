@@ -5,13 +5,14 @@ import colors from 'src/colors'
 
 const garamond = 'EB Garamond, eb-garamond, Garamond, serif';
 
-const globalStyles = css`
+const globalStyles = css`x
   * {
     box-sizing: border-box; 
     font-family: '${garamond}';
   }
   
   h1, h2, h3, h4, p, a {
+    margin-top: 0;
     color: ${colors.dark}
     font-family: '${garamond}';
     font-display: 'swap';
@@ -19,33 +20,43 @@ const globalStyles = css`
 
   h1 {
     line-height: 36px;
-    font-size: 28px;
+    font-size: 32px;
   }
 
   h2 {
-    font-weight: normal;
-    font-size: 28px;
-    line-height: 24px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 26px;
   }
 
   h3 {
     font-weight: normal;
-    font-size: 24px;
-    line-height: 30px;
+    font-size: 28px;
+    line-height: 32px;
   }
 
   h4 {
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 30px;
+    font-weight: normal;
+    font-size: 28px;
+    line-height: 36px;
   }
 
   p {
-    font-family: '${garamond}';
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
     line-height: 36px;
+  }
+
+  small {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  #__next {
+    width: 100%;
   }
 
   body {
@@ -54,7 +65,7 @@ const globalStyles = css`
     font-family: '${garamond}';
     font-display: 'swap';
     display: flex;
-    width: 100vw;
+    justify-content: 'center';
   }
 `
 

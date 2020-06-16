@@ -22,7 +22,8 @@ const navLinksStyle=  css({
 
 const navStyle = css({
   maxWidth: 1280,
-  width: '100vw',
+  width: '100%',
+  flex:1,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'cemter',

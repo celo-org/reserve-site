@@ -3,4 +3,4 @@ node_modules
 
 .next/
 
-yarn-error.og
+yarn-error.log

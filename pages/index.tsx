@@ -6,28 +6,28 @@ import Footer from 'src/Footer'
 import { css , jsx} from '@emotion/core'
 import { flexCol } from 'src/styles'
 import Head from 'src/Head'
-import Button from 'src/Button'
-import text from 'content/home/intro.md'
+import intro from 'src/content/home/intro.md'
+import about from 'src/content/home/about.md'
+import initialTarget from 'src/content/home/initial-target.md'
 import matter from 'front-matter'
-import Markdown from 'src/Markdown'
+import Section from 'src/Section'
 
+const INTRO = matter<{title: string}>(intro)
+const INITIAL_TARGET = matter<{title: string}>(initialTarget)
+const ABOUT = matter<{title: string}>(about)
 
 export default function Home() {
   return (
     <>
     <Head />
     <div css={rootStyle}>
-      <div css={flexCol}> 
-      <NavBar/>
-      <main css={mainStyle}>
-        <Button href="/">Test</Button>
-        <h1>one</h1>
-        {/* <h2>second</h2>
-        <h3>three</h3>
-        <h4>head 4</h4>
-        <p>Paragraphs of content</p> */}
-        <Markdown source={matter(text).body} />
-      </main>
+      <div css={containerStyle}> 
+        <NavBar/>
+        <main css={mainStyle}>
+          <Section title={INTRO.attributes.title} content={INTRO.body}  />
+          <Section title={INITIAL_TARGET.attributes.title} content={INITIAL_TARGET.body}  />
+          <Section title={ABOUT.attributes.title} content={ABOUT.body}  />
+        </main>
       </div>
      <Footer/>
     </div>
@@ -39,10 +39,14 @@ const rootStyle = css({
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100vh',
+  flex: 1,
+  alignItems: 'center',
   justifyContent:" space-between"
 })
 
 const mainStyle = css({
-  paddingLeft: 16,
-  paddingRight: 16
+  width: '100%',
+  maxWidth: 960
 })
+
+const containerStyle = css(flexCol, {flex: 1, width: '100%', alignItems: 'center'})
