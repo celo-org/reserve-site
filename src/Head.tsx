@@ -67,6 +67,10 @@ const globalStyles = css`x
     display: flex;
     justify-content: 'center';
   }
+
+  img {
+    object-fit: contain;
+  }
 `
 
 export default function Head() {
