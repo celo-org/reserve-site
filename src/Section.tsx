@@ -35,9 +35,7 @@ const rootStyle = css({
 const headingAreaStyle = css({
   paddingRight: 20,
   marginTop: 5,
-  flexBasis: 230,
   minWidth: 220,
-  flex: 1
 })
 
 const contentAreaStyle = css({flex: 1, minWidth: 320})
