@@ -9,6 +9,7 @@ import Head from 'src/Head'
 import intro from 'src/content/home/intro.md'
 import about from 'src/content/home/about.md'
 import initialTarget from 'src/content/home/initial-target.md'
+import attestations from 'src/content/home/attestations.md'
 import matter from 'front-matter'
 import Section from 'src/Section'
 import ReserveAddresses from 'src/ReserveAddresses'
@@ -18,6 +19,7 @@ import TargetGraph from 'src/TargetGraph'
 const INTRO = matter<{title: string}>(intro)
 const INITIAL_TARGET = matter<{title: string}>(initialTarget)
 const ABOUT = matter<{title: string}>(about)
+const ATTESTATIONS = matter<{title: string}>(attestations)
 
 export default function Home() {
   return (
@@ -38,7 +40,8 @@ export default function Home() {
             <TargetGraph />
           </Section>
           
-          <Section title={ABOUT.attributes.title} content={ABOUT.body}  titleCSS={titleStyle} />
+          <Section title={ABOUT.attributes.title} content={ABOUT.body}   />
+          <Section title={ATTESTATIONS.attributes.title} content={ATTESTATIONS.body}   />
         </main>
       </div>
      <Footer/>

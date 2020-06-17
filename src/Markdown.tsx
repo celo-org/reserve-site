@@ -10,7 +10,7 @@ export interface Attributes {
 }
 
 function Paragraph({children}) {
-  return <p css={css(contentStyle, {marginBottom: 24})}>
+  return <p css={paragrahStyle}>
     {children}
   </p>
 }
@@ -43,3 +43,5 @@ export default function Markdown({ source }) {
 }
 
 const contentStyle = css({maxWidth: 480}) 
+
+const paragrahStyle = css(contentStyle, {marginBottom: 24})

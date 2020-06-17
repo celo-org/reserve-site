@@ -15,7 +15,6 @@ const rootStyle = css({
   width: 670,
   height: 363,
   objectFit: 'contain',
-  // backgroundColor: 'pink'
 })
 
 const ALT_TEXT ="Initial Target: 50% CELO, 25% BTC,20% ETH 5% stable value portfolio (crypto assets with low volatility, candidates are decentralised stablecoins e.g. DAI)"
