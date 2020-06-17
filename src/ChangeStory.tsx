@@ -7,8 +7,8 @@ export default function ChangeStory() {
 }
 
 const rootStyle = {
-  marginTop: 24,
   display: 'flex',
+  marginTop: 16,
 }
 
 const textStyle = css({

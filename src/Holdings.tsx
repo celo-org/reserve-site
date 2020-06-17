@@ -25,10 +25,18 @@ export default function  Holdings() {
   </div>
 }
 
+const BREAK_POINT = "@media (max-width: 777px)"
 
+const amountStyle = css({
+  [BREAK_POINT]: {
+      display: "flex",
+      justifyContent: 'space-between',
+      alignItems: 'flex-end'
+  }
+})
 
 function Amount({label, units, gridArea}) {
-  return <div css={css({gridArea})}>
+  return <div css={css(amountStyle,{gridArea})}>
   <p>{label}</p>
   <span css={numberStyle}>{units}</span>  
 </div>
@@ -64,8 +72,21 @@ const rootStyle = css({
                      "cUSD cUSD cUSD"
                      "outstanding ratio ."
                      "info info ."
-                     `
-                     
+                     `,
+  [BREAK_POINT]: {
+    gridTemplateAreas: `"celo"
+                        "onChain" 
+                        "custody"
+                        "total"
+                        "crypto"
+                        "btc"
+                        "eth" 
+                        "dai"
+                        "cUSD"
+                        "outstanding" 
+                        "ratio"
+                        "info"`,
+  }    
 })
 
 const headingStyle = css({
@@ -82,7 +103,11 @@ const headingTextStyle = css({
 })
 
 const numberStyle = css({
-  fontSize: 36
+  fontSize: 36,
+  [BREAK_POINT]: {
+    fontSize: 28,
+    marginBottom: 8,
+  }
 })
 
 const finePrintStyle = css({

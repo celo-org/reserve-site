@@ -17,7 +17,7 @@ export default function Footer() {
 }
 
 const rootStyle = css({
-  boxSizing: 'content-box',
+  boxSizing: 'border-box',
   display: 'flex',
   maxWidth: 1280,
   width: '100%',
@@ -36,5 +36,6 @@ const wordMark = css({
 
 const contentStyle = css({
   maxWidth: 380,
-  margin: 16
+  // paddingLeft: 16,
+  // paddingRight: 16,
 })
