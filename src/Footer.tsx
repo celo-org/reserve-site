@@ -36,6 +36,4 @@ const wordMark = css({
 
 const contentStyle = css({
   maxWidth: 380,
-  // paddingLeft: 16,
-  // paddingRight: 16,
 })

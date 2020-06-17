@@ -10,12 +10,12 @@ export default function  Holdings() {
     <Amount label="CELO on-chain" units={"40,000,00"} gridArea="onChain" />
     <Amount label="Celo in Custody" units={"80,000,00"} gridArea="custody" />
     <Heading title="Additional Crypto Assets" gridArea="crypto" />
-    <Amount label="BTC" units={"120,000,00"} gridArea="btc" />
-    <Amount label="ETH" units={"40,000,00"} gridArea="eth" />
-    <Amount label="DAI" units={"80,000,00"} gridArea="dai" />
+    <Amount label="BTC" units={"100"} gridArea="btc" />
+    <Amount label="ETH" units={"9,000"} gridArea="eth" />
+    <Amount label="DAI" units={"5,000"} gridArea="dai" />
     <Heading title="cUSD Asset" gridArea="cUSD"  iconSrc="/CUSD.png" />
     <Amount label="cUSD outstanding" units={"5,000,000"} gridArea="outstanding" />
-    <Amount label="Reserve Ratio*" units={"40,000,00"} gridArea="ratio" />
+    <Amount label="Reserve Ratio*" units={"20"} gridArea="ratio" />
     <div css={infoStyle}>
       <div css={finePrintStyle}>
         <small >*ratio between the size of the reserve and the total value of all outstanding cUSD (and other future stabilized tokens supported by the reserve)</small>

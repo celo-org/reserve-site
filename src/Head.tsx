@@ -2,6 +2,7 @@
 import { css, Global } from '@emotion/core'
 import NextHead from 'next/head'
 import colors from 'src/colors'
+import description from  'src/content/meta-description.md'
 
 const garamond = 'EB Garamond, eb-garamond, Garamond, serif';
 
@@ -59,7 +60,7 @@ const globalStyles = css`x
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
-    line-height: 36px;
+    line-height: 26px;
   }
 
   small {
@@ -89,15 +90,30 @@ const globalStyles = css`x
 `
 
 export default function Head() {
+  const title = "CeloReserve.org"
+  const metaImage = '/open-graph.png'
   return <>
     <Global styles={globalStyles}/>
     <NextHead>
-        <title>CeloReserve.org</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link
-            href="https://fonts.googleapis.com/css?family=EB+Garamond:400,500,500i,700&display=swap"
-            rel="stylesheet"
-          />
+      <title>{title}</title>
+      <link rel="icon" href="/favicon.ico" />
+      <link
+          href="https://fonts.googleapis.com/css?family=EB+Garamond:400,500,500i,700&display=swap"
+          rel="stylesheet"
+        />
+      <meta name="description" content={description} />
+
+      <meta property="og:url" content={`https://celoreserve.org`} />
+      <meta property="og:title" content={title} />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content={metaImage} />
+      <meta property="og:description" content={description} />
+
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={metaImage} />
+      <meta name="twitter:site" content={'@celoOrg'} />
+      <meta name="twitter:card" content="summary_large_image" />
     </NextHead>    
   </>
 }

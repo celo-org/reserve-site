@@ -31,7 +31,7 @@ function Address({label, hex}) {
 
   return <div onClick={onPress} css={rootStyle}>
     <h5 css={labelStyle}>{label}</h5>
-    <span>{hex} <CopyIcon /> <span className="info">{justCopied? "Copied" : "Copy"}</span></span>
+    <span css={css({wordWrap: 'break-word'})}>{hex} <CopyIcon /> <span className="info">{justCopied? "Copied" : "Copy"}</span></span>
   </div>
 }
 

@@ -66,4 +66,3 @@ const mainStyle = css({
 
 const containerStyle = css(flexCol, {flex: 1, width: '100%', alignItems: 'center'})
 
-const titleStyle = css({marginTop: 40})

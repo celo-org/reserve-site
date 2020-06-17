@@ -7,10 +7,9 @@ interface Props {
   title: string
   content?: string
   children?: React.ReactNode
-  titleCSS?: any
 }
 
-export default function Section({title, content, titleCSS, children}: Props) {
+export default function Section({title, content, children}: Props) {
   return <section css={rootStyle}>
           <div css={headingAreaStyle}>
             <h2 css={titleCSS}>
@@ -36,7 +35,15 @@ const rootStyle = css({
 const headingAreaStyle = css({
   paddingRight: 20,
   marginTop: 5,
-  flexBasis: 230
+  flexBasis: 230,
+  minWidth: 220,
+  flex: 1
 })
 
 const contentAreaStyle = css({flex: 1, minWidth: 320})
+
+const titleCSS = css({
+  "@media (max-width: 590px)": {
+    fontSize: 28
+  }
+})
