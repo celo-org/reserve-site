@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css, } from '@emotion/core'
-import CopyIcon from 'src/CopyIcon'
+import CopyIcon from 'components/CopyIcon'
 
 export default function ReserveAddresses() {
   return <>

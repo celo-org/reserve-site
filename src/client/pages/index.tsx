@@ -1,20 +1,20 @@
 /** @jsx jsx */
 
 import * as React from 'react'
-import NavBar from 'src/Navbar'
-import Footer from 'src/Footer'
+import NavBar from 'components/Navbar'
+import Footer from 'components/Footer'
 import { css , jsx} from '@emotion/core'
-import { flexCol } from 'src/styles'
-import Head from 'src/Head'
-import intro from 'src/content/home/intro.md'
-import about from 'src/content/home/about.md'
-import initialTarget from 'src/content/home/initial-target.md'
-import attestations from 'src/content/home/attestations.md'
+import { flexCol } from 'components/styles'
+import Head from 'components/Head'
+import intro from 'content/home/intro.md'
+import about from 'content/home/about.md'
+import initialTarget from 'content/home/initial-target.md'
+import attestations from 'content/home/attestations.md'
 import matter from 'front-matter'
-import Section from 'src/Section'
-import ReserveAddresses from 'src/ReserveAddresses'
-import Holdings from 'src/Holdings'
-import TargetGraph from 'src/TargetGraph'
+import Section from 'components/Section'
+import ReserveAddresses from 'components/ReserveAddresses'
+import Holdings from 'components/Holdings'
+import TargetGraph from 'components/TargetGraph'
 
 const INTRO = matter<{title: string}>(intro)
 const INITIAL_TARGET = matter<{title: string}>(initialTarget)

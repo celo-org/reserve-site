@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css, } from '@emotion/core'
 
-import colors from 'src/colors'
+import colors from 'components/colors'
 
 
 export default function NavBar() {

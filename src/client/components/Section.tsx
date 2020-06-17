@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css, } from '@emotion/core'
-import Markdown from 'src/Markdown'
+import Markdown from 'components/Markdown'
 
 interface Props {
   title: string
@@ -42,6 +42,7 @@ const contentAreaStyle = css({flex: 1, minWidth: 320})
 
 const titleCSS = css({
   "@media (max-width: 590px)": {
-    fontSize: 28
+    fontSize: 28,
+    lineHeight: 1.5
   }
 })
