@@ -1,0 +1,60 @@
+{
+  "name": "@celo/reserve-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "tsc",
+    "prepare": "next build",
+    "deploy": "yarn run kill-dev; yarn run clean-next-cache; yarn run prepare; gcloud app deploy $MANIFEST",
+    "deploy:stage": "gcloud config set project celo-reserve-site-281118; NODE_ENV=production DEPLOY_ENV=development MANIFEST=stage.yaml yarn run deploy && yarn view -s stage",
+    "deploy:prod": "gcloud config set project celo-reserve-site-281118; NODE_ENV=production DEPLOY_ENV=production MANIFEST=production.yaml yarn run deploy && yarn view",
+    "view": "gcloud app browse",
+    "kill-dev": "kill -9 $(lsof -ti :3000)",
+    "clean-next-cache": "rm -rf .next",
+    "start": "next start -p $PORT"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "airtable": "^0.8.1",
+    "fathom-client": "^3.0.0",
+    "front-matter": "^4.0.2",
+    "markdown-to-jsx": "^6.11.4",
+    "next": "^10.0.5",
+    "raw-loader": "^4.0.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/runtime": "^7.8.4",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^10.12.18",
+    "@types/react": "^16.9.34",
+    "babel-jest": "^26.1.0",
+    "codecov": "^3.6.5",
+    "husky": "^3.0.0",
+    "jest": "^26.1.0",
+    "jest-circus": "^26.6.3",
+    "jest-junit": "^10.0.0",
+    "jest-snapshot": "^26.1.0",
+    "lerna": "^3.16.0",
+    "patch-package": "^6.2.2",
+    "prettier": "1.19.1",
+    "prettier-plugin-java": "^0.6.0",
+    "prettier-plugin-solidity": "1.0.0-alpha.35",
+    "pretty-quick": "^2.0.1",
+    "solc": "0.5.8",
+    "ts-jest": "^26.1.1",
+    "ts-node": "^8.3.0",
+    "tsconfig-paths": "^3.8.0",
+    "tslint": "^5.20.0",
+    "typescript": "^3.8.3",
+    "typescript-tslint-plugin": "^0.5.4"
+  },
+  "engines": {
+    "node": "10"
+  }
+}
