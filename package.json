@@ -12,6 +12,9 @@
     "view": "gcloud app browse",
     "kill-dev": "kill -9 $(lsof -ti :3000)",
     "clean-next-cache": "rm -rf .next",
+    "postinstall": "yarn keys:decrypt",
+    "keys:decrypt": "bash scripts/key_placer.sh decrypt",
+    "keys:encrypt": "bash scripts/key_placer.sh encrypt",
     "start": "next start -p $PORT"
   },
   "dependencies": {
