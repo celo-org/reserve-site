@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "tsc",
-    "prepare": "next build",
-    "deploy": "yarn run kill-dev; yarn run clean-next-cache; yarn run prepare; gcloud app deploy $MANIFEST",
+    "build:next": "next build",
+    "deploy": "yarn run kill-dev; yarn run clean-next-cache; yarn run build:next; gcloud app deploy $MANIFEST",
     "deploy:stage": "gcloud config set project celo-reserve-site-281118; NODE_ENV=production DEPLOY_ENV=development MANIFEST=stage.yaml yarn run deploy && yarn view -s stage",
     "deploy:prod": "gcloud config set project celo-reserve-site-281118; NODE_ENV=production DEPLOY_ENV=production MANIFEST=production.yaml yarn run deploy && yarn view",
     "view": "gcloud app browse",
