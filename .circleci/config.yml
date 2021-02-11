@@ -42,7 +42,7 @@ jobs:
           root: .
           paths:
             - node_modules
-            - env-config.js
+            - .env.local
 
   # Build
   next-build:
