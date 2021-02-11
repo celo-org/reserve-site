@@ -5,10 +5,9 @@ import getConfig from 'next/config'
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
-  const { FATHOM_KEY } = getConfig().publicRuntimeConfig
   useEffect(() => {
     // Initialize Fathom when the app loads
-    Fathom.load(FATHOM_KEY, {
+    Fathom.load(process.env.NEXT_PUBLIC_FATHOM_KEY, {
       excludedDomains: ['localhost'],
     })
 
