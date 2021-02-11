@@ -12,6 +12,7 @@ interface Fields {
 }
 
 export default async function fetchRecords() {
+  try {
   const records = (await getAirtable(TableNames.ReserveAddresses)
     .select({
       maxRecords: 1,
@@ -20,6 +21,10 @@ export default async function fetchRecords() {
     })
     .firstPage()) as Record<Fields>[]
   return records.map((record) => convert(record.fields))[0]
+  } catch (e) {
+    console.error("could not fetch addresses", e)
+    return {}
+  }
 }
 
 function convert(fields: Fields): Addresses {

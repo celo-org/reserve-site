@@ -50,5 +50,4 @@ jobs:
     steps:
       - checkout
       - *CHECKOUT-WORKSPACE
-      - run: yarn keys:decrypt
       - run: yarn build:next

@@ -17,14 +17,19 @@ interface Fields {
 }
 
 export default async function fetchRecords() {
-  const records = (await getAirtable(TableNames.ReserveHoldings)
+  try {
+    const records = (await getAirtable(TableNames.ReserveHoldings)
     .select({
       maxRecords: 1,
       filterByFormula: IS_LIVE,
       sort: [{ field: 'order', direction: 'desc' }],
     })
     .firstPage()) as Record<Fields>[]
-  return records.map((record) => convert(record.fields))[0]
+    return records.map((record) => convert(record.fields))[0]
+  } catch (e) {
+    console.error("could not fetch holdings", e)
+    return {}
+  }
 }
 
 function convert(fields: Fields): HoldingsData {
