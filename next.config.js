@@ -1,3 +1,4 @@
+console.info("ENV IS",process.env)
 module.exports = {
   experimental: {
     modern: true,
