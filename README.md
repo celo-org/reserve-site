@@ -5,7 +5,7 @@ Code for [celoreserve.org](https://celoreserve.org)
 
 ## Data Integrity
 
-The following is where the numbers displayed on celoreserve.org come from.
+The following is where the numbers displayed on celoreserve.org comes from. These are not official celo reserve sources.
 
 ### Reserve Holdings
 
