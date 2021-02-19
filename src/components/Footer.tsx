@@ -15,6 +15,9 @@ export default function Footer({ year }) {
         <div css={copyRightStyle}>© {year} AP Reserve Foundation</div>
       </div>
       <div>
+      <a css={navStyle} href="https://github.com/celo-org/reserve-site">
+          Source
+        </a>
         <a css={navStyle} href="/legal/terms">
           Terms
         </a>
