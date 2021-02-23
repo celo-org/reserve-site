@@ -28,6 +28,7 @@
     "fathom-client": "^3.0.0",
     "front-matter": "^4.0.2",
     "markdown-to-jsx": "^6.11.4",
+    "mockdate": "^3.0.2",
     "next": "^10.0.5",
     "raw-loader": "^4.0.1",
     "react": "16.13.1",

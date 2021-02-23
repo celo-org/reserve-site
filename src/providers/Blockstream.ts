@@ -1,3 +1,5 @@
+import ProviderSource, {Providers, errorResult} from "./ProviderSource"
+
 interface BlockstreamAddress {
   "address":string,
   "chain_stats":{
@@ -16,7 +18,13 @@ interface BlockstreamAddress {
   }
 }
 
-export default async function getBTCBalance(address:string) {
-  const response = await fetch(`https://blockstream.info/api/address/${address}`)
-  return response.json() as Promise<BlockstreamAddress>
+export default async function getBTCBalance(address:string): Promise<ProviderSource> {
+  try {
+    const response = await fetch(`https://blockstream.info/api/address/${address}`)
+    const time = Date.now()
+    const data = (await  response.json() as BlockstreamAddress)
+    return {hasError: false, source: Providers.blockstream, value: data.chain_stats.funded_txo_sum, time}
+  } catch (error) {
+    return errorResult(error, Providers.blockchainDotCom)
+  }
  }

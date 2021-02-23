@@ -1,18 +1,33 @@
+import ProviderSource, {Providers, errorResult} from "./ProviderSource"
 
 interface CBResponse {
-   "data":
-      {"base":"BTC" | "ETH",
-      "currency":"USD",
-      "amount":string
-   }
+  "data":
+    {"base":"BTC" | "ETH",
+    "currency":"USD",
+    "amount":string
+  }
 }
 
-export async  function getBTCInUSD() {
-   const response = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
-   return response.json() as Promise<CBResponse>
+export async  function getBTCInUSD(): Promise<ProviderSource> {
+  try {
+    const response = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
+    const time = Date.now()
+    const data = await response.json() as CBResponse
+    return {hasError: false, source: Providers.coinbase, value: data.data.amount, time}
+  } catch (error) {
+    return errorResult(error, Providers.coinbase)
+  }
 }
 
-export async  function getETHInUSD() {
-   const response = await fetch("https://api.coinbase.com/v2/prices/ETH-USD/spot")
-   return response.json() as Promise<CBResponse>
+
+
+export async  function getETHInUSD(): Promise<ProviderSource> {
+   try {
+    const response = await fetch("https://api.coinbase.com/v2/prices/ETH-USD/spot")
+    const time = Date.now()
+    const data = await response.json() as CBResponse
+    return {hasError: false, source: Providers.coinbase, value: data.data.amount, time}
+  } catch (error) {
+    return errorResult(error, Providers.coinbase)
+  }
 }
