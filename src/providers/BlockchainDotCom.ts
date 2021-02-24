@@ -1,4 +1,6 @@
+import normalizeBTCvalue from "src/utils/normalizeBTCValue"
 import ProviderSource, {Providers, errorResult} from "./ProviderSource"
+
 type BalanceReponse = Record<string,{
   final_balance: number
   n_tx: number
@@ -9,7 +11,7 @@ export async function getBTCBalance(address:string): Promise<ProviderSource> {
   try {
     const response = await fetch(`https://blockchain.info/balance?active=${address}`)
     const data = (await response.json()) as BalanceReponse
-    return {hasError: false, source:Providers.blockchainDotCom, value: data[address].final_balance, time: Date.now() }
+    return {hasError: false, source:Providers.blockchainDotCom, value: normalizeBTCvalue(data[address].final_balance), time: Date.now() }
   } catch (error){
     return errorResult(error, Providers.blockchainDotCom)
   }

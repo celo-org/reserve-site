@@ -4,6 +4,7 @@ export enum Providers {
   blockstream = "blockstream",
   blockchainDotCom = "blockchain.com",
   etherscan = "etherscan",
+  ethplorer = "ethplorer"
 }
 
 export default interface ProviderSource {

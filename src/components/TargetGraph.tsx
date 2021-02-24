@@ -1,5 +1,5 @@
-
-import { css, jsx } from '@emotion/core'
+import {Fragment} from "react"
+import { css } from '@emotion/core'
 import colors from 'src/components/colors'
 const DATA: ChartData[] = [
   { color: colors.gold, token: 'CELO', percent: 50 },
@@ -26,7 +26,7 @@ export default function TargetGraph() {
       <div css={legendStyle}>
         <h4>Initial Target</h4>
         {DATA.map(({ color, token, percent }) => (
-          <ChartKey color={color} token={token} percent={percent} />
+          <ChartKey key={token} color={color} token={token} percent={percent} />
         ))}
         <small>
           *Crypto Assets with low volatility. Candidates are decentralised stablecoins e.g. DAI
@@ -36,7 +36,7 @@ export default function TargetGraph() {
         <svg viewBox="-25 -25 50 50" transform="rotate(-90)" width="100%" height="100%">
           {DATA_WITH_OFFSETS.map(({ color, percent, offset }) => {
             return (
-              <>
+              <Fragment key={color}>
                 <circle
                   cx="0"
                   cy="0"
@@ -58,7 +58,7 @@ export default function TargetGraph() {
                   strokeWidth="0.25"
                   transform={`rotate(${((offset - 12.5) * 360) / 100})`}
                 />
-              </>
+              </Fragment>
             )
           })}
         </svg>

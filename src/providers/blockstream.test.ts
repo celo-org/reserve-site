@@ -7,7 +7,7 @@ describe("getBTCBalance on Blocksteam", () => {
       "hasError": false,
       "source": "blockstream",
       "time": 1587686400000,
-      "value": 140798450548,
+      "value": 1407.98450548,
     })
   })
 })
