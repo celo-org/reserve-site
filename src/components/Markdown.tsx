@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 import { css, jsx } from '@emotion/core'
 import MarkdownJSX from 'markdown-to-jsx'
 import Button from './Button'

@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 import { css, jsx } from '@emotion/core'
 import { GetStaticPaths } from 'next'
 import Footer from 'src/components/Footer'

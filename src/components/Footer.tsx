@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 import { css, jsx } from '@emotion/core'
 import ChangeStory from './ChangeStory'
 import { fineStyle } from './styles'

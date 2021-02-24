@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 import { css, jsx } from '@emotion/core'
 import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'

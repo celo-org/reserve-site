@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 import { css, jsx } from '@emotion/core'
 import Amount from 'src/components/Amount'
 import Heading from 'src/components/Heading'
@@ -82,12 +82,12 @@ const rootStyle = css({
                     `,
   [BreakPoints.tablet]: {
     gridTemplateAreas: `"celo"
-                        "onChain" 
+                        "onChain"
                         "custody"
                         "total"
                         "crypto"
                         "btc"
-                        "eth" 
+                        "eth"
                         "dai"`,
   },
 })

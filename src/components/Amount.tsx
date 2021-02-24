@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+import { css } from '@emotion/core'
 import { BreakPoints } from 'src/components/styles'
 
 interface AmountProps {

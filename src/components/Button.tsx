@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 
 import { css, jsx } from '@emotion/core'
 import Chevron from './Chevron'
