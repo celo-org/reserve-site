@@ -12,8 +12,6 @@ export interface HoldingsData {
 }
 
 export interface Addresses {
-  celoAddress: string
-  custodyAddress: string
   btcAddress: string
   ethAddress: string
   daiAddress: string

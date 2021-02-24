@@ -29,8 +29,6 @@ export default async function fetchRecords() {
 
 function convert(fields: Fields): Addresses {
   return {
-    celoAddress: fields.CELO,
-    custodyAddress: fields['CELO in custody'],
     btcAddress: fields.BTC,
     ethAddress: fields.ETH,
     daiAddress: fields.DAI,

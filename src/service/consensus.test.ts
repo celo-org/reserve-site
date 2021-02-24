@@ -17,7 +17,6 @@ async function Erros() {
   return {hasError: true, time: 0, source: Providers.coinbase, value: 0 }
 }
 
-
 describe(`consensus()`, () => {
   describe("when both parties agree", () => {
     it("returns value and indicts the agreement", async () => {
