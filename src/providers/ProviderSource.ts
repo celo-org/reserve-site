@@ -4,7 +4,8 @@ export enum Providers {
   blockstream = "blockstream",
   blockchainDotCom = "blockchain.com",
   etherscan = "etherscan",
-  ethplorer = "ethplorer"
+  ethplorer = "ethplorer",
+  forno = "forno.celo.org"
 }
 
 export default interface ProviderSource {

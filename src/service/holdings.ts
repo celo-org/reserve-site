@@ -1,5 +1,6 @@
 import { getBTCBalance as getBlockChainBTCBalance } from 'src/providers/BlockchainDotCom'
 import getBlockStreemBTCBalance from 'src/providers/Blockstream'
+import { getInCustodyBalance } from 'src/providers/Celo'
 import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
 import getAddressess from "src/service/addresses"
@@ -38,17 +39,23 @@ async function daiBalance() {
   return eth
 }
 
+async function celoCustodiedBalance() {
+  return await getInCustodyBalance()
+}
+
 export default async function getHoldings() {
-  const [btcHeld, ethHeld, daiHeld] = await Promise.all([
+  const [btcHeld, ethHeld, daiHeld, celoCustodied] = await Promise.all([
     btcBalance(),
     ethBalance(),
     daiBalance(),
+    celoCustodiedBalance()
   ])
 
   return {
     BTC: btcHeld,
     ETH: ethHeld,
-    dai: daiHeld
+    DAI: daiHeld,
+    CELO_CUSTODIED: celoCustodied
   }
 }
 
