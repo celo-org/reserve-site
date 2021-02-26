@@ -5,7 +5,6 @@ import ProviderSource, { errorResult, Providers } from './ProviderSource'
 const kit = newKit('https://forno.celo.org')
 
 
-
 export async function getFrozenBalance(): Promise<ProviderSource> {
   try {
     const reserve = await kit.contracts.getReserve()
@@ -57,34 +56,8 @@ export async function getcEURSupply(): Promise<ProviderSource> {
 }
 
 
-export async function getTotalRatio() {
-  const celoBalance = await getReserveCeloBalance()
-  const totalStableValue = await totalValueOfStableTokens()
-  console.log('cusd', formatNumber(totalStableValue))
-  console.log('celoBalance', formatNumber(celoBalance))
-  return celoBalance.dividedBy(totalStableValue)
-}
-
-export async function getUnFrozenRatio(): Promise<ProviderSource> {
-
-}
 
 const WEI_PER = 1_000_000_000_000_000_000
-
-// Return value in CELO of stable Tokens
-//  Todo get cEUR
-async function totalValueOfStableTokens () {
-  const exchange = await kit.contracts.getExchange()
-  const cusdToken = await kit.contracts.getStableToken()
-  const cUSDamount = await cusdToken.totalSupply()
-  return exchange.quoteUsdSell(cUSDamount)
-}
-
-async function getReserveCeloBalance() {
-  const reserve = await kit.contracts.getReserve()
-  return reserve.getReserveGoldBalance()
-}
-
 
 function formatNumber(value: BigNumber) {
   return value.dividedBy(WEI_PER).toNumber()

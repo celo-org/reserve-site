@@ -51,3 +51,11 @@ jobs:
       - checkout
       - *CHECKOUT-WORKSPACE
       - run: yarn build:next
+
+  # Test
+  test:
+    <<: *NODE
+    steps:
+      - checkout
+      - *CHECKOUT-WORKSPACE
+      - run: yarn test

@@ -5,7 +5,9 @@ export enum Providers {
   blockchainDotCom = "blockchain.com",
   etherscan = "etherscan",
   ethplorer = "ethplorer",
-  forno = "forno.celo.org"
+  forno = "forno.celo.org",
+  ecb = "ecb.europa.eu",
+  exchangeRates = "exchangeratesapi.io"
 }
 
 export default interface ProviderSource {
