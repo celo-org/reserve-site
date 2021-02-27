@@ -31,3 +31,14 @@ export async  function getETHInUSD(): Promise<ProviderSource> {
     return errorResult(error, Providers.coinbase)
   }
 }
+
+export async  function getCELOPrice(): Promise<ProviderSource> {
+  try {
+    const response = await fetch("https://api.coinbase.com/v2/prices/CGLD-USD/spot")
+    const time = Date.now()
+    const data = await response.json() as CBResponse
+    return {hasError: false, source: Providers.coinbase, value: data.data.amount, time}
+  } catch (error) {
+    return errorResult(error, Providers.coinbase)
+  }
+}

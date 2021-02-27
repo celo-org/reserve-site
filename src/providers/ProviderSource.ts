@@ -11,7 +11,7 @@ export enum Providers {
 }
 
 export default interface ProviderSource {
-  value: number | string
+  value: number
   source: Providers
   time: number
   hasError: boolean

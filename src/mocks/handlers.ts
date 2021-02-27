@@ -11,6 +11,11 @@ export const handlers = [
       ctx.json({"data":{"base":"ETH","currency":"USD","amount":"1500.00"}})
     )
   }),
+  rest.get("https://api.coinbase.com/v2/prices/CGLD-USD/spot",(req, res, ctx) => {
+    return res(
+      ctx.json({"data":{"base":"CGLD","currency":"USD","amount":"3.9619"}})
+    )
+  }),
   rest.get('https://api.etherscan.io/api', (req, res, ctx) => {
     const action = req.url.searchParams.get("action")
     const module = req.url.searchParams.get("module")

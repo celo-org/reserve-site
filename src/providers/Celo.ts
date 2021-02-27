@@ -4,6 +4,17 @@ import ProviderSource, { errorResult, Providers } from './ProviderSource'
 
 const kit = newKit('https://forno.celo.org')
 
+export async function getCeloPrice(): Promise<ProviderSource> {
+  try {
+    const exchange = await kit.contracts.getExchange()
+    const rate = await exchange.quoteGoldSell(WEI_PER)
+    const time = Date.now()
+    return {hasError: false, value: formatNumber(rate), source: Providers.forno, time}
+
+  } catch (error) {
+    return errorResult(error, Providers.forno)
+  }
+}
 
 export async function getFrozenBalance(): Promise<ProviderSource> {
   try {
@@ -57,7 +68,7 @@ export async function getcEURSupply(): Promise<ProviderSource> {
 
 
 
-const WEI_PER = 1_000_000_000_000_000_000
+export const WEI_PER = 1_000_000_000_000_000_000
 
 function formatNumber(value: BigNumber) {
   return value.dividedBy(WEI_PER).toNumber()

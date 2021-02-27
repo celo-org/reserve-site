@@ -32,6 +32,10 @@ export default async function consensus(alef:ProviderPromise, bet: ProviderPromi
 
   if (sourceA.value !== sourceB.value) {
     const recent = sourceA.time > sourceB.time ? sourceA : sourceB
-    return {value: recent.value, time: recent.time, sources: [recent.source], message: `${sourceA.source} (${sourceA.value}) differs from ${sourceB.source}` }
+    return {value: recent.value, time: recent.time, sources: [recent.source], message: `${sourceA.source} (${sourceA.value}) differs from ${sourceB.source} (${sourceB.value}) ${percentDif(sourceA.value, sourceB.value)}%` }
   }
+}
+
+function percentDif(x: number,y: number) {
+  return Math.abs((1- (x / y)) * 100).toPrecision(5)
 }
