@@ -36,7 +36,7 @@ describe(`consensus()`, () => {
       const result = await consensus(Alfie(), Cerci())
       expect(result).toEqual(
         {
-          "message": "etherscan (100) differs from coinbase",
+          "message": "etherscan (100) differs from coinbase (102) 1.9608%",
           "sources": ["coinbase"],
           "time": 1614121843684,
           "value": 102,

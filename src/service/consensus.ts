@@ -3,7 +3,7 @@ import ProviderSource, { Providers } from "src/providers/ProviderSource"
 type ProviderPromise = Promise<ProviderSource>
 
 interface Consensus {
-  value: string | number
+  value: number
   sources: Providers[],
   message: string,
   time: number
@@ -36,6 +36,6 @@ export default async function consensus(alef:ProviderPromise, bet: ProviderPromi
   }
 }
 
-function percentDif(x: number,y: number) {
+function percentDif(x: number, y: number) {
   return Math.abs((1- (x / y)) * 100).toPrecision(5)
 }

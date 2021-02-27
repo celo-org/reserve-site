@@ -7,22 +7,22 @@ import { getEthPrice } from "src/providers/Etherscan"
 
 import consensus from "./consensus"
 
-async function btcPrice() {
+export async function btcPrice() {
   const price = await consensus(coinbase.getBTCInUSD(), getBTCPrice())
   return price
 }
 
-async function ethPrice() {
+export async function ethPrice() {
   const price = await consensus(coinbase.getETHInUSD(), getEthPrice())
   return price
 }
 
-async function euroPrice() {
+export async function euroPrice() {
   const rate = await consensus(euroToUSD(), euroToUSDRate())
   return rate
 }
 
-async function celoPrice() {
+export async function celoPrice() {
   const price = await consensus(getCeloPrice(),coinbase.getCELOPrice())
   return price
 }

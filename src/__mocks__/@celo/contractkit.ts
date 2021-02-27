@@ -5,7 +5,7 @@ export const newKit = jest.fn(() => {
   return {
     contracts: {
       getExchange: async () => ({
-        getGoldExchangeRate: jest.fn(async () => new mockBigNumber(3.892* mockWEI ))
+        quoteGoldSell: jest.fn(async () => new mockBigNumber(3.892* mockWEI ))
       }),
       getReserve: async () => ({
         getReserveGoldBalance: jest.fn(async () => new mockBigNumber(70208036 * mockWEI))

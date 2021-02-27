@@ -21,25 +21,25 @@ interface Fields {
   UnfrozenReserveRatio: number
 }
 
-async function btcBalance() {
+export async function btcBalance() {
   const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"
   const btc = await consensus(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
   return btc
 }
 
-async function ethBalance() {
+export async function ethBalance() {
   const address = "0xe1955eA2D14e60414eBF5D649699356D8baE98eE"
   const eth = await consensus(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
   return eth
 }
 
-async function daiBalance() {
+export async function daiBalance() {
   const address = "0x16B34Ce9A6a6F7FC2DD25Ba59bf7308E7B38E186"
   const eth = await consensus(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
   return eth
 }
 
-async function celoCustodiedBalance() {
+export async function celoCustodiedBalance() {
   return await getInCustodyBalance()
 }
 
