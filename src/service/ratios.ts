@@ -1,4 +1,4 @@
-import {btcBalance, ethBalance, daiBalance} from "src/service/holdings"
+import {btcBalance, ethBalance, daiBalance, } from "src/service/holdings"
 import {btcPrice, ethPrice} from "src/service/rates"
 import {getTotalStableValueInUSD} from "src/service/stables"
 
@@ -16,6 +16,11 @@ export async function unfrozenReserveAssetsValueInUSD() {
 }
 
 export async function totalReserveAssetsValueInUSD() {
+  const totalNonCeloAssetValue = await nonCeloAssetValue()
+  return totalNonCeloAssetValue +
+}
+
+async function totalValueOfCeloInReserve() {
 
 }
 

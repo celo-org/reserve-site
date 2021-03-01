@@ -1,49 +1,64 @@
-import {Fragment} from "react"
+import {Fragment, useMemo} from "react"
 import { css } from '@emotion/core'
 import colors from 'src/components/colors'
-const DATA: ChartData[] = [
-  { color: colors.gold, token: 'CELO', percent: 50 },
-  { color: colors.blue, token: 'BTC', percent: 30 },
-  { color: colors.red, token: 'ETH', percent: 15 },
-  { color: colors.green, token: 'Stable value portfolio*', percent: 5 },
+export const INITAL_TARGET: ChartData[] = [
+  {  token: 'CELO', percent: 50 },
+  {  token: 'BTC', percent: 30 },
+  {  token: 'ETH', percent: 15 },
+  {  token: 'Stable value portfolio*', percent: 5 },
 ]
 
-const DATA_WITH_OFFSETS = DATA.map((data, index) => {
-  let offset = 0
-  let i = index - 1
-  while (i >= 0) {
-    offset = offset + DATA[i].percent
-    --i
-  }
-  return { offset, ...data }
-})
+enum TokenColor {
+  BTC = colors.blue,
+  ETH = colors.red,
+  CELO = colors.gold,
+  "Stable value portfolio*" = colors.green
+}
 
-export default function TargetGraph() {
+interface Props {
+  slices: ChartData[]
+  label: string
+}
+
+export default function PieChart({slices,label}: Props) {
   const radius = 10
   const circumfrance = Math.PI * 2 * radius
+
+  const dataWithOffsets = slices.map((data, index) => {
+    let offset = 0
+    let i = index - 1
+
+    while (i >= 0) {
+      console.log("inspect",data)
+      offset = offset + slices[i].percent
+      --i
+    }
+    return { offset, ...data }
+  })
+
   return (
-    <div css={rootStyle}>
-      <div css={legendStyle}>
-        <h4>Initial Target</h4>
-        {DATA.map(({ color, token, percent }) => (
-          <ChartKey key={token} color={color} token={token} percent={percent} />
+    <figure css={rootStyle}>
+      <figcaption css={legendStyle}>
+        <h4>{label}</h4>
+        {slices.map(({token, percent }) => (
+          <ChartKey key={token} token={token} percent={percent} />
         ))}
         <small>
           *Crypto Assets with low volatility. Candidates are decentralised stablecoins e.g. DAI
         </small>
-      </div>
+      </figcaption>
       <div css={pieStyle}>
         <svg viewBox="-25 -25 50 50" transform="rotate(-90)" width="100%" height="100%">
-          {DATA_WITH_OFFSETS.map(({ color, percent, offset }) => {
+          {dataWithOffsets.map(({ percent, offset, token }) => {
             return (
-              <Fragment key={color}>
+              <Fragment key={token}>
                 <circle
                   cx="0"
                   cy="0"
                   opacity={0.8}
                   r={radius}
                   fill="transparent"
-                  stroke={color}
+                  stroke={TokenColor[token]}
                   strokeWidth="9"
                   strokeDasharray={`${circumfrance * (percent / 100)} ${circumfrance *
                     (1 - percent / 100)}`}
@@ -63,7 +78,7 @@ export default function TargetGraph() {
           })}
         </svg>
       </div>
-    </div>
+    </figure>
   )
 }
 
@@ -75,23 +90,23 @@ const legendStyle = css({
 const pieStyle = css({ display: 'flex', flex: 3, minWidth: 250 })
 
 const rootStyle = css({
+  paddingTop: 36,
+  margin: 0,
   display: 'flex',
   flexWrap: 'wrap',
-  paddingLeft: 15,
   maxWidth: '100%',
   width: 670,
 })
 
-interface ChartData {
-  color: colors
+export interface ChartData {
   token: string
   percent: number
 }
 
-function ChartKey({ color, token, percent }: ChartData) {
+function ChartKey({token, percent }: ChartData) {
   return (
     <div css={chartKeyStyle}>
-      <div css={css(squareStyle, { backgroundColor: color as string })} />
+      <div css={css(squareStyle, { backgroundColor: TokenColor[token]})} />
       <span css={percentStyle}>{percent}%</span>
       <span>{token}</span>
     </div>

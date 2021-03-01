@@ -3,23 +3,8 @@ import getBlockStreemBTCBalance from 'src/providers/Blockstream'
 import { getInCustodyBalance } from 'src/providers/Celo'
 import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
-import getAddressess from "src/service/addresses"
-import { HoldingsData } from 'src/service/Data'
 import consensus from './consensus'
-
-interface Fields {
-  live?: boolean
-  'Updated Date': string
-  Unfrozen: number
-  Frozen: number
-  Custody: number
-  BTC: number
-  ETH: number
-  DAI: number
-  cUSD: number
-  'Reserve Ratio': number
-  UnfrozenReserveRatio: number
-}
+import getRates from "./rates"
 
 export async function btcBalance() {
   const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"
@@ -51,26 +36,21 @@ export default async function getHoldings() {
     celoCustodiedBalance()
   ])
 
-  return {
-    BTC: btcHeld,
-    ETH: ethHeld,
-    DAI: daiHeld,
-    CELO_CUSTODIED: celoCustodied
-  }
-}
+  const rates = await getRates()
 
-
-function convert(fields: Fields): HoldingsData {
   return {
-    updatedDate: fields['Update Date'],
-    unfrozen: fields.Unfrozen,
-    frozen: fields.Frozen,
-    inCustody: fields.Custody,
-    ratio: fields['Reserve Ratio'],
-    unFrozenRatio: fields.UnfrozenReserveRatio,
-    BTC: fields.BTC,
-    ETH: fields.ETH,
-    DAI: fields.DAI,
-    cUSD: fields.cUSD,
+    mktValue: {
+      TOTAL: {},
+      BTC: {...rates, value: rates.btc.value * btcHeld.value},
+      ETH: {...rates, value: rates.eth.value * ethHeld.value},
+      DAI: {...rates, value: daiHeld.value},
+      CELO_CUSTODIED: {...rates, value: rates.celo.value * celoCustodied.value}
+    },
+    units: {
+      BTC: btcHeld,
+      ETH: ethHeld,
+      DAI: daiHeld,
+      CELO_CUSTODIED: celoCustodied
+    }
   }
 }

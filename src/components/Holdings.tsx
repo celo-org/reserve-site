@@ -1,22 +1,78 @@
 
-import { css, jsx } from '@emotion/core'
+import { css } from '@emotion/core'
+import useSWR from "swr"
 import Amount from 'src/components/Amount'
 import Heading from 'src/components/Heading'
 import { BreakPoints } from 'src/components/styles'
-import { HoldingsData } from 'src/service/Data'
+import PieChart,{ChartData} from 'src/components/PieChart'
+import { useMemo } from 'react'
 
-export default function Holdings(props: Omit<HoldingsData, 'updatedDate'>) {
+async function fetchHoldings() {
+  const response = await fetch("api/holdings")
+  return response.json()
+}
+
+interface HoldingsApi {
+  mktValue: {
+    TOTAL: {value:number}
+    BTC: {value:number}
+    ETH: {value:number}
+    CELO_CUSTODIED: {value:number}
+    DAI: {value:number}
+  }
+  units: {
+    BTC: {value:number}
+    ETH: {value:number}
+    CELO_CUSTODIED: {value:number}
+    DAI: {value:number}
+  }
+}
+
+const INITAL_DATA: HoldingsApi = {
+  mktValue: {
+    TOTAL: {value: 1},
+    BTC: {value: 0},
+    ETH: {value: 0},
+    CELO_CUSTODIED: {value: 0},
+    DAI: {value: 0}
+  },
+  units: {
+    BTC: {value: 0},
+    ETH: {value: 0},
+    CELO_CUSTODIED: {value: 0},
+    DAI: {value: 0}
+  }
+}
+
+function useChartData(mktValue: HoldingsApi["mktValue"]): ChartData[] {
+  const percentages = useMemo(() => {
+      return Object.keys(mktValue).map(key => {
+        console.log(key, mktValue[key])
+        return {token: key, percent: mktValue[key].value / mktValue.TOTAL.value}
+      })
+  }, [mktValue])
+
+  return percentages
+}
+
+export default function Holdings() {
+  const {data} = useSWR<HoldingsApi>("api/holdings", fetchHoldings, {initialData: INITAL_DATA})
+  const percentages = useChartData(data.mktValue)
+  console.log(percentages)
   return (
+    <>
     <div css={rootStyle}>
       <Heading title="CELO" gridArea="celo" iconSrc="/assets/CELO.png" />
-      <Amount label="Frozen" units={props.frozen} gridArea="total" />
-      <Amount label="Unfrozen" units={props.unfrozen} gridArea="onChain" />
-      <Amount label="In Custody" units={props.inCustody} gridArea="custody" />
+      <Amount label="Frozen" units={100} value={150} gridArea="total" />
+      <Amount label="Unfrozen" units={100} value={150} gridArea="onChain" />
+      <Amount label="In Custody" units={data.units.CELO_CUSTODIED.value} value={data.mktValue.CELO_CUSTODIED.value} gridArea="custody" />
       <Heading title="Additional Crypto Assets" gridArea="crypto" marginTop={30} />
-      <Amount label="BTC" units={props.BTC} gridArea="btc" />
-      <Amount label="ETH" units={props.ETH} gridArea="eth" />
-      <Amount label="DAI" units={props.DAI} gridArea="dai" />
+      <Amount label="BTC" units={data.units.BTC.value} value={data.mktValue.BTC.value} gridArea="btc" />
+      <Amount label="ETH" units={data.units.ETH.value} value={data.mktValue.ETH.value} gridArea="eth" />
+      <Amount label="DAI" units={data.units.DAI.value} value={data.mktValue.DAI.value} gridArea="dai" />
     </div>
+    <PieChart label={"Current Composition"} slices={percentages} />
+    </>
   )
 }
 
@@ -24,7 +80,7 @@ export function StableTokens(props) {
   return (
     <div css={stableTokenStyle}>
       <Heading title="cUSD" gridArea="cUSD" iconSrc="/assets/CUSD.png" />
-      <Amount label="Outstanding" units={props.cUSD} gridArea="outstanding" />
+      <Amount label="Outstanding" units={props.cUSD} value={150} gridArea="outstanding" />
     </div>
   )
 }

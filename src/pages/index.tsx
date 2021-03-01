@@ -8,7 +8,7 @@ import NavBar from 'src/components/Navbar'
 import ReserveAddresses from 'src/components/ReserveAddresses'
 import Section from 'src/components/Section'
 import { flexCol } from 'src/components/styles'
-import TargetGraph from 'src/components/TargetGraph'
+import PieChart, {INITAL_TARGET} from 'src/components/PieChart'
 import { Updated } from 'src/components/Updated'
 import { Addresses, HoldingsData } from 'src/service/Data'
 
@@ -37,17 +37,7 @@ export default function Home(props: HoldingsData & Addresses & Props) {
               title={'Current Reserve Holdings'}
               subHeading={<Updated date={props.updatedDate} />}
             >
-              <Holdings
-                unFrozenRatio={props.unFrozenRatio}
-                frozen={props.frozen}
-                inCustody={props.inCustody}
-                unfrozen={props.unfrozen}
-                cUSD={props.cUSD}
-                DAI={props.DAI}
-                BTC={props.BTC}
-                ETH={props.ETH}
-                ratio={props.ratio}
-              />
+              <Holdings  />
             </Section>
             <Section title="Stable Value Assets">
               <StableTokens cUSD={props.cUSD} />
@@ -60,15 +50,15 @@ export default function Home(props: HoldingsData & Addresses & Props) {
                 dai={props.daiAddress}
                 btc={props.btcAddress}
                 eth={props.ethAddress}
-                celo={props.celoAddress}
-                custody={props.custodyAddress}
+                celo={"1"}
+                custody={"1"}
               />
             </Section>
             <Section
               title={props.INITIAL_TARGET.attributes.title}
               content={props.INITIAL_TARGET.body}
             >
-              <TargetGraph />
+              <PieChart label={"Initial Target"} slices={INITAL_TARGET}/>
             </Section>
 
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />

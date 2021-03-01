@@ -1,5 +1,6 @@
 enum colors {
   dark = '#333',
+  gray =  "#7A7A7A",
   gold = '#FECD4F',
   blue = '#59A5D0',
   red = '#FC9A84',
