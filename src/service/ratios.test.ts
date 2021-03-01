@@ -1,4 +1,4 @@
-import getRatios, {btcValue, ethValue, daiValue, nonCeloAssetValue, totalOutstandingLiabilitiesInUSD} from "./ratios"
+import getRatios, {btcValue, ethValue, daiValue, nonCeloAssetValue} from "./ratios"
 
 describe(`getRatios()`, () => {
     it("returns ratio of total asset value to total outstanding stable tokens in circulations", async () => {
@@ -8,13 +8,6 @@ describe(`getRatios()`, () => {
         unfrozen: 12.2
       })
     })
-})
-
-describe(`totalOutstandingLiabilitiesInUSD()`, () => {
-  it("returns value in USD of all the stable tokens backed by the reserve", async () => {
-    const result = await totalOutstandingLiabilitiesInUSD()
-    expect(result).toEqual(40208036.10770464)
-  })
 })
 
 describe(`btcValue()`, () => {

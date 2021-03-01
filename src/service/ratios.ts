@@ -1,8 +1,10 @@
 import {btcBalance, ethBalance, daiBalance} from "src/service/holdings"
-import {btcPrice, ethPrice, euroPrice} from "src/service/rates"
-import {getcUSDSupply, getcEURSupply} from "src/providers/Celo"
+import {btcPrice, ethPrice} from "src/service/rates"
+import {getTotalStableValueInUSD} from "src/service/stables"
 
 export default async  function getRatios() {
+  const numerator = await getTotalStableValueInUSD()
+
   return {
     total: 0,
     unfrozen: 0
@@ -15,16 +17,6 @@ export async function unfrozenReserveAssetsValueInUSD() {
 
 export async function totalReserveAssetsValueInUSD() {
 
-}
-
-export async function totalOutstandingLiabilitiesInUSD(){
-  const [totalCUSD, cEURValue] = await Promise.all([getcUSDSupply(),totalCeloEuroValueInUSD()])
-  return totalCUSD.value + cEURValue
-}
-
-async function totalCeloEuroValueInUSD(): Promise<number> {
-  const [units,price] = await  Promise.all([getcEURSupply(),euroPrice()])
-  return price.value * units.value
 }
 
 

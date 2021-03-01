@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import getRates from "src/service/rates"
+import getStableValueTokens, {getTotalStableValueInUSD} from "src/service/stables"
 export default async function(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
-      const rates = await getRates()
-      res.json({rates})
+      const tokens = await getStableValueTokens()
+      const totalStableValueInUSD = await getTotalStableValueInUSD()
+      res.json({tokens, totalStableValueInUSD})
     } else {
       res.status(405)
     }
