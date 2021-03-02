@@ -28,29 +28,52 @@ export async function celoCustodiedBalance() {
   return await getInCustodyBalance()
 }
 
-export default async function getHoldings() {
-  const [btcHeld, ethHeld, daiHeld, celoCustodied] = await Promise.all([
+export interface HoldingsApi {
+  mktValue: {
+    BTC: {value:number}
+    ETH: {value:number}
+    DAI: {value:number}
+    CELO_CUSTODIED: {value:number}
+    CELO_FROZEN: {value: number}
+    CELO_UNFROZEN: {value: number}
+  }
+  units: {
+    BTC: {value:number}
+    ETH: {value:number}
+    DAI: {value:number}
+    CELO_CUSTODIED: {value:number}
+    CELO_FROZEN: {value: number}
+    CELO_UNFROZEN: {value: number}
+  }
+}
+
+export default async function getHoldings(): Promise<HoldingsApi> {
+  const [btcHeld, ethHeld, daiHeld, celoCustodied, rates] = await Promise.all([
     btcBalance(),
     ethBalance(),
     daiBalance(),
-    celoCustodiedBalance()
+    celoCustodiedBalance(),
+    getRates()
   ])
 
-  const rates = await getRates()
 
   return {
     mktValue: {
-      TOTAL: {},
       BTC: {...rates, value: rates.btc.value * btcHeld.value},
       ETH: {...rates, value: rates.eth.value * ethHeld.value},
       DAI: {...rates, value: daiHeld.value},
-      CELO_CUSTODIED: {...rates, value: rates.celo.value * celoCustodied.value}
+      CELO_CUSTODIED: {...rates, value: rates.celo.value * celoCustodied.value},
+      CELO_FROZEN: {value: 0},
+      CELO_UNFROZEN: {value: 0}
     },
     units: {
       BTC: btcHeld,
       ETH: ethHeld,
       DAI: daiHeld,
-      CELO_CUSTODIED: celoCustodied
+      CELO_CUSTODIED: celoCustodied,
+      CELO_FROZEN: {value: 0},
+      CELO_UNFROZEN: {value: 0}
+
     }
   }
 }

@@ -40,7 +40,7 @@ export default function Home(props: HoldingsData & Addresses & Props) {
               <Holdings  />
             </Section>
             <Section title="Stable Value Assets">
-              <StableTokens cUSD={props.cUSD} />
+              <StableTokens  />
             </Section>
             <Section title="Reserve Ratio">
               <Ratios total={props.ratio} unfrozen={props.unFrozenRatio} />
@@ -58,7 +58,7 @@ export default function Home(props: HoldingsData & Addresses & Props) {
               title={props.INITIAL_TARGET.attributes.title}
               content={props.INITIAL_TARGET.body}
             >
-              <PieChart label={"Initial Target"} slices={INITAL_TARGET}/>
+              <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true}/>
             </Section>
 
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />

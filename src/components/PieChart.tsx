@@ -12,15 +12,17 @@ enum TokenColor {
   BTC = colors.blue,
   ETH = colors.red,
   CELO = colors.gold,
+  DAI = colors.green,
   "Stable value portfolio*" = colors.green
 }
 
 interface Props {
   slices: ChartData[]
   label: string
+  showFinePrint?: boolean
 }
 
-export default function PieChart({slices,label}: Props) {
+export default function PieChart({slices,label,showFinePrint}: Props) {
   const radius = 10
   const circumfrance = Math.PI * 2 * radius
 
@@ -43,9 +45,9 @@ export default function PieChart({slices,label}: Props) {
         {slices.map(({token, percent }) => (
           <ChartKey key={token} token={token} percent={percent} />
         ))}
-        <small>
+        {showFinePrint &&<small>
           *Crypto Assets with low volatility. Candidates are decentralised stablecoins e.g. DAI
-        </small>
+        </small>}
       </figcaption>
       <div css={pieStyle}>
         <svg viewBox="-25 -25 50 50" transform="rotate(-90)" width="100%" height="100%">
@@ -107,7 +109,7 @@ function ChartKey({token, percent }: ChartData) {
   return (
     <div css={chartKeyStyle}>
       <div css={css(squareStyle, { backgroundColor: TokenColor[token]})} />
-      <span css={percentStyle}>{percent}%</span>
+      <span css={percentStyle}>{percent.toPrecision(2)}%</span>
       <span>{token}</span>
     </div>
   )

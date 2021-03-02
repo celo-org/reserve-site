@@ -5,82 +5,82 @@ import Amount from 'src/components/Amount'
 import Heading from 'src/components/Heading'
 import { BreakPoints } from 'src/components/styles'
 import PieChart,{ChartData} from 'src/components/PieChart'
-import { useMemo } from 'react'
+import { HoldingsApi} from "src/service/holdings"
+import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
 
-async function fetchHoldings() {
-  const response = await fetch("api/holdings")
+async function fetcher(url: string) {
+  const response = await fetch(url)
   return response.json()
-}
-
-interface HoldingsApi {
-  mktValue: {
-    TOTAL: {value:number}
-    BTC: {value:number}
-    ETH: {value:number}
-    CELO_CUSTODIED: {value:number}
-    DAI: {value:number}
-  }
-  units: {
-    BTC: {value:number}
-    ETH: {value:number}
-    CELO_CUSTODIED: {value:number}
-    DAI: {value:number}
-  }
 }
 
 const INITAL_DATA: HoldingsApi = {
   mktValue: {
-    TOTAL: {value: 1},
     BTC: {value: 0},
     ETH: {value: 0},
+    DAI: {value: 0},
     CELO_CUSTODIED: {value: 0},
-    DAI: {value: 0}
+    CELO_UNFROZEN: {value: 0},
+    CELO_FROZEN: {value: 0},
+
   },
   units: {
     BTC: {value: 0},
     ETH: {value: 0},
+    DAI: {value: 0},
     CELO_CUSTODIED: {value: 0},
-    DAI: {value: 0}
+    CELO_UNFROZEN: {value: 0},
+    CELO_FROZEN: {value: 0},
   }
 }
 
-function useChartData(mktValue: HoldingsApi["mktValue"]): ChartData[] {
-  const percentages = useMemo(() => {
-      return Object.keys(mktValue).map(key => {
-        console.log(key, mktValue[key])
-        return {token: key, percent: mktValue[key].value / mktValue.TOTAL.value}
-      })
-  }, [mktValue])
 
-  return percentages
+
+function  getPercents({CELO_CUSTODIED, CELO_UNFROZEN, CELO_FROZEN, ETH, BTC, DAI}: HoldingsApi["mktValue"]): ChartData[] {
+  const celoTotal =  CELO_CUSTODIED.value + CELO_FROZEN.value + CELO_UNFROZEN.value
+  const total = celoTotal + BTC.value + ETH.value + DAI.value
+
+  function toPercent(value: number) {
+    return (value / total) * 100
+  }
+
+  return [
+    {token: "CELO", percent: toPercent(celoTotal) },
+    {token: "BTC", percent: toPercent(BTC.value) },
+    {token: "ETH", percent: toPercent(ETH.value) },
+    {token: "DAI", percent: toPercent(DAI.value) }
+  ]
 }
 
 export default function Holdings() {
-  const {data} = useSWR<HoldingsApi>("api/holdings", fetchHoldings, {initialData: INITAL_DATA})
-  const percentages = useChartData(data.mktValue)
-  console.log(percentages)
+  const {data} = useSWR<HoldingsApi>("api/holdings", fetcher, {initialData: INITAL_DATA})
+  const {units, mktValue} = data
+  const percentages = getPercents(mktValue)
+  const isLoading = units.CELO_CUSTODIED.value === INITAL_DATA.units.CELO_CUSTODIED.value
+  console.log(data)
   return (
     <>
-    <div css={rootStyle}>
-      <Heading title="CELO" gridArea="celo" iconSrc="/assets/CELO.png" />
-      <Amount label="Frozen" units={100} value={150} gridArea="total" />
-      <Amount label="Unfrozen" units={100} value={150} gridArea="onChain" />
-      <Amount label="In Custody" units={data.units.CELO_CUSTODIED.value} value={data.mktValue.CELO_CUSTODIED.value} gridArea="custody" />
-      <Heading title="Additional Crypto Assets" gridArea="crypto" marginTop={30} />
-      <Amount label="BTC" units={data.units.BTC.value} value={data.mktValue.BTC.value} gridArea="btc" />
-      <Amount label="ETH" units={data.units.ETH.value} value={data.mktValue.ETH.value} gridArea="eth" />
-      <Amount label="DAI" units={data.units.DAI.value} value={data.mktValue.DAI.value} gridArea="dai" />
-    </div>
-    <PieChart label={"Current Composition"} slices={percentages} />
+      <div css={rootStyle}>
+        <Heading title="CELO" gridArea="celo" iconSrc="/assets/CELO.png" />
+        <Amount loading={isLoading} label="Frozen" units={units.CELO_FROZEN.value} value={mktValue.CELO_FROZEN.value} gridArea="total" />
+        <Amount loading={isLoading} label="Unfrozen" units={units.CELO_UNFROZEN.value} value={mktValue.CELO_UNFROZEN.value} gridArea="onChain" />
+        <Amount loading={isLoading} label="In Custody" units={units.CELO_CUSTODIED.value} value={mktValue.CELO_CUSTODIED.value} gridArea="custody" />
+        <Heading title="Additional Crypto Assets" gridArea="crypto" marginTop={30} />
+        <Amount loading={isLoading} label="BTC" units={units.BTC.value} value={mktValue.BTC.value} gridArea="btc" />
+        <Amount loading={isLoading} label="ETH" units={units.ETH.value} value={mktValue.ETH.value} gridArea="eth" />
+        <Amount loading={isLoading} label="DAI" units={units.DAI.value} value={mktValue.DAI.value} gridArea="dai" />
+      </div>
+      <PieChart label={"Current Composition"} slices={percentages} />
     </>
   )
 }
 
-export function StableTokens(props) {
+
+export function StableTokens() {
+  const { data } = useSWR<StableValueTokensAPI>("api/stable-value-tokens",fetcher)
   return (
     <div css={stableTokenStyle}>
       <Heading title="cUSD" gridArea="cUSD" iconSrc="/assets/CUSD.png" />
-      <Amount label="Outstanding" units={props.cUSD} value={150} gridArea="outstanding" />
+      <Amount label="Units" units={data?.tokens?.cUSD?.value} gridArea="outstanding" />
     </div>
   )
 }
@@ -150,7 +150,7 @@ const rootStyle = css({
 
 const stableTokenStyle = css(rootStyle, {
   gridTemplateAreas: `"cUSD cUSD cUSD"
-                     "outstanding . ."`,
+                    "outstanding . ."`,
   [BreakPoints.tablet]: {
     gridTemplateAreas: `"cUSD"
                         "outstanding"`,

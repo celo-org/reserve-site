@@ -7,16 +7,21 @@ interface AmountProps {
   value?: number
   gridArea: string
   context?: string
+  loading?: boolean
 }
 
-export default function Amount({ label, units, gridArea, context, value }: AmountProps) {
+export default function Amount({ label, units, gridArea, context, value, loading }: AmountProps) {
   const display = new Intl.NumberFormat('default').format(Math.round(units))
   const displayValue = value && Math.round(value).toLocaleString()
   return (
     <div title={context} css={css(amountStyle, { gridArea })}>
       <p>{label}</p>
-      <span css={numberStyle}>{display}</span>
-      {displayValue && <span css={dollarValueStyle}>${displayValue}<sup css={supCss}>*</sup></span>}
+      <span css={css(numberStyle, loading && notShowing )}>{display}</span>
+      {!!value && <span css={css(dollarValueStyle, loading && notShowing)}>
+        ${displayValue}
+        {/* <sup css={supCss}>*</sup> */}
+      </span>
+      }
     </div>
   )
 }
@@ -25,7 +30,14 @@ const supCss = css({
   fontSize: 18
 })
 
+const notShowing = css({
+  opacity: 0
+})
+
 const numberStyle = css({
+  transitionProperty: "opacity",
+  transitionDuration: "100ms",
+  opacity: 1,
   fontSize: 36,
   [BreakPoints.tablet]: {
     fontSize: 28,
