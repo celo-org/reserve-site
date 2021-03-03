@@ -15,28 +15,28 @@ export default function Amount({ label, units, gridArea, context, value, loading
   const displayValue = value && Math.round(value).toLocaleString()
   return (
     <div title={context} css={css(amountStyle, { gridArea })}>
-      <p>{label}</p>
+      <p css={labelCss}>{label}</p>
       <span css={css(numberStyle, loading && notShowing )}>{display}</span>
-      {!!value && <span css={css(dollarValueStyle, loading && notShowing)}>
-        ${displayValue}
-        {/* <sup css={supCss}>*</sup> */}
+      <span css={css(dollarValueStyle, loading && notShowing)}>
+        {loading ? " ": !!value && `$${displayValue}`}
       </span>
-      }
     </div>
   )
 }
-
-const supCss = css({
-  fontSize: 18
-})
 
 const notShowing = css({
   opacity: 0
 })
 
+const labelCss = css({
+  textAlign: "left"
+})
+
 const numberStyle = css({
+  textAlign: "left",
+  display: "block",
   transitionProperty: "opacity",
-  transitionDuration: "100ms",
+  transitionDuration: "500ms",
   opacity: 1,
   fontSize: 36,
   [BreakPoints.tablet]: {
@@ -48,7 +48,6 @@ const numberStyle = css({
 const dollarValueStyle = css(numberStyle, {
   color: colors.gray,
   marginTop: 16,
-  display: "block"
 })
 
 const amountStyle = css({

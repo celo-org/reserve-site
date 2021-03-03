@@ -20,9 +20,10 @@ interface Props {
   slices: ChartData[]
   label: string
   showFinePrint?: boolean
+  isLoading?: boolean
 }
 
-export default function PieChart({slices,label,showFinePrint}: Props) {
+export default function PieChart({slices,label,showFinePrint, isLoading}: Props) {
   const radius = 10
   const circumfrance = Math.PI * 2 * radius
 
@@ -31,8 +32,7 @@ export default function PieChart({slices,label,showFinePrint}: Props) {
     let i = index - 1
 
     while (i >= 0) {
-      console.log("inspect",data)
-      offset = offset + slices[i].percent
+      offset = offset + (slices[i].percent || 0)
       --i
     }
     return { offset, ...data }
@@ -109,7 +109,7 @@ function ChartKey({token, percent }: ChartData) {
   return (
     <div css={chartKeyStyle}>
       <div css={css(squareStyle, { backgroundColor: TokenColor[token]})} />
-      <span css={percentStyle}>{percent.toPrecision(2)}%</span>
+      <span css={percentStyle}>{ isNaN(percent) ? 0 : percent.toPrecision(2)}%</span>
       <span>{token}</span>
     </div>
   )

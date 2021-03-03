@@ -15,4 +15,5 @@ export interface Addresses {
   btcAddress: string
   ethAddress: string
   daiAddress: string
+  celoCustodyAddress: string
 }

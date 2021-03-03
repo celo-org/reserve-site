@@ -5,28 +5,44 @@ import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
 import consensus from './consensus'
 import getRates from "./rates"
+import {get, HOUR, SECOND, refresh, MINUTE} from "src/service/cache"
+
+async function fetchBTCBalance() {
+  const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"
+  return consensus(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
+}
+
+refresh("btc-balance", HOUR, fetchBTCBalance)
 
 export async function btcBalance() {
-  const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"
-  const btc = await consensus(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
-  return btc
+  return get("btc-balance") || fetchBTCBalance()
 }
+
+async function fetchETHBalance() {
+  const address = "0xe1955eA2D14e60414eBF5D649699356D8baE98eE"
+  return consensus(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
+}
+refresh("eth-balance", HOUR, fetchETHBalance)
 
 export async function ethBalance() {
-  const address = "0xe1955eA2D14e60414eBF5D649699356D8baE98eE"
-  const eth = await consensus(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
-  return eth
+  return get("eth-balance") || fetchETHBalance()
 }
 
-export async function daiBalance() {
+function fetchDaiBalance() {
   const address = "0x16B34Ce9A6a6F7FC2DD25Ba59bf7308E7B38E186"
-  const eth = await consensus(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
-  return eth
+  return consensus(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
+}
+refresh("dai-balance", HOUR, fetchDaiBalance)
+
+export async function daiBalance() {
+  return get("dai-balance") || fetchDaiBalance()
 }
 
 export async function celoCustodiedBalance() {
-  return await getInCustodyBalance()
+  return get("celo-custody-balance") || getInCustodyBalance()
 }
+
+refresh("celo-custody-balance", 2 * MINUTE, getInCustodyBalance)
 
 export interface HoldingsApi {
   mktValue: {

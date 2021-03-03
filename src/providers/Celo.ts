@@ -66,7 +66,13 @@ export async function getcEURSupply(): Promise<ProviderSource> {
   }
 }
 
+export async function getAddresses() {
+  const reserve = await kit.contracts.getReserve()
+  const addresses = await reserve.getOtherReserveAddresses()
+  console.log("ADDRESS", addresses)
+}
 
+getAddresses()
 
 export const WEI_PER = 1_000_000_000_000_000_000
 

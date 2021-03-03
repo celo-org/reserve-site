@@ -17,7 +17,7 @@ export async function unfrozenReserveAssetsValueInUSD() {
 
 export async function totalReserveAssetsValueInUSD() {
   const totalNonCeloAssetValue = await nonCeloAssetValue()
-  return totalNonCeloAssetValue +
+  return totalNonCeloAssetValue + 0
 }
 
 async function totalValueOfCeloInReserve() {

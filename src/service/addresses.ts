@@ -20,7 +20,7 @@ export default async function fetchRecords() {
       sort: [{ field: 'order', direction: 'desc' }],
     })
     .firstPage()) as Record<Fields>[]
-  return records.map((record) => convert(record.fields))[0]
+    return records.map((record) => convert(record.fields))[0]
   } catch (e) {
     console.error("could not fetch addresses", e)
     return {}
@@ -32,5 +32,6 @@ function convert(fields: Fields): Addresses {
     btcAddress: fields.BTC,
     ethAddress: fields.ETH,
     daiAddress: fields.DAI,
+    celoCustodyAddress: fields['CELO in custody']
   }
 }

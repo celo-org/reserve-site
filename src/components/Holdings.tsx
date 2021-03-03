@@ -7,8 +7,10 @@ import { BreakPoints } from 'src/components/styles'
 import PieChart,{ChartData} from 'src/components/PieChart'
 import { HoldingsApi} from "src/service/holdings"
 import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
+import Head from 'next/head'
 
 async function fetcher(url: string) {
+  console.log(url)
   const response = await fetch(url)
   return response.json()
 }
@@ -33,7 +35,21 @@ const INITAL_DATA: HoldingsApi = {
   }
 }
 
+function sumTotalHoldings(mktValue:  HoldingsApi["mktValue"]) {
+  const {CELO_CUSTODIED, CELO_UNFROZEN, CELO_FROZEN} = mktValue
+  const celoTotal = CELO_CUSTODIED.value + CELO_UNFROZEN.value +  CELO_FROZEN.value
+  return  celoTotal +  sumNonCelo(mktValue)
+}
 
+function sumUnfrozenHoldings(mktValue:  HoldingsApi["mktValue"]) {
+  const {CELO_CUSTODIED, CELO_UNFROZEN} = mktValue
+  const celoTotal =  CELO_CUSTODIED.value + CELO_UNFROZEN.value
+  return celoTotal + sumNonCelo(mktValue)
+}
+
+function sumNonCelo({ETH, BTC, DAI}: HoldingsApi["mktValue"]) {
+  return BTC.value + ETH.value + DAI.value
+}
 
 function  getPercents({CELO_CUSTODIED, CELO_UNFROZEN, CELO_FROZEN, ETH, BTC, DAI}: HoldingsApi["mktValue"]): ChartData[] {
   const celoTotal =  CELO_CUSTODIED.value + CELO_FROZEN.value + CELO_UNFROZEN.value
@@ -52,13 +68,15 @@ function  getPercents({CELO_CUSTODIED, CELO_UNFROZEN, CELO_FROZEN, ETH, BTC, DAI
 }
 
 export default function Holdings() {
-  const {data} = useSWR<HoldingsApi>("api/holdings", fetcher, {initialData: INITAL_DATA})
+  const {data} = useSWR<HoldingsApi>("/api/holdings", fetcher, {initialData: INITAL_DATA, revalidateOnMount: true})
   const {units, mktValue} = data
   const percentages = getPercents(mktValue)
-  const isLoading = units.CELO_CUSTODIED.value === INITAL_DATA.units.CELO_CUSTODIED.value
-  console.log(data)
+  const isLoading = units.CELO_CUSTODIED.value === INITAL_DATA.units.CELO_CUSTODIED.value && units.BTC.value === INITAL_DATA.units.BTC.value
   return (
     <>
+      <Head>
+        <link rel="preload" href="/api/holdings" as="fetch" crossOrigin="anonymous"/>
+      </Head>
       <div css={rootStyle}>
         <Heading title="CELO" gridArea="celo" iconSrc="/assets/CELO.png" />
         <Amount loading={isLoading} label="Frozen" units={units.CELO_FROZEN.value} value={mktValue.CELO_FROZEN.value} gridArea="total" />
@@ -76,7 +94,7 @@ export default function Holdings() {
 
 
 export function StableTokens() {
-  const { data } = useSWR<StableValueTokensAPI>("api/stable-value-tokens",fetcher)
+  const { data } = useSWR<StableValueTokensAPI>("/api/stable-value-tokens",fetcher)
   return (
     <div css={stableTokenStyle}>
       <Heading title="cUSD" gridArea="cUSD" iconSrc="/assets/CUSD.png" />
@@ -91,10 +109,18 @@ interface RatioProps {
 }
 
 export function Ratios(props: RatioProps) {
+  const stables  = useSWR<StableValueTokensAPI>("/api/stable-value-tokens",fetcher)
+  const holdings = useSWR<HoldingsApi>("/api/holdings", fetcher)
+  const isLoading = !holdings.data || !stables.data
+
+  const outstanding = stables.data?.totalStableValueInUSD || 1
+  const totalReserveValue = holdings.data ? sumTotalHoldings(holdings.data?.mktValue) : 1
+  const unfrozenReserveValue = holdings.data ? sumUnfrozenHoldings(holdings.data?.mktValue) : 1
+
   return (
     <div css={ratiosSectionStyle}>
-      <Amount label="Total" units={props.total} gridArea="ratio" />
-      <Amount label="Unfrozen" units={props.unfrozen} gridArea="unfrozen" />
+      <Amount loading={isLoading} label="Total" units={totalReserveValue / outstanding} gridArea="ratio" />
+      <Amount loading={isLoading} label="Unfrozen" units={unfrozenReserveValue / outstanding} gridArea="unfrozen" />
 
       <div css={infoStyle}>
         <div css={finePrintStyle}>

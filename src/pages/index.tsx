@@ -1,5 +1,4 @@
-
-import { css, jsx } from '@emotion/core'
+import { css } from '@emotion/core'
 import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'
@@ -50,8 +49,8 @@ export default function Home(props: HoldingsData & Addresses & Props) {
                 dai={props.daiAddress}
                 btc={props.btcAddress}
                 eth={props.ethAddress}
-                celo={"1"}
-                custody={"1"}
+                celo={props.celoCustodyAddress}
+                custody={props.celoCustodyAddress}
               />
             </Section>
             <Section
@@ -92,27 +91,31 @@ const containerStyle = css(flexCol, { flex: 1, width: '100%', alignItems: 'cente
 
 export async function getStaticProps() {
   try {
-    const about = await import('src/content/home/about.md').then((mod) => mod.default)
-    const attestations = await import('src/content/home/attestations.md').then((mod) => mod.default)
-    const initialTarget = await import('src/content/home/initial-target.md').then(
-      (mod) => mod.default
-    )
-    const intro = await import('src/content/home/intro.md').then((mod) => mod.default)
-    const matter = await import('front-matter').then((mod) => mod.default)
+    const [
+      about,
+      attestations,
+      initialTarget,
+      intro,
+      matter,
+      fetchAddresses,
+    ] = await Promise.all([
+      import('src/content/home/about.md').then((mod) => mod.default),
+      import('src/content/home/attestations.md').then((mod) => mod.default),
+      import('src/content/home/initial-target.md').then((mod) => mod.default),
+      import('src/content/home/intro.md').then((mod) => mod.default),
+      import('front-matter').then((mod) => mod.default),
+      import('src/service/addresses').then((mod) => mod.default)
+    ])
+    const addresses = await fetchAddresses()
+
 
     const INTRO = matter<ContentShape>(intro)
     const INITIAL_TARGET = matter<ContentShape>(initialTarget)
     const ABOUT = matter<ContentShape>(about)
     const ATTESTATIONS = matter<ContentShape>(attestations)
-
-    const fetchData = await import('src/service/holdings').then((mod) => mod.default)
-    const fetchAddresses = await import('src/service/addresses').then((mod) => mod.default)
-
-    const [addresses, holdings] = await Promise.all([fetchAddresses(), fetchData()])
     return {
       props: {
         ...addresses,
-        ...holdings,
         INTRO,
         INITIAL_TARGET,
         ABOUT,
