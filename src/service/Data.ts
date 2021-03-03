@@ -11,9 +11,9 @@ export interface HoldingsData {
   unFrozenRatio: number
 }
 
-export interface Addresses {
-  btcAddress: string
-  ethAddress: string
-  daiAddress: string
-  celoCustodyAddress: string
+export interface Address {
+  address: string
+  label: string
+  status?: "active" | "inactive"
+  link?: string
 }

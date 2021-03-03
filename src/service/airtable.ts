@@ -17,7 +17,7 @@ export default function getAirtable(name: TableNames) {
 
 export enum TableNames {
   ReserveHoldings = 'Reserve Holdings',
-  ReserveAddresses = 'Reserve Addresses',
+  ReserveAddresses = 'Off Chain Addresses',
 }
 
 export interface Record<Fields> {

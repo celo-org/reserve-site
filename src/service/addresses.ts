@@ -1,37 +1,27 @@
+import { getAddresses as getCeloAddresses } from 'src/providers/Celo'
 import getAirtable, { Record, TableNames } from 'src/service/airtable'
-import { Addresses } from 'src/service/Data'
-const IS_LIVE = 'live=1'
+import { getOrSave } from './cache'
+import { Address } from 'src/service/Data'
 
-interface Fields {
-  live?: boolean
-  CELO: string
-  'CELO in custody': string
-  BTC: string
-  ETH: string
-  DAI: string
+const IS_LIVE = 'Status="active"'
+
+
+export default async function getAddresses() {
+  const celoAddresses = await getOrSave("onchain-addresses", getCeloAddresses)
+  const offchain = await getOrSave<Address[]>("offchain-addresses", fetchAddresses)
+  return celoAddresses.concat(offchain.sort((a,b) => a.label > b.label ? 1: -1))
 }
 
-export default async function fetchRecords() {
+async function fetchAddresses() {
   try {
   const records = (await getAirtable(TableNames.ReserveAddresses)
     .select({
-      maxRecords: 1,
       filterByFormula: IS_LIVE,
-      sort: [{ field: 'order', direction: 'desc' }],
     })
-    .firstPage()) as Record<Fields>[]
-    return records.map((record) => convert(record.fields))[0]
+    .firstPage()) as Record<Address>[]
+    return records.map((record) => record.fields)
   } catch (e) {
     console.error("could not fetch addresses", e)
-    return {}
-  }
-}
-
-function convert(fields: Fields): Addresses {
-  return {
-    btcAddress: fields.BTC,
-    ethAddress: fields.ETH,
-    daiAddress: fields.DAI,
-    celoCustodyAddress: fields['CELO in custody']
+    return []
   }
 }

@@ -1,25 +1,19 @@
-
-import { css, jsx } from '@emotion/core'
+import { css} from '@emotion/core'
 import * as React from 'react'
 import Button from 'src/components/Button'
 import CopyIcon from 'src/components/CopyIcon'
+import { Address } from 'src/service/Data'
 
 interface Props {
-  dai: string
-  btc: string
-  celo: string
-  custody: string
-  eth: string
+  addresses: Address[]
 }
 
-export default function ReserveAddresses({ dai, btc, celo, custody, eth }: Props) {
+export default function ReserveAddresses(props: Props) {
   return (
     <>
-      <Address label="CELO" hex={celo} />
-      <Address label="CELO in Custody" hex={custody} />
-      <Address label="BTC" hex={btc} />
-      <Address label="ETH" hex={eth} />
-      <Address label="DAI" hex={dai} />
+      {props.addresses.map(({address, label, link}) => {
+        return <AddressDisplay key={address}  link={link} label={label} hex={address} />
+      })}
       <Button href="https://docs.celo.org/command-line-interface/reserve">
         Query Reserve Holdings
       </Button>
@@ -28,7 +22,7 @@ export default function ReserveAddresses({ dai, btc, celo, custody, eth }: Props
 }
 const MILLISECONDS = 5000
 
-function useCopy(hex) {
+function useCopy(hex: string) {
   const [justCopied, setCopied] = React.useState(false)
 
   function onPress() {
@@ -40,13 +34,13 @@ function useCopy(hex) {
   return { onPress, justCopied }
 }
 
-function Address({ label, hex }) {
+function AddressDisplay({ label, hex , link }) {
   const { onPress, justCopied } = useCopy(hex)
 
   return (
-    <div onClick={onPress} css={rootStyle}>
-      <h5 css={labelStyle}>{label}</h5>
-      <span css={css({ wordWrap: 'break-word' })}>
+    <div css={rootStyle}>
+      <h5 css={labelStyle}><a href={link} target="_blank" rel="noopener">{label}</a></h5>
+      <span onClick={onPress} css={iconStyle}>
         {hex} <CopyIcon /> <span className="info">{justCopied ? 'Copied' : 'Copy'}</span>
       </span>
     </div>
@@ -57,10 +51,16 @@ async function onCopy(text: string) {
   await navigator.clipboard.writeText(text)
 }
 
-const labelStyle = css({ marginBottom: 5, marginTop: 10 })
+const labelStyle = css({
+  marginBottom: 5,
+  marginTop: 10,
+  a: {
+    textDecoration: "none"
+  }
+})
 
-const rootStyle = css({
-  marginBottom: 24,
+const iconStyle = css({
+  wordWrap: 'break-word',
   cursor: 'pointer',
   '&:active': {
     svg: {
@@ -77,4 +77,8 @@ const rootStyle = css({
       opacity: 1,
     },
   },
+})
+
+const rootStyle = css({
+  marginBottom: 24,
 })

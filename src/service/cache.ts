@@ -2,22 +2,24 @@ import Cache from "node-cache"
 
 const CACHE = new Cache()
 
-
-export function get(key:string) {
-  return CACHE.get(key)
+export function getOrSave<T>(key: string, fetcher: () => Promise<T>) {
+  return get<T>(key) || set<T>(key,fetcher())
 }
 
-export async function set(key: string, dataPromise: Promise<any>) {
+export function get<T>(key:string) {
+  return CACHE.get<T>(key)
+}
+
+export async function set<T>(key: string, dataPromise: Promise<T>) {
   const data = await dataPromise
-  CACHE.set(key, data)
-  return data
+  CACHE.set<T>(key, data)
+  return data as T
 }
 
 export async function refresh<T>(key: string, interval: number, fetcher: () => Promise<T>) {
   const setData = async () => {
     const data = await fetcher()
-    console.log(data)
-    CACHE.set(key, data)
+    CACHE.set<T>(key, data)
   }
 
   setData()

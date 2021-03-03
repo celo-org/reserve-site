@@ -5,7 +5,7 @@ import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
 import consensus from './consensus'
 import getRates from "./rates"
-import {get, HOUR, SECOND, refresh, MINUTE} from "src/service/cache"
+import {get, HOUR, refresh, MINUTE} from "src/service/cache"
 
 async function fetchBTCBalance() {
   const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"

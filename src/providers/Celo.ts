@@ -1,5 +1,6 @@
 import { newKit } from '@celo/contractkit'
 import BigNumber from 'bignumber.js'
+import { Address } from 'src/service/Data'
 import ProviderSource, { errorResult, Providers } from './ProviderSource'
 
 const kit = newKit('https://forno.celo.org')
@@ -66,13 +67,18 @@ export async function getcEURSupply(): Promise<ProviderSource> {
   }
 }
 
-export async function getAddresses() {
-  const reserve = await kit.contracts.getReserve()
-  const addresses = await reserve.getOtherReserveAddresses()
-  console.log("ADDRESS", addresses)
+function generatelink(address: string) {
+  return `https://explorer.celo.org/address/${address}/coin_balances`
 }
 
-getAddresses()
+export async function getAddresses(): Promise<Address[]> {
+  const reserve = await kit.contracts.getReserve()
+  const addresses = await reserve.getOtherReserveAddresses()
+
+  return [{label: "Celo Reserve", address: reserve.address, link:generatelink(reserve.address)} ].concat(
+    addresses.map(address => ({address, label: "CELO with Custodian", link: generatelink(address)}))
+  )
+}
 
 export const WEI_PER = 1_000_000_000_000_000_000
 

@@ -9,7 +9,7 @@ import Section from 'src/components/Section'
 import { flexCol } from 'src/components/styles'
 import PieChart, {INITAL_TARGET} from 'src/components/PieChart'
 import { Updated } from 'src/components/Updated'
-import { Addresses, HoldingsData } from 'src/service/Data'
+import { Address, HoldingsData } from 'src/service/Data'
 
 interface ContentShape {
   title: string
@@ -21,9 +21,10 @@ interface Props {
   ABOUT: FrontMatterResult<ContentShape>
   ATTESTATIONS: FrontMatterResult<ContentShape>
   year: string
+  addresses: Address[]
 }
 
-export default function Home(props: HoldingsData & Addresses & Props) {
+export default function Home(props: HoldingsData & Props) {
   return (
     <>
       <Head />
@@ -45,13 +46,7 @@ export default function Home(props: HoldingsData & Addresses & Props) {
               <Ratios total={props.ratio} unfrozen={props.unFrozenRatio} />
             </Section>
             <Section title={'Reserve Addresses'}>
-              <ReserveAddresses
-                dai={props.daiAddress}
-                btc={props.btcAddress}
-                eth={props.ethAddress}
-                celo={props.celoCustodyAddress}
-                custody={props.celoCustodyAddress}
-              />
+              <ReserveAddresses addresses={props.addresses}  />
             </Section>
             <Section
               title={props.INITIAL_TARGET.attributes.title}
@@ -108,14 +103,13 @@ export async function getStaticProps() {
     ])
     const addresses = await fetchAddresses()
 
-
     const INTRO = matter<ContentShape>(intro)
     const INITIAL_TARGET = matter<ContentShape>(initialTarget)
     const ABOUT = matter<ContentShape>(about)
     const ATTESTATIONS = matter<ContentShape>(attestations)
     return {
       props: {
-        ...addresses,
+        addresses: addresses,
         INTRO,
         INITIAL_TARGET,
         ABOUT,
