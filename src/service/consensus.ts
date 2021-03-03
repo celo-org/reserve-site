@@ -2,7 +2,7 @@
 import ProviderSource, { Providers } from "src/providers/ProviderSource"
 type ProviderPromise = Promise<ProviderSource>
 
-interface Consensus {
+export interface Consensus {
   value: number
   sources: Providers[],
   message: string,

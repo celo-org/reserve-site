@@ -97,8 +97,10 @@ export function StableTokens() {
   const { data } = useSWR<StableValueTokensAPI>("/api/stable-value-tokens",fetcher)
   return (
     <div css={stableTokenStyle}>
-      <Heading title="cUSD" gridArea="cUSD" iconSrc="/assets/CUSD.png" />
-      <Amount label="Units" units={data?.tokens?.cUSD?.value} gridArea="outstanding" />
+      <Heading title="Outstanding Supply" gridArea="title" />
+      {data?.tokens?.map((token) => {
+        return <Amount iconSrc={`/assets/tokens/${token.token}.svg`} label={token.token} units={token.units} value={token.value} gridArea={""} />
+      })}
     </div>
   )
 }
@@ -158,9 +160,9 @@ const rootStyle = css({
   gridColumnGap: 20,
   gridRowGap: 12,
   gridTemplateAreas: `"celo celo celo"
-                     "total onChain custody"
-                     "crypto crypto crypto"
-                     "btc eth dai"
+                    "total onChain custody"
+                    "crypto crypto crypto"
+                    "btc eth dai"
                     `,
   [BreakPoints.tablet]: {
     gridTemplateAreas: `"celo"
@@ -174,13 +176,17 @@ const rootStyle = css({
   },
 })
 
-const stableTokenStyle = css(rootStyle, {
-  gridTemplateAreas: `"cUSD cUSD cUSD"
-                    "outstanding . ."`,
-  [BreakPoints.tablet]: {
-    gridTemplateAreas: `"cUSD"
-                        "outstanding"`,
-  },
+const stableTokenStyle = css({
+  display: 'grid',
+  gridColumnGap: 20,
+  gridRowGap: 12,
+  gridTemplateAreas: `"title title title"`,
+  gridTemplateColumns: "1fr 1fr 1fr",
+  gridAutoFlow: "dense",
+  [BreakPoints.tablet] : {
+    gridTemplateAreas: `"title"`,
+    gridTemplateColumns: "100%",
+  }
 })
 
 const finePrintStyle = css({

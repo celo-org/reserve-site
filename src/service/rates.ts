@@ -5,7 +5,7 @@ import euroToUSDRate from "src/providers/ExchangeRateAPI"
 import {getCeloPrice} from "src/providers/Celo"
 import { getEthPrice } from "src/providers/Etherscan"
 import {get,set, HOUR, refresh} from "src/service/cache"
-import consensus from "./consensus"
+import consensus, {Consensus} from "./consensus"
 
 
 
@@ -16,7 +16,7 @@ async function fetchBTCPrice() {
 refresh("btc-price", HOUR, fetchBTCPrice)
 
 export async function btcPrice() {
-  return get("btc-price") || set("btc-price",fetchBTCPrice())
+  return get<Consensus>("btc-price") || set("btc-price",fetchBTCPrice())
 }
 
 
@@ -28,7 +28,7 @@ async function fetchETHPrice() {
 refresh("eth-price", HOUR, fetchETHPrice)
 
 export async function ethPrice() {
-  return get("eth-price") || fetchETHPrice()
+  return get<Consensus>("eth-price") || fetchETHPrice()
 }
 
 
@@ -39,7 +39,7 @@ async function fetchEuroPrice() {
 refresh("euro-price", HOUR, fetchEuroPrice)
 
 export async function euroPrice() {
-  return get("euro-price") || fetchEuroPrice()
+  return get<Consensus>("euro-price") || fetchEuroPrice()
 }
 
 async function fetchCELOPrice() {
@@ -49,7 +49,7 @@ async function fetchCELOPrice() {
 refresh("celo-price", HOUR, fetchCELOPrice)
 
 export async function celoPrice() {
-  return get("celo-price") || fetchCELOPrice()
+  return get<Consensus>("celo-price") || fetchCELOPrice()
 }
 
 export default async function rates() {

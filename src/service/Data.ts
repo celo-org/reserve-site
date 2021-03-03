@@ -17,3 +17,11 @@ export interface Address {
   status?: "active" | "inactive"
   link?: string
 }
+
+export interface TokenModel {
+  token: string
+  units: number
+  value: number
+  updated: number
+  hasError: boolean
+}
