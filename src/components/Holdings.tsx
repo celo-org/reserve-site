@@ -10,68 +10,66 @@ import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
 import Head from 'next/head'
 
 async function fetcher(url: string) {
-  console.log(url)
   const response = await fetch(url)
   return response.json()
 }
+const initalToken = {
+  value: 0,
+  units: 0,
+  hasError: false,
+  token: "CELO",
+  updated: 0
+}
 
 const INITAL_DATA: HoldingsApi = {
-  mktValue: {
-    BTC: {value: 0},
-    ETH: {value: 0},
-    DAI: {value: 0},
-    CELO_CUSTODIED: {value: 0},
-    CELO_UNFROZEN: {value: 0},
-    CELO_FROZEN: {value: 0},
-
+  celo: {
+    custody: initalToken,
+    unfrozen: initalToken,
+    frozen: initalToken
   },
-  units: {
-    BTC: {value: 0},
-    ETH: {value: 0},
-    DAI: {value: 0},
-    CELO_CUSTODIED: {value: 0},
-    CELO_UNFROZEN: {value: 0},
-    CELO_FROZEN: {value: 0},
-  }
+  otherAssets: []
 }
 
-function sumTotalHoldings(mktValue:  HoldingsApi["mktValue"]) {
-  const {CELO_CUSTODIED, CELO_UNFROZEN, CELO_FROZEN} = mktValue
-  const celoTotal = CELO_CUSTODIED.value + CELO_UNFROZEN.value +  CELO_FROZEN.value
-  return  celoTotal +  sumNonCelo(mktValue)
+function sumTotalHoldings(holdings:  HoldingsApi) {
+  return  sumCeloTotal(holdings) +  sumNonCelo(holdings)
 }
 
-function sumUnfrozenHoldings(mktValue:  HoldingsApi["mktValue"]) {
-  const {CELO_CUSTODIED, CELO_UNFROZEN} = mktValue
-  const celoTotal =  CELO_CUSTODIED.value + CELO_UNFROZEN.value
-  return celoTotal + sumNonCelo(mktValue)
+function sumCeloTotal(holdings: HoldingsApi) {
+  const { custody, frozen, unfrozen } = holdings.celo
+  return custody.value + unfrozen.value + frozen.value
 }
 
-function sumNonCelo({ETH, BTC, DAI}: HoldingsApi["mktValue"]) {
-  return BTC.value + ETH.value + DAI.value
+function sumUnfrozenHoldings(holdings:  HoldingsApi) {
+  const {custody, unfrozen} = holdings.celo
+  const celoTotal =  custody.value + unfrozen.value
+  return celoTotal + sumNonCelo(holdings)
 }
 
-function  getPercents({CELO_CUSTODIED, CELO_UNFROZEN, CELO_FROZEN, ETH, BTC, DAI}: HoldingsApi["mktValue"]): ChartData[] {
-  const celoTotal =  CELO_CUSTODIED.value + CELO_FROZEN.value + CELO_UNFROZEN.value
-  const total = celoTotal + BTC.value + ETH.value + DAI.value
+function sumNonCelo({otherAssets}: HoldingsApi) {
+  return otherAssets.reduce((prev, current) => (current.value + prev), 0)
+}
+
+function  getPercents(holdings: HoldingsApi): ChartData[] {
+  const celoTotal =  sumCeloTotal(holdings)
+  const total = celoTotal + sumNonCelo(holdings)
 
   function toPercent(value: number) {
     return (value / total) * 100
   }
 
-  return [
-    {token: "CELO", percent: toPercent(celoTotal) },
-    {token: "BTC", percent: toPercent(BTC.value) },
-    {token: "ETH", percent: toPercent(ETH.value) },
-    {token: "DAI", percent: toPercent(DAI.value) }
-  ]
+  return [{token: "CELO", percent: toPercent(celoTotal) }].concat(holdings.otherAssets.map((asset) => {
+    return {
+      token: asset.token,
+      percent: toPercent(asset.value)
+    }
+  }))
 }
 
 export default function Holdings() {
   const {data} = useSWR<HoldingsApi>("/api/holdings", fetcher, {initialData: INITAL_DATA, revalidateOnMount: true})
-  const {units, mktValue} = data
-  const percentages = getPercents(mktValue)
-  const isLoading = units.CELO_CUSTODIED.value === INITAL_DATA.units.CELO_CUSTODIED.value && units.BTC.value === INITAL_DATA.units.BTC.value
+  const percentages = getPercents(data)
+  const isLoading = data.otherAssets.length === 0
+  const celo = data.celo
   return (
     <>
       <Head>
@@ -79,13 +77,13 @@ export default function Holdings() {
       </Head>
       <div css={rootStyle}>
         <Heading title="CELO" gridArea="celo" iconSrc="/assets/CELO.png" />
-        <Amount loading={isLoading} label="Frozen" units={units.CELO_FROZEN.value} value={mktValue.CELO_FROZEN.value} gridArea="total" />
-        <Amount loading={isLoading} label="Unfrozen" units={units.CELO_UNFROZEN.value} value={mktValue.CELO_UNFROZEN.value} gridArea="onChain" />
-        <Amount loading={isLoading} label="In Custody" units={units.CELO_CUSTODIED.value} value={mktValue.CELO_CUSTODIED.value} gridArea="custody" />
+        <Amount loading={isLoading} label="Frozen" units={celo.frozen.units} value={celo.frozen.value} gridArea="total" />
+        <Amount loading={isLoading} label="Unfrozen" units={celo.unfrozen.units} value={celo.unfrozen.value} gridArea="onChain" />
+        <Amount loading={isLoading} label="In Custody" units={celo.custody.units} value={celo.custody.value} gridArea="custody" />
         <Heading title="Additional Crypto Assets" gridArea="crypto" marginTop={30} />
-        <Amount loading={isLoading} label="BTC" units={units.BTC.value} value={mktValue.BTC.value} gridArea="btc" />
-        <Amount loading={isLoading} label="ETH" units={units.ETH.value} value={mktValue.ETH.value} gridArea="eth" />
-        <Amount loading={isLoading} label="DAI" units={units.DAI.value} value={mktValue.DAI.value} gridArea="dai" />
+        {data?.otherAssets?.map(asset => (
+          <Amount loading={isLoading} label={asset.token} units={asset.units} value={asset.value} gridArea={""} />
+        ))}
       </div>
       <PieChart label={"Current Composition"} slices={percentages} />
     </>
@@ -116,8 +114,8 @@ export function Ratios(props: RatioProps) {
   const isLoading = !holdings.data || !stables.data
 
   const outstanding = stables.data?.totalStableValueInUSD || 1
-  const totalReserveValue = holdings.data ? sumTotalHoldings(holdings.data?.mktValue) : 1
-  const unfrozenReserveValue = holdings.data ? sumUnfrozenHoldings(holdings.data?.mktValue) : 1
+  const totalReserveValue = holdings.data ? sumTotalHoldings(holdings.data) : 1
+  const unfrozenReserveValue = holdings.data ? sumUnfrozenHoldings(holdings.data) : 1
 
   return (
     <div css={ratiosSectionStyle}>
@@ -143,9 +141,9 @@ const ratiosSectionStyle = css({
   gridColumnGap: 20,
   gridRowGap: 12,
   gridTemplateAreas: `
-                     "ratio unfrozen ."
-                     "info info ."
-                     `,
+                    "ratio unfrozen ."
+                    "info info ."
+                    `,
   [BreakPoints.tablet]: {
     gridTemplateAreas: `
     "unfrozen"

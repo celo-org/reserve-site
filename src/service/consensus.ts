@@ -15,7 +15,7 @@ export default async function consensus(alef:ProviderPromise, bet: ProviderPromi
   const sourceB =results[1]
 
   if (sourceA.hasError && sourceB.hasError) {
-    return {value: null, time: 0, sources: [], message: "could not get new data"}
+    return {value: null, time: 0, sources: [], message: "Error could not get new data"}
   }
 
   if (sourceA.hasError && !sourceB.hasError) {

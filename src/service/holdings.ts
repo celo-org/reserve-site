@@ -3,9 +3,11 @@ import getBlockStreemBTCBalance from 'src/providers/Blockstream'
 import { getInCustodyBalance } from 'src/providers/Celo'
 import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
-import consensus from './consensus'
+import consensus, { Consensus } from './consensus'
 import getRates from "./rates"
 import {get, HOUR, refresh, MINUTE} from "src/service/cache"
+import { TokenModel } from './Data'
+import ProviderSource from 'src/providers/ProviderSource'
 
 async function fetchBTCBalance() {
   const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"
@@ -15,7 +17,7 @@ async function fetchBTCBalance() {
 refresh("btc-balance", HOUR, fetchBTCBalance)
 
 export async function btcBalance() {
-  return get("btc-balance") || fetchBTCBalance()
+  return get<Consensus>("btc-balance") || fetchBTCBalance()
 }
 
 async function fetchETHBalance() {
@@ -25,7 +27,7 @@ async function fetchETHBalance() {
 refresh("eth-balance", HOUR, fetchETHBalance)
 
 export async function ethBalance() {
-  return get("eth-balance") || fetchETHBalance()
+  return get<Consensus>("eth-balance") || fetchETHBalance()
 }
 
 function fetchDaiBalance() {
@@ -35,32 +37,22 @@ function fetchDaiBalance() {
 refresh("dai-balance", HOUR, fetchDaiBalance)
 
 export async function daiBalance() {
-  return get("dai-balance") || fetchDaiBalance()
+  return get<Consensus>("dai-balance") || fetchDaiBalance()
 }
 
 export async function celoCustodiedBalance() {
-  return get("celo-custody-balance") || getInCustodyBalance()
+  return get<ProviderSource>("celo-custody-balance") || getInCustodyBalance()
 }
 
 refresh("celo-custody-balance", 2 * MINUTE, getInCustodyBalance)
 
 export interface HoldingsApi {
-  mktValue: {
-    BTC: {value:number}
-    ETH: {value:number}
-    DAI: {value:number}
-    CELO_CUSTODIED: {value:number}
-    CELO_FROZEN: {value: number}
-    CELO_UNFROZEN: {value: number}
+  celo: {
+    unfrozen: TokenModel
+    frozen: TokenModel
+    custody: TokenModel
   }
-  units: {
-    BTC: {value:number}
-    ETH: {value:number}
-    DAI: {value:number}
-    CELO_CUSTODIED: {value:number}
-    CELO_FROZEN: {value: number}
-    CELO_UNFROZEN: {value: number}
-  }
+  otherAssets: TokenModel[]
 }
 
 export default async function getHoldings(): Promise<HoldingsApi> {
@@ -72,24 +64,46 @@ export default async function getHoldings(): Promise<HoldingsApi> {
     getRates()
   ])
 
+  const otherAssets: TokenModel[] = [
+    toToken("BTC", btcHeld, rates.btc),
+    toToken("ETH", ethHeld, rates.eth),
+    toToken("DAI", daiHeld),
+  ]
 
   return {
-    mktValue: {
-      BTC: {...rates, value: rates.btc.value * btcHeld.value},
-      ETH: {...rates, value: rates.eth.value * ethHeld.value},
-      DAI: {...rates, value: daiHeld.value},
-      CELO_CUSTODIED: {...rates, value: rates.celo.value * celoCustodied.value},
-      CELO_FROZEN: {value: 0},
-      CELO_UNFROZEN: {value: 0}
+    celo: {
+      frozen: {
+        token: "CELO",
+        units: celoCustodied.value,
+        value: celoCustodied.value * rates.celo.value,
+        hasError: celoCustodied.hasError,
+        updated: celoCustodied.time
+      },
+      unfrozen: {
+        token: "CELO",
+        units: celoCustodied.value,
+        value: celoCustodied.value * rates.celo.value,
+        hasError: celoCustodied.hasError,
+        updated: celoCustodied.time
+      },
+      custody: {
+        token: "CELO",
+        units: celoCustodied.value,
+        value: celoCustodied.value * rates.celo.value,
+        hasError: celoCustodied.hasError,
+        updated: celoCustodied.time
+      }
     },
-    units: {
-      BTC: btcHeld,
-      ETH: ethHeld,
-      DAI: daiHeld,
-      CELO_CUSTODIED: celoCustodied,
-      CELO_FROZEN: {value: 0},
-      CELO_UNFROZEN: {value: 0}
+    otherAssets
+  }
+}
 
-    }
+function toToken(label: string, tokenData: Consensus, rate?: Consensus): TokenModel {
+  return {
+    token: label,
+    units: tokenData.value,
+    value: ( tokenData.value || 0) * (rate?.value ||1),
+    hasError: !tokenData.value,
+    updated: tokenData.time
   }
 }
