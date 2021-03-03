@@ -61,7 +61,7 @@ describe(`consensus()`, () => {
   describe("when neither party responds", () => {
     it("returns invalid", async () => {
       const result = await consensus(Erros(), Erros())
-      expect(result).toEqual({value: null, time: 0,  "sources": [], message: "could not get new data"})
+      expect(result).toEqual({value: null, time: 0,  "sources": [], message: "Error could not get new data"})
     })
   })
 })
