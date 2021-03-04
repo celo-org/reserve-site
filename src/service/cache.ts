@@ -2,7 +2,9 @@ import Cache from "node-cache"
 
 const CACHE = new Cache()
 
-export function getOrSave<T>(key: string, fetcher: () => Promise<T>) {
+interface Cachable  {value: number | null | Array<any>, hasError?: boolean}
+
+export function getOrSave<T extends Cachable>(key: string, fetcher: () => Promise<T>) {
   return get<T>(key) || set<T>(key,fetcher)
 }
 
@@ -11,11 +13,11 @@ export function get<T>(key:string) {
   return data
 }
 
-const IN_TRANSIT: Record<string, Promise<any>> = {}
+const IN_TRANSIT: Record<string, Promise<Cachable>> = {}
 
 // sets the result of promise fetcher in cache under key
 // if currently waiting for a promise at key will not start another fetch
-export async function set<T>(key: string, fetcher: () => Promise<T>) {
+export async function set<T extends Cachable>(key: string, fetcher: () => Promise<T>): Promise<T> {
   // return the already used promise
   if (IN_TRANSIT[key]) {
     return IN_TRANSIT[key] as Promise<T>
@@ -26,10 +28,10 @@ export async function set<T>(key: string, fetcher: () => Promise<T>) {
 
     // dont save bad data
     if (data.hasError || data.hasOwnProperty("value") && data.value === null) {
-      return null
+      return data as T
     }
 
-    CACHE.set<T>(key,data)
+    CACHE.set(key,data)
 
     // wait a moment to delete
     setTimeout((() => {

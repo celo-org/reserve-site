@@ -6,7 +6,7 @@ const IS_LIVE = 'Status="active"'
 const AIRTABLE_TABLE_ID = 'appFFSLHqjejvZgYM'
 
 export async function getNonCeloAddresses() {
-  return getOrSave<Address[]>("offchain-addresses", fetchNonCeloAddresses)
+  return getOrSave<{value:Address[]| null}>("offchain-addresses", fetchNonCeloAddresses)
 }
 
 async function fetchNonCeloAddresses() {
@@ -16,10 +16,10 @@ async function fetchNonCeloAddresses() {
         filterByFormula: IS_LIVE,
       })
       .firstPage()) as Record<Address>[]
-    return records.map((record) => record.fields)
+    return {value: records.map((record) => record.fields)}
   } catch (e) {
     console.error("could not fetch addresses", e)
-    return []
+    return {value: null}
   }
 }
 

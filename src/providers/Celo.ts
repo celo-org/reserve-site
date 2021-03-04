@@ -71,13 +71,19 @@ function generatelink(address: string) {
   return `https://explorer.celo.org/address/${address}/coin_balances`
 }
 
-export async function getAddresses(): Promise<Address[]> {
-  const reserve = await kit.contracts.getReserve()
-  const addresses = await reserve.getOtherReserveAddresses()
+export async function getAddresses(): Promise<{value:Address[] | null}> {
+  try {
+    const reserve = await kit.contracts.getReserve()
+    const addresses = await reserve.getOtherReserveAddresses()
 
-  return [{label: "Celo Reserve", address: reserve.address, link:generatelink(reserve.address)} ].concat(
-    addresses.map(address => ({address, label: "CELO with Custodian", link: generatelink(address)}))
-  )
+    return {
+      value: [{label: "Celo Reserve", address: reserve.address, link:generatelink(reserve.address)} ].concat(
+        addresses.map(address => ({address, label: "CELO with Custodian", link: generatelink(address)}))
+    )}
+
+  } catch {
+    return {value: null}
+  }
 }
 
 export const WEI_PER = 1_000_000_000_000_000_000
