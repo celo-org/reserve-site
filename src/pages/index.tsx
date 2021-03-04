@@ -97,9 +97,9 @@ export async function getStaticProps() {
       fetchAddresses,
     ] = await Promise.all([
       import('src/content/home/about.md').then((mod) => mod.default),
-      import('src/content/home/reserve-table.md').then((mod) => mod.default),
       import('src/content/home/attestations.md').then((mod) => mod.default),
       import('src/content/home/initial-target.md').then((mod) => mod.default),
+      import('src/content/home/reserve-table.md').then((mod) => mod.default),
       import('src/content/home/intro.md').then((mod) => mod.default),
       import('front-matter').then((mod) => mod.default),
       import('src/service/addresses').then((mod) => mod.default)
