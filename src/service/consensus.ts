@@ -11,9 +11,8 @@ export interface Consensus {
 
 export default async function consensus(alef:ProviderPromise, bet: ProviderPromise): Promise<Consensus> {
   const results = await Promise.all([alef, bet])
-  const sourceA =results[0]
-  const sourceB =results[1]
-
+  const sourceA = results[0]
+  const sourceB = results[1]
   if (sourceA.hasError && sourceB.hasError) {
     return {value: null, time: 0, sources: [], message: "Error could not get new data"}
   }

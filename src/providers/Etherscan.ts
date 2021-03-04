@@ -23,7 +23,7 @@ export async function getEthPrice(): Promise<ProviderSource> {
   try {
     const response = await fetch(`https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${API_KEY}`)
     const data = await response.json() as EthScanPriceResponse
-    return {hasError: data.status === "0", source: Providers.etherscan, value: data.result.ethusd, time: Number(data.result.ethusd_timestamp)}
+    return {hasError: data.status === "0", source: Providers.etherscan, value: Number(data.result.ethusd), time: Number(data.result.ethusd_timestamp)}
   } catch (error) {
     return errorResult(error, Providers.etherscan)
   }

@@ -5,9 +5,11 @@ import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
 import consensus, { Consensus } from './consensus'
 import getRates from "./rates"
-import {get, HOUR, refresh, MINUTE} from "src/service/cache"
+import {getOrSave, HOUR, refresh} from "src/service/cache"
 import { TokenModel } from './Data'
 import ProviderSource from 'src/providers/ProviderSource'
+// import {getNonCeloAddresses} from "src/providers/airtable"
+
 
 async function fetchBTCBalance() {
   const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"
@@ -17,7 +19,7 @@ async function fetchBTCBalance() {
 refresh("btc-balance", HOUR, fetchBTCBalance)
 
 export async function btcBalance() {
-  return get<Consensus>("btc-balance") || fetchBTCBalance()
+  return getOrSave<Consensus>("btc-balance", fetchBTCBalance)
 }
 
 async function fetchETHBalance() {
@@ -27,7 +29,7 @@ async function fetchETHBalance() {
 refresh("eth-balance", HOUR, fetchETHBalance)
 
 export async function ethBalance() {
-  return get<Consensus>("eth-balance") || fetchETHBalance()
+  return getOrSave<Consensus>("eth-balance", fetchETHBalance)
 }
 
 function fetchDaiBalance() {
@@ -37,14 +39,14 @@ function fetchDaiBalance() {
 refresh("dai-balance", HOUR, fetchDaiBalance)
 
 export async function daiBalance() {
-  return get<Consensus>("dai-balance") || fetchDaiBalance()
+  return getOrSave<Consensus>("dai-balance", fetchDaiBalance)
 }
 
 export async function celoCustodiedBalance() {
-  return get<ProviderSource>("celo-custody-balance") || getInCustodyBalance()
+  return getOrSave<ProviderSource>("celo-custody-balance", getInCustodyBalance)
 }
 
-refresh("celo-custody-balance", 2 * MINUTE, getInCustodyBalance)
+refresh("celo-custody-balance", HOUR, getInCustodyBalance)
 
 export interface HoldingsApi {
   celo: {

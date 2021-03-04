@@ -3,27 +3,48 @@ import Cache from "node-cache"
 const CACHE = new Cache()
 
 export function getOrSave<T>(key: string, fetcher: () => Promise<T>) {
-  return get<T>(key) || set<T>(key,fetcher())
+  return get<T>(key) || set<T>(key,fetcher)
 }
 
 export function get<T>(key:string) {
-  return CACHE.get<T>(key)
+  const data = CACHE.get<T>(key)
+  return data
 }
 
-export async function set<T>(key: string, dataPromise: Promise<T>) {
-  const data = await dataPromise
-  CACHE.set<T>(key, data)
-  return data as T
+const IN_TRANSIT: Record<string, Promise<any>> = {}
+
+// sets the result of promise fetcher in cache under key
+// if currently waiting for a promise at key will not start another fetch
+export async function set<T>(key: string, fetcher: () => Promise<T>) {
+  // return the already used promise
+  if (IN_TRANSIT[key]) {
+    return IN_TRANSIT[key] as Promise<T>
+  } else {
+    // set the pending promise
+    IN_TRANSIT[key] = fetcher()
+    const data = await IN_TRANSIT[key]
+
+    // dont save bad data
+    if (data.hasError || data.hasOwnProperty("value") && data.value === null) {
+      return null
+    }
+
+    CACHE.set<T>(key,data)
+
+    // wait a moment to delete
+    setTimeout((() => {
+      IN_TRANSIT[key] = null
+    }),100)
+
+    return data as T
+  }
 }
 
 export async function refresh<T>(key: string, interval: number, fetcher: () => Promise<T>) {
   const setData = async () => {
-    const data = await fetcher()
-    CACHE.set<T>(key, data)
+    set<T>(key, fetcher)
   }
-
-  setData()
-  setInterval(setData,interval)
+  return setInterval(setData,interval)
 }
 
 export const SECOND = 1000

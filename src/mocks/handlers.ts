@@ -1,4 +1,4 @@
-import { response, rest } from 'msw'
+import { rest } from 'msw'
 
 export const handlers = [
   rest.get('https://api.coinbase.com/v2/prices/BTC-USD/spot', (req, res, ctx) => {

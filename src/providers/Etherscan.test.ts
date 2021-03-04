@@ -7,7 +7,7 @@ describe("getEthPrice", () => {
       "hasError": false,
       "source": "etherscan",
       "time": 1613763975,
-      "value": "1400.00",
+      "value": 1400,
       })
   })
 })
