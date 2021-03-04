@@ -56,7 +56,7 @@ export default function Home(props: HoldingsData & Props) {
               <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true}/>
             </Section>
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
-            <Section title={props.RESERVE_TABLE.attributes.title} />
+            <Section title={props.RESERVE_TABLE.attributes.title} content={props.RESERVE_TABLE.body} />
             <Section
               title={props.ATTESTATIONS.attributes.title}
               content={props.ATTESTATIONS.body}
