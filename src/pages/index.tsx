@@ -20,6 +20,7 @@ interface Props {
   INITIAL_TARGET: FrontMatterResult<ContentShape>
   ABOUT: FrontMatterResult<ContentShape>
   ATTESTATIONS: FrontMatterResult<ContentShape>
+  RESERVE_TABLE: FrontMatterResult<ContentShape>
   year: string
   addresses: Address[]
 }
@@ -54,8 +55,8 @@ export default function Home(props: HoldingsData & Props) {
             >
               <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true}/>
             </Section>
-
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
+            <Section title={props.RESERVE_TABLE.attributes.title} />
             <Section
               title={props.ATTESTATIONS.attributes.title}
               content={props.ATTESTATIONS.body}
@@ -90,11 +91,13 @@ export async function getStaticProps() {
       about,
       attestations,
       initialTarget,
+      reserveTable,
       intro,
       matter,
       fetchAddresses,
     ] = await Promise.all([
       import('src/content/home/about.md').then((mod) => mod.default),
+      import('src/content/home/reserve-table.md').then((mod) => mod.default),
       import('src/content/home/attestations.md').then((mod) => mod.default),
       import('src/content/home/initial-target.md').then((mod) => mod.default),
       import('src/content/home/intro.md').then((mod) => mod.default),
@@ -107,6 +110,7 @@ export async function getStaticProps() {
     const INITIAL_TARGET = matter<ContentShape>(initialTarget)
     const ABOUT = matter<ContentShape>(about)
     const ATTESTATIONS = matter<ContentShape>(attestations)
+    const RESERVE_TABLE = matter<ContentShape>(reserveTable)
     return {
       props: {
         addresses: addresses,
@@ -114,6 +118,7 @@ export async function getStaticProps() {
         INITIAL_TARGET,
         ABOUT,
         ATTESTATIONS,
+        RESERVE_TABLE,
         year: new Date().getFullYear(),
       },
     }
