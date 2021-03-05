@@ -2,7 +2,7 @@ import { css} from '@emotion/core'
 import * as React from 'react'
 import Button from 'src/components/Button'
 import CopyIcon from 'src/components/CopyIcon'
-import { Address } from 'src/service/Data'
+import { Address, Tokens } from 'src/service/Data'
 
 interface Props {
   addresses: Address[]
@@ -11,8 +11,8 @@ interface Props {
 export default function ReserveAddresses(props: Props) {
   return (
     <>
-      {props.addresses.map(({address, label, link}) => {
-        return <AddressDisplay key={address}  link={link} label={label} hex={address} />
+      {props.addresses.map(({address, label, token}) => {
+        return <AddressDisplay key={address} token={token} label={label} hex={address} />
       })}
       <Button href="https://docs.celo.org/command-line-interface/reserve">
         Query Reserve Holdings
@@ -33,18 +33,36 @@ function useCopy(hex: string) {
 
   return { onPress, justCopied }
 }
+interface DisplayProps {
+  label: string,
+  hex: string,
+  token: Tokens
+}
 
-function AddressDisplay({ label, hex , link }) {
+const AddressDisplay = React.memo(function AddressDisplay({ label, hex, token }: DisplayProps) {
   const { onPress, justCopied } = useCopy(hex)
 
   return (
     <div css={rootStyle}>
-      <h5 css={labelStyle}><a href={link} target="_blank" rel="noopener">{label}</a></h5>
+      <h5 css={labelStyle}><a href={generatelink(token, hex)} target="_blank" rel="noopener">{label}</a></h5>
       <span onClick={onPress} css={iconStyle}>
         {hex} <CopyIcon /> <span className="info">{justCopied ? 'Copied' : 'Copy'}</span>
       </span>
     </div>
   )
+})
+
+function generatelink(token: Tokens, address: string) {
+  switch (token) {
+    case "CELO":
+      return `https://explorer.celo.org/address/${address}/coin_balances`
+    case "BTC":
+      return `https://blockstream.info/address/${address}`
+    case "ETH":
+      return `https://etherscan.io/address/${address}`
+    case  'DAI':
+      return `https://ethplorer.io/address/${address}`
+  }
 }
 
 async function onCopy(text: string) {

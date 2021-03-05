@@ -2,9 +2,9 @@ import { getBTCPrice } from "src/providers/BlockchainDotCom"
 import * as coinbase from "src/providers/Coinbase"
 import { euroToUSD } from "src/providers/ECB"
 import euroToUSDRate from "src/providers/ExchangeRateAPI"
-import {getCeloPrice} from "src/providers/Celo"
+import { getCeloPrice } from "src/providers/Celo"
 import { getEthPrice } from "src/providers/Etherscan"
-import {HOUR, refresh, getOrSave} from "src/service/cache"
+import {HOUR, refresh, getOrSave, MINUTE} from "src/service/cache"
 import consensus, {Consensus} from "./consensus"
 
 async function fetchBTCPrice() {
@@ -32,7 +32,7 @@ async function fetchEuroPrice() {
   const rate = await consensus(euroToUSD(), euroToUSDRate())
   return rate
 }
-refresh("euro-price", HOUR, fetchEuroPrice)
+refresh("euro-price", 4 * HOUR, fetchEuroPrice)
 
 export async function euroPrice() {
   return getOrSave<Consensus>("euro-price",fetchEuroPrice)
@@ -42,7 +42,7 @@ async function fetchCELOPrice() {
   const price = await consensus(getCeloPrice(),coinbase.getCELOPrice())
   return price
 }
-refresh("celo-price", HOUR, fetchCELOPrice)
+refresh("celo-price", 20 * MINUTE, fetchCELOPrice)
 
 export async function celoPrice() {
   return getOrSave<Consensus>("celo-price",fetchCELOPrice)

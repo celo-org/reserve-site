@@ -4,7 +4,6 @@ export interface Address {
   label: string
   token: Tokens
   status?: "active" | "inactive"
-  link?: string
 }
 
 

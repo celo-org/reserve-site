@@ -67,18 +67,14 @@ export async function getcEURSupply(): Promise<ProviderSource> {
   }
 }
 
-function generatelink(address: string) {
-  return `https://explorer.celo.org/address/${address}/coin_balances`
-}
-
 export async function getAddresses(): Promise<{value:Address[] | null}> {
   try {
     const reserve = await kit.contracts.getReserve()
     const addresses = await reserve.getOtherReserveAddresses()
 
     return {
-      value: [{label: "Celo Reserve", token: "CELO" as Tokens, address: reserve.address, link:generatelink(reserve.address)} ].concat(
-        addresses.map(address => ({address, token: "CELO" as Tokens, label: "CELO with Custodian", link: generatelink(address)}))
+      value: [{label: "Celo Reserve", token: "CELO" as Tokens, address: reserve.address} ].concat(
+        addresses.map(address => ({address, token: "CELO" as Tokens, label: "CELO with Custodian"}))
     )}
 
   } catch {
