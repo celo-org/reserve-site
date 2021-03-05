@@ -35,6 +35,7 @@ export default function Table(){
     }
 
     const headerDiv = css({
+        fontFamily: 'EB Garamond',
         backgroundColor: '#D5EBF5',
         display: 'flex',
         justifyContent: 'center',
@@ -46,4 +47,5 @@ export default function Table(){
     const label = css({
         padding: 10,
         border: '1px solid white',
+        display: 'flex'
     })
