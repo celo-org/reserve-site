@@ -10,8 +10,19 @@ Code for [celoreserve.org](https://celoreserve.org)
 * [Stability WhitePaper](https://celo.org/papers/stability)
 
 ## Data Integrity
+The following is where the numbers displayed on celoreserve.org comes from. These are not used by the reserve itself.
 
-The following is where the numbers displayed on celoreserve.org comes from. These are not official celo reserve sources.
+### Update Frequency
+
+  | Type | Frequency | notes |
+  | --- | --- | --- |
+  | On Chain Assets | 20 Seconds |  |
+  | --- | --- | --- |
+  | BTC, ETH, DAI | Hourly | Pratically only change daily |
+  | --- | --- | --- |
+  | euro conversion rate | Hourly | source rates updated once a day |
+  | --- | --- | --- |
+  | token prices | ? | |
 
 ### Reserve Holdings
 

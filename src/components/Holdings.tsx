@@ -10,6 +10,8 @@ import Head from 'next/head'
 import { Tokens} from "src/service/Data"
 import { fetcher } from 'src/utils/fetcher'
 import { skipZeros } from 'src/utils/skipZeros'
+import { Updated } from 'src/components/Updated'
+import Section from 'src/components/Section'
 
 const initalToken = {
   value: 0,
@@ -54,13 +56,29 @@ function  getPercents(holdings: HoldingsApi): ChartData[] {
   }))
 }
 
+function findOldestValueUpdatedAt(data?: HoldingsApi): number {
+  if (!data) {
+    return 0
+  }
+
+  return Math.min(...data.otherAssets.map((token) => token.updated).concat([
+    data.celo.custody.updated,
+    data.celo.frozen.updated,
+    data.celo.unfrozen.updated
+  ]))
+}
+
 export default function Holdings() {
   const {data} = useSWR<HoldingsApi>("/api/holdings", fetcher, {initialData: INITAL_DATA, revalidateOnMount: true})
   const percentages = getPercents(data)
   const isLoading = data.otherAssets.length === 0
   const celo = data.celo
+  const oldestUpdate = findOldestValueUpdatedAt(data)
   return (
-    <>
+    <Section
+      title={'Current Reserve Holdings'}
+      subHeading={<Updated date={oldestUpdate} />}
+    >
       <Head>
         <link rel="preload" href="/api/holdings" as="fetch" crossOrigin="anonymous"/>
       </Head>
@@ -75,7 +93,7 @@ export default function Holdings() {
         ))}
       </div>
       <PieChart label={"Current Composition"} slices={percentages} />
-    </>
+    </Section>
   )
 }
 

@@ -28,8 +28,10 @@ async function fetchBTCBalance() {
 }
 
 async function getSumBalance(token:Tokens, balanceFetcher: (address: string) => Promise<Consensus>) {
+  console.time(`balance-time-${token}`)
   const addresses = await getGroupedNonCeloAddresses()
   const balances = await Promise.all(addresses[token].map(balanceFetcher))
+  console.timeEnd(`balance-time-${token}`)
   return balances.reduce(sumMerge)
 }
 
@@ -95,15 +97,15 @@ export default async function getHoldings(): Promise<HoldingsApi> {
     celo: {
       frozen: {
         token: "CELO",
-        units: celoCustodied.value,
-        value: celoCustodied.value * rates.celo.value,
+        units: 43503650,
+        value: 43503650 * rates.celo.value,
         hasError: celoCustodied.hasError,
         updated: celoCustodied.time
       },
       unfrozen: {
         token: "CELO",
-        units: celoCustodied.value,
-        value: celoCustodied.value * rates.celo.value,
+        units: 75717821,
+        value: 75717821 * rates.celo.value,
         hasError: celoCustodied.hasError,
         updated: celoCustodied.time
       },

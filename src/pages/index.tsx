@@ -10,7 +10,6 @@ import ReserveAddresses from 'src/components/ReserveAddresses'
 import Section from 'src/components/Section'
 import { flexCol } from 'src/components/styles'
 import PieChart, {INITAL_TARGET} from 'src/components/PieChart'
-import { Updated } from 'src/components/Updated'
 import { Address } from 'src/service/Data'
 
 interface ContentShape {
@@ -35,17 +34,12 @@ export default function Home(props: Props) {
           <NavBar />
           <main css={mainStyle}>
             <Section title={props.INTRO.attributes.title} content={props.INTRO.body} />
-            <Section
-              title={'Current Reserve Holdings'}
-              subHeading={<Updated date={"updated"} />}
-            >
               <Holdings  />
-            </Section>
             <Section title="Stable Value Assets">
               <StableTokens  />
             </Section>
             <Section title="Reserve Ratio">
-              <Ratios total={10} unfrozen={14} />
+              <Ratios />
             </Section>
             <Section title={'Reserve Addresses'}>
               <ReserveAddresses addresses={props.addresses}  />
