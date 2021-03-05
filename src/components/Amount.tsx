@@ -17,7 +17,7 @@ export default function Amount({iconSrc, label, units, gridArea, context, value,
   return (
     <div title={context} css={css(amountStyle, { gridArea })}>
       <div css={labelAreaCss}>
-        {iconSrc && <img src={iconSrc} css={iconStyle} alt=" " />}
+        {iconSrc && <img width={30} height={30} src={iconSrc} css={iconStyle} alt="" />}
         <p css={labelCss}>{label}</p>
       </div>
       <span css={css(numberStyle, loading && notShowing )}>{display}</span>

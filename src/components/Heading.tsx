@@ -11,7 +11,7 @@ export default function Heading({ title, gridArea, iconSrc, marginTop }: Heading
   return (
     <div css={css(headingStyle, { gridArea, marginTop })}>
       <h4 css={headingTextStyle}>
-        {iconSrc && <img src={iconSrc} css={iconStyle} alt={`${title} token icon`} />}
+        {iconSrc && <img src={iconSrc} width={30} height={30} css={iconStyle} alt={`${title} token icon`} />}
         {title}
       </h4>
     </div>
@@ -27,4 +27,4 @@ const headingStyle = css({
   borderBottomColor: 'rgba(46, 51, 56, 0.3)',
   borderBottomStyle: 'solid',
 })
-const iconStyle = css({ height: 29, width: 29, marginRight: 8 })
+const iconStyle = css({ height: 30, width: 30, marginRight: 8 })

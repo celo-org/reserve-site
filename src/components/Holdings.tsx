@@ -77,7 +77,7 @@ export default function Holdings() {
         <link rel="preload" href="/api/holdings" as="fetch" crossOrigin="anonymous"/>
       </Head>
       <div css={rootStyle}>
-        <Heading title="CELO" gridArea="celo" iconSrc="/assets/CELO.png" />
+        <Heading title="CELO" gridArea="celo" iconSrc="/assets/tokens/CELO.svg" />
         <Amount loading={isLoading} label="Frozen" units={celo.frozen.units} value={celo.frozen.value} gridArea="total" />
         <Amount loading={isLoading} label="Unfrozen" units={celo.unfrozen.units} value={celo.unfrozen.value} gridArea="onChain" />
         <Amount loading={isLoading} label="In Custody" units={celo.custody.units} value={celo.custody.value} gridArea="custody" />
