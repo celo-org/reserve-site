@@ -14,14 +14,15 @@ interface AmountProps {
 export default function Amount({iconSrc, label, units, gridArea, context, value, loading }: AmountProps) {
   const display = new Intl.NumberFormat('default').format(Math.round(units))
   const displayValue = value && Math.round(value).toLocaleString()
+  const id = `a-${dasherize(label)}`
   return (
     <div title={context} css={css(amountStyle, { gridArea })}>
       <div css={labelAreaCss}>
         {iconSrc && <img width={30} height={30} src={iconSrc} css={iconStyle} alt="" />}
-        <p css={labelCss}>{label}</p>
+        <p id={id} css={labelCss}>{label}</p>
       </div>
-      <span css={css(numberStyle, loading && notShowing )}>{display}</span>
-      <span css={css(dollarValueStyle, loading && notShowing)}>
+      <span aria-labelledby={id} css={css(numberStyle, loading && notShowing )}>{display}</span>
+      <span aria-label={`Value of ${label} in USD`} css={css(dollarValueStyle, loading && notShowing)}>
         {loading ? " ": !!value && `$${displayValue}`}
       </span>
     </div>
@@ -35,6 +36,10 @@ const notShowing = css({
 const labelCss = css({
   textAlign: "left"
 })
+
+function dasherize(str: string) {
+  return str.toLowerCase().split(" ").join("-")
+}
 
 const labelAreaCss = css({
   display: "inline-flex",

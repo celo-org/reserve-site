@@ -2,7 +2,9 @@ import { css } from '@emotion/core'
 import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'
-import Holdings, { Ratios, StableTokens } from 'src/components/Holdings'
+import Holdings from 'src/components/Holdings'
+import { StableTokens } from "src/components/StableTokens"
+import { Ratios } from "src/components/Ratios"
 import NavBar from 'src/components/Navbar'
 import ReserveAddresses from 'src/components/ReserveAddresses'
 import Section from 'src/components/Section'
