@@ -3,7 +3,7 @@
 
 Code for [celoreserve.org](https://celoreserve.org)
 
-*For more information about the Reserve it self please refer to:*
+*For more information about the Reserve itself please refer to:*
 
 * [celoreserve.org](https://celoreserve.org)
 * [Celo Docs](https://docs.celo.org/developer-guide/sdk-code-reference/summary-2/classes/_wrappers_reserve_.reservewrapper)
@@ -39,9 +39,6 @@ For CELO the on change exchange price (which itself is an aggregation of the pri
 For other crypto assets two data providers are used. These are simply averaged if both return correctly. If one provider fails to respond then the other is used and if both fail a cache of the last successful fetch is used until new data is fetched.
 For BTC thse are [blockchain.com's getAccountByTypeAndCurrency](https://api.blockchain.com/v3/#/payments/getAccountByTypeAndCurrency) and [Coinbase's Data Api spot price](https://developers.coinbase.com/api/v2#exchange-rates).
 For ETH these are [Etherscan.io ETHER Last Price](https://etherscan.io/apis#stats) and [Coinbase's Data Api spot price](https://developers.coinbase.com/api/v2#exchange-rates).
-
-
-*Prices are updated for every X*
 
 ### Stable Assets Outstanding
 
