@@ -39,4 +39,6 @@ export default function Table(){
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        fontWeight: 'bold',
+        padding: 5
     })
