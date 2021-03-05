@@ -9,7 +9,7 @@ import Section from 'src/components/Section'
 import { flexCol } from 'src/components/styles'
 import PieChart, {INITAL_TARGET} from 'src/components/PieChart'
 import { Updated } from 'src/components/Updated'
-import { Address, HoldingsData } from 'src/service/Data'
+import { Address } from 'src/service/Data'
 
 interface ContentShape {
   title: string
@@ -24,7 +24,7 @@ interface Props {
   addresses: Address[]
 }
 
-export default function Home(props: HoldingsData & Props) {
+export default function Home(props: Props) {
   return (
     <>
       <Head />
@@ -35,7 +35,7 @@ export default function Home(props: HoldingsData & Props) {
             <Section title={props.INTRO.attributes.title} content={props.INTRO.body} />
             <Section
               title={'Current Reserve Holdings'}
-              subHeading={<Updated date={props.updatedDate} />}
+              subHeading={<Updated date={"updated"} />}
             >
               <Holdings  />
             </Section>
@@ -43,7 +43,7 @@ export default function Home(props: HoldingsData & Props) {
               <StableTokens  />
             </Section>
             <Section title="Reserve Ratio">
-              <Ratios total={props.ratio} unfrozen={props.unFrozenRatio} />
+              <Ratios total={10} unfrozen={14} />
             </Section>
             <Section title={'Reserve Addresses'}>
               <ReserveAddresses addresses={props.addresses}  />

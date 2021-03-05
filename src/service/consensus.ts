@@ -35,6 +35,11 @@ export default async function consensus(alef:ProviderPromise, bet: ProviderPromi
   }
 }
 
+export function sumMerge(acc: Consensus, current: Consensus) {
+  return {...acc, value: acc.value + current.value, time: current.time, source: current.sources, messsage: `${acc.message} | ${current.message}`}
+}
+
 function percentDif(x: number, y: number) {
   return Math.abs((1- (x / y)) * 100).toPrecision(5)
 }
+
