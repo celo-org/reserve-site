@@ -8,6 +8,7 @@ import ReserveAddresses from 'src/components/ReserveAddresses'
 import Section from 'src/components/Section'
 import { flexCol } from 'src/components/styles'
 import PieChart, {INITAL_TARGET} from 'src/components/PieChart'
+import Table from 'src/components/Table'
 import { Updated } from 'src/components/Updated'
 import { Address, HoldingsData } from 'src/service/Data'
 
@@ -56,7 +57,9 @@ export default function Home(props: HoldingsData & Props) {
               <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true}/>
             </Section>
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
-            <Section title={props.RESERVE_TABLE.attributes.title} content={props.RESERVE_TABLE.body} />
+            <Section title={props.RESERVE_TABLE.attributes.title} content={props.RESERVE_TABLE.body}>
+              <Table />
+              </Section>
             <Section
               title={props.ATTESTATIONS.attributes.title}
               content={props.ATTESTATIONS.body}
