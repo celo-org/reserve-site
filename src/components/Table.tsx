@@ -14,7 +14,7 @@ export default function Table(){
         )
     }
     
-    let arrayHeader = ["Quarter/Period", "BTC Delta", "CELO Delta", "ETH Delta", "DAI Delta", "Dollar Value"]
+    let arrayHeader = ["Quarter / Period", "BTC Δ", "CELO Δ", "ETH Δ", "DAI Δ", "Dollar Value"]
     
     return(
         <div>
@@ -22,7 +22,7 @@ export default function Table(){
                 <thead css={headerDiv}>
                     {arrayHeader.map((key, index) =>{
             return (
-                    <th key={index}>{key.toUpperCase()}</th>
+                    <th css={label}  key={index}>{key.toUpperCase()}</th>
             )
         })}
                 </thead>
@@ -40,5 +40,10 @@ export default function Table(){
         justifyContent: 'center',
         alignItems: 'center',
         fontWeight: 'bold',
-        padding: 5
+        // padding: 10,
+    })
+
+    const label = css({
+        padding: 10,
+        border: '1px solid white',
     })
