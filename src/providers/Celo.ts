@@ -1,6 +1,6 @@
 import { newKit } from '@celo/contractkit'
 import BigNumber from 'bignumber.js'
-import { Address } from 'src/service/Data'
+import { Address, Tokens } from 'src/service/Data'
 import ProviderSource, { errorResult, Providers } from './ProviderSource'
 
 const kit = newKit('https://forno.celo.org')
@@ -77,8 +77,8 @@ export async function getAddresses(): Promise<{value:Address[] | null}> {
     const addresses = await reserve.getOtherReserveAddresses()
 
     return {
-      value: [{label: "Celo Reserve", address: reserve.address, link:generatelink(reserve.address)} ].concat(
-        addresses.map(address => ({address, label: "CELO with Custodian", link: generatelink(address)}))
+      value: [{label: "Celo Reserve", token: "CELO" as Tokens, address: reserve.address, link:generatelink(reserve.address)} ].concat(
+        addresses.map(address => ({address, token: "CELO" as Tokens, label: "CELO with Custodian", link: generatelink(address)}))
     )}
 
   } catch {

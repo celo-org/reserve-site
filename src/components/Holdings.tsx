@@ -8,6 +8,7 @@ import PieChart,{ChartData} from 'src/components/PieChart'
 import { HoldingsApi} from "src/service/holdings"
 import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
 import Head from 'next/head'
+import {Tokens} from "src/service/Data"
 
 async function fetcher(url: string) {
   const response = await fetch(url)
@@ -17,7 +18,7 @@ const initalToken = {
   value: 0,
   units: 0,
   hasError: false,
-  token: "CELO",
+  token: "CELO" as Tokens,
   updated: 0
 }
 
