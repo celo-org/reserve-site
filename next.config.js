@@ -18,5 +18,36 @@ module.exports = {
       ],
     })
     return config
+  },
+  async headers() {
+    return [
+      {
+        source: '/',
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public; max-age=60, stale-while-revalidate=360",
+          },
+        ],
+      },
+      {
+        source: '/:other',
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public; max-age=60, stale-while-revalidate=360",
+          },
+        ],
+      },
+      {
+        source: '/api/:any',
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public; max-age=20, stale-while-revalidate=60",
+          },
+        ],
+      },
+    ]
   }
 }

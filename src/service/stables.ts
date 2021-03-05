@@ -4,7 +4,7 @@ import { euroPrice } from "src/service/rates"
 import {TokenModel} from "src/service/Data"
 
 export default async function stables(): Promise<TokenModel[]> {
-  const [cUSD, cEUR] = await Promise.all([getcUSDSupply(), getcEURSupply()])
+  const [cUSD, cEUR, cEURValueInUSD] = await Promise.all([getcUSDSupply(), getcEURSupply(), totalCeloEuroValueInUSD()])
   return [{
     token: 'cUSD',
     units: cUSD.value,
@@ -15,7 +15,7 @@ export default async function stables(): Promise<TokenModel[]> {
   {
     token: 'cEUR',
     units: cEUR.value,
-    value: await totalCeloEuroValueInUSD(),
+    value: cEURValueInUSD,
     updated: cEUR.time,
     hasError: cEUR.hasError
   }]
