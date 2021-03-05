@@ -1,4 +1,4 @@
-
+import { css } from '@emotion/core'
 export default function Table(){
     
     
@@ -19,12 +19,10 @@ export default function Table(){
     return(
         <div>
             <table>
-                <thead>
+                <thead css={headerDiv}>
                     {arrayHeader.map((key, index) =>{
             return (
-                <div>
                     <th key={index}>{key.toUpperCase()}</th>
-                </div>
             )
         })}
                 </thead>
@@ -35,3 +33,10 @@ export default function Table(){
         </div>
     )
     }
+
+    const headerDiv = css({
+        backgroundColor: '#D5EBF5',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    })
