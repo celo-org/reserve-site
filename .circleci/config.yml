@@ -43,8 +43,15 @@ jobs:
           paths:
             - node_modules
             - .env.local
+   # Test
+  test:
+    <<: *NODE
+    steps:
+      - checkout
+      - *CHECKOUT-WORKSPACE
+      - run: yarn test
 
-  # Build
+      # Build
   next-build:
     <<: *NODE
     steps:
@@ -52,10 +59,3 @@ jobs:
       - *CHECKOUT-WORKSPACE
       - run: yarn build:next
 
-  # Test
-  test:
-    <<: *NODE
-    steps:
-      - checkout
-      - *CHECKOUT-WORKSPACE
-      - run: yarn test
