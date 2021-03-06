@@ -48,8 +48,3 @@ export async function refresh<T extends Cachable>(key: string, interval: number,
   }
   return setInterval(setData,interval)
 }
-
-export const SECOND = 1000
-
-export const MINUTE = 60 * SECOND
-export const HOUR = 60 * MINUTE

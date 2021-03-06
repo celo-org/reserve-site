@@ -1,6 +1,7 @@
 import ProviderSource, {Providers, errorResult} from "./ProviderSource"
 import normalizeBTCvalue from "src/utils/normalizeBTCValue"
 
+//usage limits unknown
 interface BlockstreamAddress {
   "address":string,
   "chain_stats":{

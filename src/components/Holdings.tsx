@@ -89,7 +89,7 @@ export default function Holdings() {
         <Amount loading={isLoading} label="In Custody" units={celo.custody.units} value={celo.custody.value} gridArea="custody" />
         <Heading title="Additional Crypto Assets" gridArea="crypto" marginTop={30} />
         {data?.otherAssets?.filter(skipZeros)?.map(asset => (
-          <Amount loading={isLoading} label={asset.token} units={asset.units} value={asset.value} gridArea={""} />
+          <Amount key={asset.token} loading={isLoading} label={asset.token} units={asset.units} value={asset.value} gridArea={""} />
         ))}
       </div>
       <PieChart label={"Current Composition"} slices={percentages} />

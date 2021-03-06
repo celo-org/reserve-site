@@ -44,7 +44,7 @@ module.exports = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public; max-age=20, stale-while-revalidate=60",
+            value: "public; max-age=10, stale-while-revalidate=20",
           },
         ],
       },

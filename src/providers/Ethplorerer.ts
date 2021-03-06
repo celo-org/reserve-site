@@ -1,6 +1,7 @@
 import ProviderSource, {Providers, errorResult} from "./ProviderSource"
 import BigNumber from "bignumber.js"
 
+// usage limits 4,762,800 req/week | 35,000req /hour
 
 interface TokenInfo {
   address: string

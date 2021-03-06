@@ -1,5 +1,6 @@
 import ProviderSource, {Providers, errorResult} from "./ProviderSource"
 
+// usage limits 10,000 requests per hour ()
 interface CBResponse {
   "data":
     {"base":"BTC" | "ETH",

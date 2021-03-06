@@ -14,15 +14,14 @@ The following is where the numbers displayed on celoreserve.org comes from. Thes
 
 ### Update Frequency
 
-  | Type | Frequency | notes |
+  | Data | Frequency | Notes |
   | --- | --- | --- |
-  | On Chain Assets | 20 Seconds |  |
-  | --- | --- | --- |
-  | BTC, ETH, DAI | Hourly | Pratically only change daily |
-  | --- | --- | --- |
-  | euro conversion rate | Hourly | source rates updated once a day |
-  | --- | --- | --- |
-  | token prices | ? | |
+  | Reserve Contract | 20 Seconds |  |
+  | Stable Tokens | 20 Seconds |  |
+  | Celo Custody | 30 Minutes | Pratically only change daily |
+  | BTC, ETH, DAI balances | 30 Minutes | Pratically only change daily |
+  | euro conversion rate | 4 Hours | source rates updated once a day |
+  | Asset prices | 5 Minutes | |
 
 ### Reserve Holdings
 

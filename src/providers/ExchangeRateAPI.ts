@@ -1,5 +1,6 @@
 import { errorResult, Providers } from "./ProviderSource"
 
+// Usage Limits: no hard limit, recommended to cache data
 
 export default async function euroToUSD() {
   try {

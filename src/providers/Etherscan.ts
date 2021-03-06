@@ -1,5 +1,8 @@
 import BigNumber from "bignumber.js"
 import ProviderSource, {Providers, errorResult} from "./ProviderSource"
+
+// Usage limit 5 calls per second
+
 interface EthScanPriceResponse {
   "status":string,
   "message":string,

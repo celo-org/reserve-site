@@ -2,7 +2,8 @@ import BigNumber from "bignumber.js"
 import { getcEURSupply, getcUSDSupply } from "src/providers/Celo"
 import { euroPrice } from "src/service/rates"
 import {TokenModel} from "src/service/Data"
-import {refresh, getOrSave, SECOND} from "src/service/cache"
+import {refresh, getOrSave} from "src/service/cache"
+import { SECOND } from "src/utils/TIME"
 
 async function cUSDSupply() {
   return getOrSave("cUSD-supply", getcUSDSupply)
