@@ -1,5 +1,5 @@
 
-import { css, jsx } from '@emotion/core'
+import { css, jsx } from '@emotion/react'
 import { GetStaticPaths } from 'next'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'

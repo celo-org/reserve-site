@@ -1,4 +1,4 @@
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import useSWR from "swr"
 import Amount from 'src/components/Amount'
 import { BreakPoints } from 'src/components/styles'

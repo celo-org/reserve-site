@@ -1,5 +1,5 @@
 
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import useSWR from "swr"
 import Amount from 'src/components/Amount'
 import Heading from 'src/components/Heading'

@@ -1,5 +1,5 @@
 
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 export default css({
   borderBottom: 1,
   borderBottomColor: 'rgba(46, 51, 56, 0.3)',

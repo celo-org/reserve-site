@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5",
-    "types": ["@emotion/core", "jest"],
+    "types": ["@emotion/react", "jest"],
     "lib": [
       "dom",
       "dom.iterable",
