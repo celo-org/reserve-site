@@ -1,4 +1,5 @@
-import {getCeloPrice,getInCustodyBalance, getcUSDSupply} from "./Celo"
+import {getCeloPrice,getInCustodyBalance, getcUSDSupply, getUnFrozenBalance, getFrozenBalance} from "./Celo"
+
 import {newKit} from "@celo/contractkit"
 
 describe("celo",() => {
@@ -38,7 +39,31 @@ describe("getInCustodyBalance", () => {
       "hasError": false,
       "source": "forno.celo.org",
       "time": 1587686400000,
+      "value": 84478770,
+    })
+  })
+})
+
+describe("getUnFrozenBalance", () => {
+  it("returns account balance of address" , async() => {
+    const balance = await getUnFrozenBalance()
+    expect(balance).toEqual({
+      "hasError": false,
+      "source": "forno.celo.org",
+      "time": 1587686400000,
       "value": 50000000,
+    })
+  })
+})
+
+describe("getFrozenBalance", () => {
+  it("returns account balance of address" , async() => {
+    const balance = await getFrozenBalance()
+    expect(balance).toEqual({
+      "hasError": false,
+      "source": "forno.celo.org",
+      "time": 1587686400000,
+      "value": 54686806,
     })
   })
 })

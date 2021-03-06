@@ -9,16 +9,16 @@ describe("getHoldings", () => {
           "custody": {
             "hasError": false,
             "token": "CELO",
-            "units": 50000000,
+            "units": 84478770,
             "updated": 1587686400000,
-            "value": 198095000,
+            "value":  334696438.863,
           },
           "frozen": {
             "hasError": false,
             "token": "CELO",
-            "units": 50000000,
+            "units": 54686806,
             "updated": 1587686400000,
-            "value": 198095000,
+            "value": 216663656.6914,
           },
           "unfrozen": {
             "hasError": false,

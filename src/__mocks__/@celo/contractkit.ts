@@ -1,4 +1,5 @@
 import mockBigNumber from "bignumber.js"
+export * from  "@celo/contractkit"
 const mockWEI = 1_000_000_000_000_000_000
 
 export const newKit = jest.fn(() => {
@@ -8,7 +9,8 @@ export const newKit = jest.fn(() => {
         quoteGoldSell: jest.fn(async () => new mockBigNumber(3.892* mockWEI ))
       }),
       getReserve: async () => ({
-        getReserveGoldBalance: jest.fn(async () => new mockBigNumber(70208036 * mockWEI))
+        getReserveCeloBalance: jest.fn(async () => new mockBigNumber(104686806 * mockWEI)),
+        getUnfrozenBalance:  jest.fn(async () => new mockBigNumber(50000000 * mockWEI)),
       }),
       getGoldToken: async () => ({
         balanceOf: jest.fn(async () => new mockBigNumber(20208036 * mockWEI))

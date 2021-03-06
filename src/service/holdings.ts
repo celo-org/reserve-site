@@ -1,6 +1,6 @@
 import { getBTCBalance as getBlockChainBTCBalance } from 'src/providers/BlockchainDotCom'
 import getBlockStreemBTCBalance from 'src/providers/Blockstream'
-import { getInCustodyBalance } from 'src/providers/Celo'
+import { getFrozenBalance, getInCustodyBalance, getUnFrozenBalance } from 'src/providers/Celo'
 import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
 import consensus, { Consensus, sumMerge } from './consensus'
@@ -62,11 +62,26 @@ export async function daiBalance() {
   return getOrSave<Consensus>("dai-balance", fetchDaiBalance)
 }
 
+
 export async function celoCustodiedBalance() {
   return getOrSave<ProviderSource>("celo-custody-balance", getInCustodyBalance)
 }
 
 refresh("celo-custody-balance", 30 * MINUTE, getInCustodyBalance)
+
+
+export async function celoFrozenBalance() {
+  return getOrSave<ProviderSource>("celo-frozen-balance", getFrozenBalance)
+}
+
+refresh("celo-frozen-balance", 30 * MINUTE, getFrozenBalance)
+
+
+export async function celoUnfrozenBalance() {
+  return getOrSave<ProviderSource>("celo-unfrozen-balance", getUnFrozenBalance)
+}
+
+refresh("celo-unfrozen-balance", 5 * MINUTE, getUnFrozenBalance)
 
 export interface HoldingsApi {
   celo: {
@@ -78,11 +93,13 @@ export interface HoldingsApi {
 }
 
 export default async function getHoldings(): Promise<HoldingsApi> {
-  const [btcHeld, ethHeld, daiHeld, celoCustodied, rates] = await Promise.all([
+  const [btcHeld, ethHeld, daiHeld, celoCustodied, frozen, unfrozen, rates] = await Promise.all([
     btcBalance(),
     ethBalance(),
     daiBalance(),
     celoCustodiedBalance(),
+    celoFrozenBalance(),
+    celoUnfrozenBalance(),
     getRates()
   ])
 
@@ -96,17 +113,17 @@ export default async function getHoldings(): Promise<HoldingsApi> {
     celo: {
       frozen: {
         token: "CELO",
-        units: 43503650,
-        value: 43503650 * rates.celo.value,
-        hasError: celoCustodied.hasError,
-        updated: celoCustodied.time
+        units: frozen.value,
+        value: frozen.value * rates.celo.value,
+        hasError: frozen.hasError,
+        updated: frozen.time
       },
       unfrozen: {
         token: "CELO",
-        units: 75717821,
-        value: 75717821 * rates.celo.value,
-        hasError: celoCustodied.hasError,
-        updated: celoCustodied.time
+        units: unfrozen.value,
+        value: unfrozen.value * rates.celo.value,
+        hasError: unfrozen.hasError,
+        updated: unfrozen.time
       },
       custody: {
         token: "CELO",
