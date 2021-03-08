@@ -30,7 +30,8 @@ export default function Amount({iconSrc, label, units, gridArea, context, value,
 }
 
 const notShowing = css({
-  opacity: 0
+  opacity: 0,
+  minHeight: "1.15em"
 })
 
 const labelCss = css({
@@ -68,7 +69,10 @@ const dollarValueStyle = css(numberStyle, {
   [BreakPoints.tablet]: {
     textAlign: "right"
   },
-  [BreakPoints.mediumPhone]: {
+  [BreakPoints.phablet]: {
+    display: "none"
+  },
+  ["@media (min-width: 597px) and (max-width: 699px)"]: {
     display: "none"
   }
 })

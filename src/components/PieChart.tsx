@@ -62,7 +62,7 @@ export default function PieChart({slices,label,showFinePrint, isLoading}: Props)
                   opacity={0.8}
                   r={radius}
                   fill="transparent"
-                  stroke={TokenColor[token]}
+                  stroke={isLoading ? colors.gray : TokenColor[token]}
                   strokeWidth="9"
                   strokeDasharray={`${circumfrance * (percent / 100)} ${circumfrance *
                     (1 - percent / 100)}`}
@@ -119,7 +119,7 @@ function ChartKey({token, percent }: ChartData) {
   return (
     <div css={chartKeyStyle}>
       <div css={css(squareStyle, { backgroundColor: TokenColor[token]})} />
-      <span css={percentStyle}>{ isNaN(percent) ? percent : percent.toPrecision(2)}%</span>
+      <span css={percentStyle}>{ isNaN(percent) ? "" : percent.toPrecision(2)}%</span>
       <span>{token}</span>
     </div>
   )

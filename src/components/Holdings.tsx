@@ -92,7 +92,7 @@ export default function Holdings() {
           <Amount key={asset.token} loading={isLoading} label={asset.token} units={asset.units} value={asset.value} gridArea={""} />
         ))}
       </div>
-      <PieChart label={"Current Composition"} slices={percentages} />
+      <PieChart label={"Current Composition"} slices={percentages} isLoading={isLoading} />
     </Section>
   )
 }
