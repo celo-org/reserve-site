@@ -21,7 +21,7 @@ describe(`consensus()`, () => {
   describe("when both parties agree", () => {
     it("returns value and indicts the agreement", async () => {
       const result = await duel(Alfie(), Bormier())
-      expect(result).toEqual({"message": "consensus",
+      expect(result).toEqual({
         "sources":  [
           "etherscan",
           "blockstream",
