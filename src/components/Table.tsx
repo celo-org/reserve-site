@@ -20,31 +20,32 @@ export default function Table(){
         <div>
             <table css={table}>
                 <thead css={headerDiv}>
-                    {arrayHeader.map((key, index) =>{
-            return (
+                    {arrayHeader.map((key, index) =>{    
+                return (
                     <th css={label}  key={index}>{key.toUpperCase()}</th>
-            )
-        })}
+                )
+                })}
                 </thead>
+
                 <tbody css={bodyDiv}>
                     {renderBody()}
                 </tbody>
+
             </table>
         </div>
     )
     }
 
     const table = css ({
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
+        // border: '3px solid black'
+        borderSpacing: 0
     })
 
     const headerDiv = css({
         fontFamily: 'EB Garamond',
         backgroundColor: '#D5EBF5',
         fontWeight: 'bold',
+        height: 10
     })
     
     const bodyDiv = css({
@@ -52,11 +53,7 @@ export default function Table(){
     
     const label = css({
         border: '1px solid white',
-        padding: 8
-        // padding: 10,
-        // display: 'flex',
-        // width: 50,
-        // height: 10,
+        padding: 10
         // justifyContent: 'center',
         // alignItems: 'center'
     })
