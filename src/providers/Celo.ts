@@ -19,8 +19,10 @@ export async function getCeloPrice(): Promise<ProviderSource> {
 
 export async function getFrozenBalance(): Promise<ProviderSource> {
   try {
-    const reserve = await kit.contracts.getReserve()
-    const nativeToken = await kit.contracts.getGoldToken()
+    const [reserve, nativeToken] = await Promise.all([
+      kit.contracts.getReserve(),
+      kit.contracts.getGoldToken()
+    ])
 
     const [total, unfrozen] = await Promise.all([
       nativeToken.balanceOf(reserve.address),
@@ -47,8 +49,11 @@ export async function getUnFrozenBalance() {
 }
 
 export async function getInCustodyBalance(): Promise<ProviderSource> {
-  try {  const reserve = await kit.contracts.getReserve()
-    const nativeToken = await kit.contracts.getGoldToken()
+  try {
+    const [reserve, nativeToken] = await Promise.all([
+      kit.contracts.getReserve(),
+      kit.contracts.getGoldToken()
+    ])
     const contractBalance = await nativeToken.balanceOf(reserve.address)
     const time = Date.now()
     // reserveCeloBalance includes both in contract and other address balances. need to subtract out
