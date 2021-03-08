@@ -26,7 +26,7 @@ export default function Table(){
             )
         })}
                 </thead>
-                <tbody>
+                <tbody css={bodyDiv}>
                     {renderBody()}
                 </tbody>
             </table>
@@ -46,8 +46,13 @@ export default function Table(){
         backgroundColor: '#D5EBF5',
         fontWeight: 'bold',
     })
-
+    
+    const bodyDiv = css({
+    })
+    
     const label = css({
+        border: '1px solid white',
+        padding: 8
         // padding: 10,
         // display: 'flex',
         // width: 50,
