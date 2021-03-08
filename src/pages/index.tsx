@@ -105,7 +105,7 @@ export async function getStaticProps() {
     const ATTESTATIONS = matter<ContentShape>(attestations)
     return {
       props: {
-        addresses: addresses || [],
+        addresses: addresses,
         INTRO,
         INITIAL_TARGET,
         ABOUT,
