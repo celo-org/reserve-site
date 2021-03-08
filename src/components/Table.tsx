@@ -37,7 +37,6 @@ export default function Table(){
     }
 
     const table = css ({
-        // border: '3px solid black'
         borderSpacing: 0
     })
 
@@ -54,6 +53,4 @@ export default function Table(){
     const label = css({
         border: '1px solid white',
         padding: 10
-        // justifyContent: 'center',
-        // alignItems: 'center'
     })
