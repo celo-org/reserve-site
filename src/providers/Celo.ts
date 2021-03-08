@@ -20,8 +20,10 @@ export async function getCeloPrice(): Promise<ProviderSource> {
 export async function getFrozenBalance(): Promise<ProviderSource> {
   try {
     const reserve = await kit.contracts.getReserve()
+    const nativeToken = await kit.contracts.getGoldToken()
+
     const [total, unfrozen] = await Promise.all([
-      reserve.getReserveCeloBalance(),
+      nativeToken.balanceOf(reserve.address),
       reserve.getUnfrozenBalance()
     ])
 
