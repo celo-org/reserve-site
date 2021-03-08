@@ -18,7 +18,7 @@ export default function Table(){
     
     return(
         <div>
-            <table>
+            <table css={table}>
                 <thead css={headerDiv}>
                     {arrayHeader.map((key, index) =>{
             return (
@@ -34,18 +34,24 @@ export default function Table(){
     )
     }
 
+    const table = css ({
+        textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    })
+
     const headerDiv = css({
         fontFamily: 'EB Garamond',
         backgroundColor: '#D5EBF5',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
         fontWeight: 'bold',
-        // padding: 10,
     })
 
     const label = css({
-        padding: 10,
-        border: '1px solid white',
-        display: 'flex'
+        // padding: 10,
+        // display: 'flex',
+        // width: 50,
+        // height: 10,
+        // justifyContent: 'center',
+        // alignItems: 'center'
     })
