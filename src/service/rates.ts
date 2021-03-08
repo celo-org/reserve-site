@@ -6,48 +6,48 @@ import { getCeloPrice } from "src/providers/Celo"
 import { getEthPrice } from "src/providers/Etherscan"
 import {refresh, getOrSave} from "src/service/cache"
 import { HOUR, MINUTE } from "src/utils/TIME"
-import consensus, {Consensus} from "./consensus"
+import duel, {Duel} from "./duel"
 
 async function fetchBTCPrice() {
-  const price = await consensus(coinbase.getBTCInUSD(), getBTCPrice())
+  const price = await duel(coinbase.getBTCInUSD(), getBTCPrice())
   return price
 }
 
 refresh("btc-price", 5 * MINUTE, fetchBTCPrice)
 
 export async function btcPrice() {
-  return getOrSave<Consensus>("btc-price", fetchBTCPrice)
+  return getOrSave<Duel>("btc-price", fetchBTCPrice)
 }
 
 async function fetchETHPrice() {
-  const price = await consensus(coinbase.getETHInUSD(), getEthPrice())
+  const price = await duel(coinbase.getETHInUSD(), getEthPrice())
   return price
 }
 refresh("eth-price", 5 * MINUTE, fetchETHPrice)
 
 export async function ethPrice() {
-  return getOrSave<Consensus>("eth-price",fetchETHPrice)
+  return getOrSave<Duel>("eth-price",fetchETHPrice)
 }
 
 async function fetchEuroPrice() {
-  const rate = await consensus(euroToUSD(), euroToUSDRate())
+  const rate = await duel(euroToUSD(), euroToUSDRate())
   return rate
 }
 
 refresh("euro-price", 4 * HOUR, fetchEuroPrice)
 
 export async function euroPrice() {
-  return getOrSave<Consensus>("euro-price",fetchEuroPrice)
+  return getOrSave<Duel>("euro-price",fetchEuroPrice)
 }
 
 async function fetchCELOPrice() {
-  const price = await consensus(getCeloPrice(),coinbase.getCELOPrice())
+  const price = await duel(getCeloPrice(),coinbase.getCELOPrice())
   return price
 }
 refresh("celo-price", 5 * MINUTE, fetchCELOPrice)
 
 export async function celoPrice() {
-  return getOrSave<Consensus>("celo-price",fetchCELOPrice)
+  return getOrSave<Duel>("celo-price",fetchCELOPrice)
 }
 
 export default async function rates() {

@@ -3,7 +3,7 @@ import getBlockStreemBTCBalance from 'src/providers/Blockstream'
 import { getFrozenBalance, getInCustodyBalance, getUnFrozenBalance } from 'src/providers/Celo'
 import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
-import consensus, { Consensus, sumMerge } from './consensus'
+import duel, { Duel, sumMerge } from './duel'
 import getRates from "./rates"
 import {refresh, getOrSave} from "src/service/cache"
 import { MINUTE } from "src/utils/TIME"
@@ -24,11 +24,11 @@ async function getGroupedNonCeloAddresses() {
 
 async function fetchBTCBalance() {
   return getSumBalance("BTC", address => {
-    return consensus(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
+    return duel(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
   })
 }
 
-async function getSumBalance(token:Tokens, balanceFetcher: (address: string) => Promise<Consensus>) {
+async function getSumBalance(token:Tokens, balanceFetcher: (address: string) => Promise<Duel>) {
   const addresses = await getGroupedNonCeloAddresses()
   const balances = await Promise.all(addresses[token].map(balanceFetcher))
   return balances.reduce(sumMerge)
@@ -37,29 +37,29 @@ async function getSumBalance(token:Tokens, balanceFetcher: (address: string) => 
 refresh("btc-balance", 30 * MINUTE, fetchBTCBalance)
 
 export async function btcBalance() {
-  return getOrSave<Consensus>("btc-balance", fetchBTCBalance)
+  return getOrSave<Duel>("btc-balance", fetchBTCBalance)
 }
 
 async function fetchETHBalance() {
   return getSumBalance("ETH", address => {
-    return consensus(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
+    return duel(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
   })
 }
 refresh("eth-balance", 30 * MINUTE, fetchETHBalance)
 
 export async function ethBalance() {
-  return getOrSave<Consensus>("eth-balance", fetchETHBalance)
+  return getOrSave<Duel>("eth-balance", fetchETHBalance)
 }
 
 function fetchDaiBalance() {
   return getSumBalance("DAI", address => {
-    return consensus(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
+    return duel(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
   })
 }
 refresh("dai-balance", 30 * MINUTE, fetchDaiBalance)
 
 export async function daiBalance() {
-  return getOrSave<Consensus>("dai-balance", fetchDaiBalance)
+  return getOrSave<Duel>("dai-balance", fetchDaiBalance)
 }
 
 
@@ -137,7 +137,7 @@ export default async function getHoldings(): Promise<HoldingsApi> {
   }
 }
 
-function toToken(label: Tokens, tokenData: Consensus, rate?: Consensus): TokenModel {
+function toToken(label: Tokens, tokenData: Duel, rate?: Duel): TokenModel {
   return {
     token: label,
     units: tokenData.value,

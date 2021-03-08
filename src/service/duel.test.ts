@@ -1,5 +1,5 @@
 import { Providers } from "src/providers/ProviderSource"
-import consensus from "./consensus"
+import duel from "./duel"
 
 async function Alfie () {
   return {value: 100, time: 1614121843624, source: Providers.etherscan, hasError: false }
@@ -20,7 +20,7 @@ async function Erros() {
 describe(`consensus()`, () => {
   describe("when both parties agree", () => {
     it("returns value and indicts the agreement", async () => {
-      const result = await consensus(Alfie(), Bormier())
+      const result = await duel(Alfie(), Bormier())
       expect(result).toEqual({"message": "consensus",
         "sources":  [
           "etherscan",
@@ -33,10 +33,9 @@ describe(`consensus()`, () => {
   })
   describe("when both parties return but results differ", () => {
     it("most recent wins", async () => {
-      const result = await consensus(Alfie(), Cerci())
+      const result = await duel(Alfie(), Cerci())
       expect(result).toEqual(
         {
-          "message": "etherscan (100) differs from coinbase (102) 1.9608%",
           "sources": ["coinbase"],
           "time": 1614121843684,
           "value": 102,
@@ -46,9 +45,8 @@ describe(`consensus()`, () => {
   })
   describe("when one party doesnt respond or has error", () => {
     it("use the other one and indicates so", async () => {
-      const result = await consensus(Bormier(), Erros())
+      const result = await duel(Bormier(), Erros())
       expect(result).toEqual({
-        "message": "Error with: coinbase",
         "sources": [
           "blockstream",
         ],
@@ -60,8 +58,8 @@ describe(`consensus()`, () => {
   })
   describe("when neither party responds", () => {
     it("returns invalid", async () => {
-      const result = await consensus(Erros(), Erros())
-      expect(result).toEqual({value: null, time: 0,  "sources": [], message: "Error could not get new data"})
+      const result = await duel(Erros(), Erros())
+      expect(result).toEqual({value: null, time: 0,  "sources": []})
     })
   })
 })
