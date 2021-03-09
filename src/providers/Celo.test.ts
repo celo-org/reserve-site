@@ -27,7 +27,7 @@ describe("getcUSDSupply", () => {
       "hasError": false,
       "source": "forno.celo.org",
       "time": 1587686400000,
-      "value": 40208036.10770464,
+      "value": 41557073.455407046,
     })
   })
 })
@@ -39,7 +39,7 @@ describe("getInCustodyBalance", () => {
       "hasError": false,
       "source": "forno.celo.org",
       "time": 1587686400000,
-      "value": 84478770,
+      "value": 2944998.2492173747,
     })
   })
 })
@@ -51,7 +51,7 @@ describe("getUnFrozenBalance", () => {
       "hasError": false,
       "source": "forno.celo.org",
       "time": 1587686400000,
-      "value": 50000000,
+      "value": 75330631.07819435,
     })
   })
 })
@@ -63,7 +63,7 @@ describe("getFrozenBalance", () => {
       "hasError": false,
       "source": "forno.celo.org",
       "time": 1587686400000,
-      "value": 54686806,
+      "value": 41313868.61313868,
     })
   })
 })

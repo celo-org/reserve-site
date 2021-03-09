@@ -84,9 +84,8 @@ export default function Holdings() {
       </Head>
       <div css={rootStyle}>
         <Heading title="CELO" gridArea="celo" iconSrc="/assets/tokens/CELO.svg" />
-        <Amount loading={isLoading} label="Frozen" units={celo.frozen.units} value={celo.frozen.value} gridArea="total" />
-        <Amount loading={isLoading} label="Unfrozen" units={celo.unfrozen.units} value={celo.unfrozen.value} gridArea="onChain" />
-        <Amount loading={isLoading} label="In Custody" units={celo.custody.units} value={celo.custody.value} gridArea="custody" />
+        <Amount context="Funds frozen in on-chain Reserve contract" loading={isLoading} label="Frozen" units={celo.frozen.units} value={celo.frozen.value} gridArea="frozen" />
+        <Amount context="Funds in on-chain Reserve contract and in custody" loading={isLoading} label="Unfrozen" units={celo.unfrozen.units + celo.custody.units} value={celo.unfrozen.value + celo.custody.value} gridArea="unfrozen" />
         <Heading title="Additional Crypto Assets" gridArea="crypto" marginTop={30} />
         {data?.otherAssets?.filter(skipZeros)?.map(asset => (
           <Amount key={asset.token} loading={isLoading} label={asset.token} units={asset.units} value={asset.value} gridArea={""} />
@@ -102,15 +101,14 @@ const rootStyle = css({
   gridColumnGap: 20,
   gridRowGap: 12,
   gridTemplateAreas: `"celo celo celo"
-                    "total onChain custody"
+                    "frozen unfrozen unfrozen"
                     "crypto crypto crypto"
                     "btc eth dai"
                     `,
   [BreakPoints.tablet]: {
     gridTemplateAreas: `"celo"
-                        "onChain"
-                        "custody"
-                        "total"
+                        "frozen"
+                        "unfrozen"
                         "crypto"
                         "btc"
                         "eth"

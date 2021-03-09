@@ -16,10 +16,10 @@ export default function Amount({iconSrc, label, units, gridArea, context, value,
   const displayValue = value && Math.round(value).toLocaleString()
   const id = `a-${dasherize(label)}`
   return (
-    <div title={context} css={css(amountStyle, { gridArea })}>
+    <div css={css(amountStyle, { gridArea })}>
       <div css={labelAreaCss}>
         {iconSrc && <img width={30} height={30} src={iconSrc} css={iconStyle} alt="" />}
-        <p id={id} css={labelCss}>{label}</p>
+        <p id={id} css={labelCss}><abbr css={abbrCSS} title={context}>{label}</abbr></p>
       </div>
       <span aria-labelledby={id} css={css(numberStyle, loading && notShowing )}>{display}</span>
       <span aria-label={`Value of ${label} in USD`} css={css(dollarValueStyle, loading && notShowing)}>
@@ -28,6 +28,11 @@ export default function Amount({iconSrc, label, units, gridArea, context, value,
     </div>
   )
 }
+
+const abbrCSS = css({
+  textDecoration: "none",
+  cursor: "help"
+})
 
 const notShowing = css({
   opacity: 0,
