@@ -72,6 +72,7 @@ export default function Home(props: HoldingsData & Props) {
   )
 }
 
+
 const rootStyle = css({
   display: 'flex',
   flexDirection: 'column',
@@ -85,6 +86,8 @@ const mainStyle = css({
   width: '100%',
   maxWidth: 960,
 })
+
+
 
 const containerStyle = css(flexCol, { flex: 1, width: '100%', alignItems: 'center' })
 

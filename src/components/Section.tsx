@@ -38,6 +38,10 @@ const headingAreaStyle = css({
   paddingRight: 20,
   marginTop: 5,
   minWidth: 220,
+  '@media (min-width: 550px)': {
+    width: 220,
+    minWidth: 0
+  }
 })
 
 const contentAreaStyle = css({
