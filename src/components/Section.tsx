@@ -50,7 +50,7 @@ const contentAreaStyle = css({
 
 const titleCSS = css({
   '@media (max-width: 590px)': {
-    fontSize: 28,
+    fontSize: 26,
     lineHeight: 1.5,
   },
 })

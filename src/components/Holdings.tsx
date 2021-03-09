@@ -1,7 +1,7 @@
 
 import { css } from '@emotion/react'
 import useSWR from "swr"
-import Amount from 'src/components/Amount'
+import Amount, { DollarDisplay } from 'src/components/Amount'
 import Heading from 'src/components/Heading'
 import { BreakPoints } from 'src/components/styles'
 import PieChart,{ChartData} from 'src/components/PieChart'
@@ -12,6 +12,7 @@ import { fetcher } from 'src/utils/fetcher'
 import { skipZeros } from 'src/utils/skipZeros'
 import { Updated } from 'src/components/Updated'
 import Section from 'src/components/Section'
+import { sumTotalHoldings } from './sumTotalHoldings'
 
 const initalToken = {
   value: 0,
@@ -77,22 +78,26 @@ export default function Holdings() {
   return (
     <Section
       title={'Current Reserve Holdings'}
-      subHeading={<Updated date={oldestUpdate} />}
+      subHeading={
+        <>
+          <DollarDisplay loading={isLoading} label="Liquidity" value={sumTotalHoldings(data)} />
+          <Updated date={oldestUpdate} />
+        </>
+      }
     >
       <Head>
         <link rel="preload" href="/api/holdings" as="fetch" crossOrigin="anonymous"/>
       </Head>
       <div css={rootStyle}>
-        <Heading title="CELO" gridArea="celo" iconSrc="/assets/tokens/CELO.svg" />
-        <Amount loading={isLoading} label="Frozen" units={celo.frozen.units} value={celo.frozen.value} gridArea="total" />
-        <Amount loading={isLoading} label="Unfrozen" units={celo.unfrozen.units} value={celo.unfrozen.value} gridArea="onChain" />
-        <Amount loading={isLoading} label="In Custody" units={celo.custody.units} value={celo.custody.value} gridArea="custody" />
-        <Heading title="Additional Crypto Assets" gridArea="crypto" marginTop={30} />
+        <Heading title="CELO" gridArea="celo" />
+        <Amount iconSrc={"/assets/tokens/CELO.svg"} context="Funds frozen in on-chain Reserve contract" loading={isLoading} label="Frozen" units={celo.frozen.units} value={celo.frozen.value} gridArea="frozen" />
+        <Amount iconSrc={"/assets/tokens/CELO.svg"} context="Funds in on-chain Reserve contract and in custody" loading={isLoading} label="Unfrozen" units={celo.unfrozen.units + celo.custody.units} value={celo.unfrozen.value + celo.custody.value} gridArea="unfrozen" />
+        <Heading title="Non-CELO Crypto Assets" gridArea="crypto" marginTop={30} />
         {data?.otherAssets?.filter(skipZeros)?.map(asset => (
           <Amount key={asset.token} loading={isLoading} label={asset.token} units={asset.units} value={asset.value} gridArea={""} />
         ))}
       </div>
-      <PieChart label={"Current Composition"} slices={percentages} />
+      <PieChart label={"Current Composition"} slices={percentages} isLoading={isLoading} />
     </Section>
   )
 }
@@ -102,15 +107,14 @@ const rootStyle = css({
   gridColumnGap: 20,
   gridRowGap: 12,
   gridTemplateAreas: `"celo celo celo"
-                    "total onChain custody"
+                    "frozen unfrozen unfrozen"
                     "crypto crypto crypto"
                     "btc eth dai"
                     `,
   [BreakPoints.tablet]: {
     gridTemplateAreas: `"celo"
-                        "onChain"
-                        "custody"
-                        "total"
+                        "frozen"
+                        "unfrozen"
                         "crypto"
                         "btc"
                         "eth"

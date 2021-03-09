@@ -4,18 +4,9 @@ import Amount from 'src/components/Amount'
 import { BreakPoints } from 'src/components/styles'
 import { HoldingsApi } from "src/service/holdings"
 import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
-import { sumCeloTotal, sumNonCelo } from './Holdings'
 import { fetcher } from "src/utils/fetcher"
-
-function sumTotalHoldings(holdings:  HoldingsApi) {
-  return  sumCeloTotal(holdings) +  sumNonCelo(holdings)
-}
-
-function sumUnfrozenHoldings(holdings:  HoldingsApi) {
-  const {custody, unfrozen} = holdings.celo
-  const celoTotal =  custody.value + unfrozen.value
-  return celoTotal + sumNonCelo(holdings)
-}
+import { sumLiquidHoldings } from './sumLiquidHoldings'
+import { sumTotalHoldings } from './sumTotalHoldings'
 
 export function Ratios() {
   const stables = useSWR<StableValueTokensAPI>("/api/stable-value-tokens", fetcher)
@@ -24,7 +15,7 @@ export function Ratios() {
 
   const outstanding = stables.data?.totalStableValueInUSD || 1
   const totalReserveValue = holdings.data ? sumTotalHoldings(holdings.data) : 1
-  const unfrozenReserveValue = holdings.data ? sumUnfrozenHoldings(holdings.data) : 1
+  const unfrozenReserveValue = holdings.data ? sumLiquidHoldings(holdings.data) : 1
 
   return (
     <div css={ratiosSectionStyle}>

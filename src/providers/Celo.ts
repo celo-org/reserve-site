@@ -1,4 +1,4 @@
-import { newKit } from '@celo/contractkit'
+import { newKit, StableToken } from '@celo/contractkit'
 import BigNumber from 'bignumber.js'
 import { Address, Tokens } from 'src/service/Data'
 import ProviderSource, { errorResult, Providers } from './ProviderSource'
@@ -19,9 +19,17 @@ export async function getCeloPrice(): Promise<ProviderSource> {
 
 export async function getFrozenBalance(): Promise<ProviderSource> {
   try {
-    const reserve = await kit.contracts.getReserve()
+    const [reserve, nativeToken] = await Promise.all([
+      kit.contracts.getReserve(),
+      kit.contracts.getGoldToken()
+    ])
+    const [total, unfrozen] = await Promise.all([
+      nativeToken.balanceOf(reserve.address),
+      reserve.getUnfrozenBalance()
+    ])
+
     const time = Date.now()
-    return {hasError: false, value:0, source: Providers.forno, time}
+    return {hasError: false, value:formatNumber(total.minus(unfrozen)), source: Providers.forno, time}
 
   } catch (error) {
     return errorResult(error, Providers.forno)
@@ -29,16 +37,28 @@ export async function getFrozenBalance(): Promise<ProviderSource> {
 }
 
 export async function getUnFrozenBalance() {
-  const reserve = await kit.contracts.getReserve()
+  try {
+    const reserve = await kit.contracts.getReserve()
+    const balance = await reserve.getUnfrozenBalance()
+
+    const time = Date.now()
+    return {hasError: false, value:formatNumber(balance), source: Providers.forno, time}
+  } catch (error) {
+    return errorResult(error, Providers.forno)
+  }
 }
 
 export async function getInCustodyBalance(): Promise<ProviderSource> {
-  try {  const reserve = await kit.contracts.getReserve()
-    const nativeToken = await kit.contracts.getGoldToken()
+  try {
+    const [reserve, nativeToken] = await Promise.all([
+      kit.contracts.getReserve(),
+      kit.contracts.getGoldToken()
+    ])
     const contractBalance = await nativeToken.balanceOf(reserve.address)
+    const totalBalance = await reserve.getReserveCeloBalance()
+
     const time = Date.now()
     // reserveCeloBalance includes both in contract and other address balances. need to subtract out
-    const totalBalance = await reserve.getReserveGoldBalance()
     return {hasError: false, value: formatNumber(totalBalance.minus(contractBalance)), source: Providers.forno, time}
   } catch (error) {
     return errorResult(error, Providers.forno)
@@ -47,8 +67,9 @@ export async function getInCustodyBalance(): Promise<ProviderSource> {
 
 export async function getcUSDSupply(): Promise<ProviderSource> {
   try {
-    const stableToken = await kit.contracts.getStableToken()
+    const stableToken = await kit.contracts.getStableToken(StableToken.cUSD)
     const totalSupply = await stableToken.totalSupply()
+
     const time = Date.now()
     return {hasError: false, value: formatNumber(totalSupply), source: Providers.forno, time}
   } catch (error) {
@@ -56,12 +77,12 @@ export async function getcUSDSupply(): Promise<ProviderSource> {
   }
 }
 
-// TODO once EUR comes out
 export async function getcEURSupply(): Promise<ProviderSource> {
-  try{
-    // const stableToken = await kit.contracts.getStableToken()
-    // stableToken.totalSupply()
-    return {hasError: false, value: 0, source: Providers.forno, time: Date.now()}
+  try {
+    const stableToken = await kit.contracts.getStableToken(StableToken.cEUR)
+    const totalSupply = await stableToken.totalSupply()
+    const time = Date.now()
+    return {hasError: false, value: formatNumber(totalSupply), source: Providers.forno, time}
   } catch (error) {
     return errorResult(error, Providers.forno)
   }

@@ -21,6 +21,9 @@ workflows:
       - next-build:
           requires:
             - install
+      - test:
+          requires:
+            - install
 
 jobs:
 
