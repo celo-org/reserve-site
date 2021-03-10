@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+import { css } from '@emotion/react'
 import * as React from 'react'
 import Markdown from 'src/components/Markdown'
 
@@ -50,7 +49,7 @@ const contentAreaStyle = css({
 
 const titleCSS = css({
   '@media (max-width: 590px)': {
-    fontSize: 28,
+    fontSize: 26,
     lineHeight: 1.5,
   },
 })

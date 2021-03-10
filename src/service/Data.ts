@@ -1,20 +1,16 @@
-export interface HoldingsData {
-  updatedDate: string
-  unfrozen: number
-  frozen: number
-  inCustody: number
-  BTC: number
-  ETH: number
-  DAI: number
-  cUSD: number
-  ratio: number
-  unFrozenRatio: number
+export type Tokens =  "BTC" | "DAI" | "ETH" | "CELO" | "cUSD" | "cEUR"
+export interface Address {
+  address: string
+  label: string
+  token: Tokens
+  status?: "active" | "inactive"
 }
 
-export interface Addresses {
-  celoAddress: string
-  custodyAddress: string
-  btcAddress: string
-  ethAddress: string
-  daiAddress: string
+
+export interface TokenModel {
+  token: Tokens
+  units: number
+  value: number
+  updated: number
+  hasError: boolean
 }

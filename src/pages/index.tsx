@@ -1,16 +1,16 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+import { css } from '@emotion/react'
 import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'
-import Holdings, { Ratios, StableTokens } from 'src/components/Holdings'
+import Holdings from 'src/components/Holdings'
+import { StableTokens } from "src/components/StableTokens"
+import { Ratios } from "src/components/Ratios"
 import NavBar from 'src/components/Navbar'
 import ReserveAddresses from 'src/components/ReserveAddresses'
 import Section from 'src/components/Section'
 import { flexCol } from 'src/components/styles'
-import TargetGraph from 'src/components/TargetGraph'
-import { Updated } from 'src/components/Updated'
-import { Addresses, HoldingsData } from 'src/service/Data'
+import PieChart, {INITAL_TARGET} from 'src/components/PieChart'
+import { Address } from 'src/service/Data'
 
 interface ContentShape {
   title: string
@@ -22,9 +22,10 @@ interface Props {
   ABOUT: FrontMatterResult<ContentShape>
   ATTESTATIONS: FrontMatterResult<ContentShape>
   year: string
+  addresses: Address[]
 }
 
-export default function Home(props: HoldingsData & Addresses & Props) {
+export default function Home(props: Props) {
   return (
     <>
       <Head />
@@ -33,42 +34,21 @@ export default function Home(props: HoldingsData & Addresses & Props) {
           <NavBar />
           <main css={mainStyle}>
             <Section title={props.INTRO.attributes.title} content={props.INTRO.body} />
-            <Section
-              title={'Current Reserve Holdings'}
-              subHeading={<Updated date={props.updatedDate} />}
-            >
-              <Holdings
-                unFrozenRatio={props.unFrozenRatio}
-                frozen={props.frozen}
-                inCustody={props.inCustody}
-                unfrozen={props.unfrozen}
-                cUSD={props.cUSD}
-                DAI={props.DAI}
-                BTC={props.BTC}
-                ETH={props.ETH}
-                ratio={props.ratio}
-              />
-            </Section>
+              <Holdings  />
             <Section title="Stable Value Assets">
-              <StableTokens cUSD={props.cUSD} />
+              <StableTokens  />
             </Section>
             <Section title="Reserve Ratio">
-              <Ratios total={props.ratio} unfrozen={props.unFrozenRatio} />
+              <Ratios />
             </Section>
             <Section title={'Reserve Addresses'}>
-              <ReserveAddresses
-                dai={props.daiAddress}
-                btc={props.btcAddress}
-                eth={props.ethAddress}
-                celo={props.celoAddress}
-                custody={props.custodyAddress}
-              />
+              <ReserveAddresses addresses={props.addresses}  />
             </Section>
             <Section
               title={props.INITIAL_TARGET.attributes.title}
               content={props.INITIAL_TARGET.body}
             >
-              <TargetGraph />
+              <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true}/>
             </Section>
 
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
@@ -102,37 +82,36 @@ const containerStyle = css(flexCol, { flex: 1, width: '100%', alignItems: 'cente
 
 export async function getStaticProps() {
   try {
-    const about = await import('src/content/home/about.md').then((mod) => mod.default)
-    const attestations = await import('src/content/home/attestations.md').then((mod) => mod.default)
-    const initialTarget = await import('src/content/home/initial-target.md').then(
-      (mod) => mod.default
-    )
-    const intro = await import('src/content/home/intro.md').then((mod) => mod.default)
-    const matter = await import('front-matter').then((mod) => mod.default)
+    const [
+      about,
+      attestations,
+      initialTarget,
+      intro,
+      matter,
+      fetchAddresses,
+    ] = await Promise.all([
+      import('src/content/home/about.md').then((mod) => mod.default),
+      import('src/content/home/attestations.md').then((mod) => mod.default),
+      import('src/content/home/initial-target.md').then((mod) => mod.default),
+      import('src/content/home/intro.md').then((mod) => mod.default),
+      import('front-matter').then((mod) => mod.default),
+      import('src/service/addresses').then((mod) => mod.default)
+    ])
+    const addresses = await fetchAddresses()
 
     const INTRO = matter<ContentShape>(intro)
     const INITIAL_TARGET = matter<ContentShape>(initialTarget)
     const ABOUT = matter<ContentShape>(about)
     const ATTESTATIONS = matter<ContentShape>(attestations)
-
-    const fetchData = await import('src/service/holdings').then((mod) => mod.default)
-    const fetchAddresses = await import('src/service/addresses').then((mod) => mod.default)
-
-    const [addresses, holdings] = await Promise.all([fetchAddresses(), fetchData()])
     return {
       props: {
-        ...addresses,
-        ...holdings,
+        addresses: addresses,
         INTRO,
         INITIAL_TARGET,
         ABOUT,
         ATTESTATIONS,
         year: new Date().getFullYear(),
       },
-      // we will attempt to re-generate the page:
-      // - when a request comes in
-      // - at most once every X seconds
-      revalidate: 60,
     }
   } catch {
     return {

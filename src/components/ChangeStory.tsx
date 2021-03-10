@@ -1,10 +1,10 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+
+import { css  } from '@emotion/react'
 
 export default function ChangeStory() {
   return (
     <div css={rootStyle}>
-      <img src="/assets/world-spin.gif" alt="globe" css={imageStyle} />
+      <img width={18} height={18} src="/assets/world-spin.gif" alt="globe" css={imageStyle} />
       <span css={pipeStyle}>|</span>
       <span css={textStyle}>Change the Story</span>
     </div>

@@ -1,12 +1,12 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+
+import { css } from '@emotion/react'
 import colors from 'src/components/colors'
 
 export default function NavBar() {
   return (
     <nav css={navStyle}>
       <a css={linkStyle} href="/">
-        Celo Reserve <span />
+        <img  src={"/assets/cr-wordmark.svg"}   alt="Home" width={110} height={19}/>
       </a>
       <div css={navLinksStyle}></div>
     </nav>
