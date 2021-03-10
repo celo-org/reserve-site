@@ -3,6 +3,7 @@ import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'
 import Holdings from 'src/components/Holdings'
+import Table from 'src/components/Table'
 import { StableTokens } from "src/components/StableTokens"
 import { Ratios } from "src/components/Ratios"
 import NavBar from 'src/components/Navbar'
