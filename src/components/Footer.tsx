@@ -1,5 +1,5 @@
 
-import { css, jsx } from '@emotion/core'
+import { css, jsx } from '@emotion/react'
 import ChangeStory from './ChangeStory'
 import { fineStyle } from './styles'
 

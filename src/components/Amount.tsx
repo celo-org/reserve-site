@@ -1,4 +1,4 @@
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import { BreakPoints } from 'src/components/styles'
 import colors from './colors'
 interface AmountProps {

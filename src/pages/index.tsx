@@ -1,4 +1,4 @@
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'

@@ -1,4 +1,4 @@
-import { css, Global } from '@emotion/core'
+import { css, Global } from '@emotion/react'
 import NextHead from 'next/head'
 import colors from 'src/components/colors'
 import description from 'src/content/meta-description.md'
@@ -7,10 +7,10 @@ const garamond = 'EB Garamond, eb-garamond, Garamond, serif'
 
 const globalStyles = css`x
   * {
-    box-sizing: border-box; 
+    box-sizing: border-box;
     font-family: '${garamond}';
   }
-  
+
   h1, h2, h3, h4, p, a {
     margin-top: 0;
     color: ${colors.dark};

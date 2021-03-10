@@ -38,7 +38,7 @@ export const handlers = [
     }
   }),
 
-  rest.get("https://blockchain.info/balance?active=38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL", (req, res, ctx) => {
+  rest.get("https://blockchain.info/balance", (req, res, ctx) => {
     return res(
       ctx.json({"38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL":{"final_balance":140798450548,"n_tx":34,"total_received":140798450548}})
     )

@@ -1,7 +1,7 @@
 node-defaults: &NODE
   working_directory: ~/app
   docker:
-    - image: celohq/node10-gcloud:v3
+    - image: circleci/node:fermium
   environment:
     # To avoid ENOMEM problem when running node
     NODE_OPTIONS: '--max-old-space-size=4096'
@@ -46,8 +46,15 @@ jobs:
           paths:
             - node_modules
             - .env.local
+   # Test
+  test:
+    <<: *NODE
+    steps:
+      - checkout
+      - *CHECKOUT-WORKSPACE
+      - run: yarn test
 
-  # Build
+      # Build
   next-build:
     <<: *NODE
     steps:
@@ -55,10 +62,3 @@ jobs:
       - *CHECKOUT-WORKSPACE
       - run: yarn build:next
 
-  # Test
-  test:
-    <<: *NODE
-    steps:
-      - checkout
-      - *CHECKOUT-WORKSPACE
-      - run: yarn test
