@@ -93,14 +93,14 @@ export interface HoldingsApi {
 }
 
 export default async function getHoldings(): Promise<HoldingsApi> {
-  const [btcHeld, ethHeld, daiHeld, celoCustodied, frozen, unfrozen, rates] = await Promise.all([
+  const [rates, btcHeld, ethHeld, daiHeld, celoCustodied, frozen, unfrozen] = await Promise.all([
+    getRates(),
     btcBalance(),
     ethBalance(),
     daiBalance(),
     celoCustodiedBalance(),
     celoFrozenBalance(),
     celoUnfrozenBalance(),
-    getRates()
   ])
 
   const otherAssets: TokenModel[] = [
