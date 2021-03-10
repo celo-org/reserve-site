@@ -1,52 +1,87 @@
 import { getBTCBalance as getBlockChainBTCBalance } from 'src/providers/BlockchainDotCom'
 import getBlockStreemBTCBalance from 'src/providers/Blockstream'
-import { getInCustodyBalance } from 'src/providers/Celo'
+import { getFrozenBalance, getInCustodyBalance, getUnFrozenBalance } from 'src/providers/Celo'
 import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
-import consensus, { Consensus } from './consensus'
+import duel, { Duel, sumMerge } from './duel'
 import getRates from "./rates"
-import {getOrSave, HOUR, refresh} from "src/service/cache"
-import { TokenModel } from './Data'
+import {refresh, getOrSave} from "src/service/cache"
+import { MINUTE } from "src/utils/TIME"
+import { TokenModel, Tokens } from './Data'
 import ProviderSource from 'src/providers/ProviderSource'
-// import {getNonCeloAddresses} from "src/providers/airtable"
+import {getNonCeloAddresses} from "src/providers/airtable"
 
+async function getGroupedNonCeloAddresses() {
+  const addresses = await getNonCeloAddresses()
+  const groupedByToken = addresses.value.reduce((groups, current) => {
+    groups[current.token] = groups[current.token] || []
+    groups[current.token].push(current.address)
+    return groups
+  }, {})
 
-async function fetchBTCBalance() {
-  const address = "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL"
-  return consensus(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
+  return groupedByToken as Record<Tokens, string[]>
 }
 
-refresh("btc-balance", HOUR, fetchBTCBalance)
+async function fetchBTCBalance() {
+  return getSumBalance("BTC", address => {
+    return duel(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
+  })
+}
+
+async function getSumBalance(token:Tokens, balanceFetcher: (address: string) => Promise<Duel>) {
+  const addresses = await getGroupedNonCeloAddresses()
+  const balances = await Promise.all(addresses[token].map(balanceFetcher))
+  return balances.reduce(sumMerge)
+}
+
+refresh("btc-balance", 30 * MINUTE, fetchBTCBalance)
 
 export async function btcBalance() {
-  return getOrSave<Consensus>("btc-balance", fetchBTCBalance)
+  return getOrSave<Duel>("btc-balance", fetchBTCBalance)
 }
 
 async function fetchETHBalance() {
-  const address = "0xe1955eA2D14e60414eBF5D649699356D8baE98eE"
-  return consensus(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
+  return getSumBalance("ETH", address => {
+    return duel(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
+  })
 }
-refresh("eth-balance", HOUR, fetchETHBalance)
+refresh("eth-balance", 30 * MINUTE, fetchETHBalance)
 
 export async function ethBalance() {
-  return getOrSave<Consensus>("eth-balance", fetchETHBalance)
+  return getOrSave<Duel>("eth-balance", fetchETHBalance)
 }
 
 function fetchDaiBalance() {
-  const address = "0x16B34Ce9A6a6F7FC2DD25Ba59bf7308E7B38E186"
-  return consensus(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
+  return getSumBalance("DAI", address => {
+    return duel(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
+  })
 }
-refresh("dai-balance", HOUR, fetchDaiBalance)
+refresh("dai-balance", 30 * MINUTE, fetchDaiBalance)
 
 export async function daiBalance() {
-  return getOrSave<Consensus>("dai-balance", fetchDaiBalance)
+  return getOrSave<Duel>("dai-balance", fetchDaiBalance)
 }
+
 
 export async function celoCustodiedBalance() {
   return getOrSave<ProviderSource>("celo-custody-balance", getInCustodyBalance)
 }
 
-refresh("celo-custody-balance", HOUR, getInCustodyBalance)
+refresh("celo-custody-balance", 30 * MINUTE, getInCustodyBalance)
+
+
+export async function celoFrozenBalance() {
+  return getOrSave<ProviderSource>("celo-frozen-balance", getFrozenBalance)
+}
+
+refresh("celo-frozen-balance", 30 * MINUTE, getFrozenBalance)
+
+
+export async function celoUnfrozenBalance() {
+  return getOrSave<ProviderSource>("celo-unfrozen-balance", getUnFrozenBalance)
+}
+
+refresh("celo-unfrozen-balance", 5 * MINUTE, getUnFrozenBalance)
 
 export interface HoldingsApi {
   celo: {
@@ -58,11 +93,13 @@ export interface HoldingsApi {
 }
 
 export default async function getHoldings(): Promise<HoldingsApi> {
-  const [btcHeld, ethHeld, daiHeld, celoCustodied, rates] = await Promise.all([
+  const [btcHeld, ethHeld, daiHeld, celoCustodied, frozen, unfrozen, rates] = await Promise.all([
     btcBalance(),
     ethBalance(),
     daiBalance(),
     celoCustodiedBalance(),
+    celoFrozenBalance(),
+    celoUnfrozenBalance(),
     getRates()
   ])
 
@@ -76,17 +113,17 @@ export default async function getHoldings(): Promise<HoldingsApi> {
     celo: {
       frozen: {
         token: "CELO",
-        units: celoCustodied.value,
-        value: celoCustodied.value * rates.celo.value,
-        hasError: celoCustodied.hasError,
-        updated: celoCustodied.time
+        units: frozen.value,
+        value: frozen.value * rates.celo.value,
+        hasError: frozen.hasError,
+        updated: frozen.time
       },
       unfrozen: {
         token: "CELO",
-        units: celoCustodied.value,
-        value: celoCustodied.value * rates.celo.value,
-        hasError: celoCustodied.hasError,
-        updated: celoCustodied.time
+        units: unfrozen.value,
+        value: unfrozen.value * rates.celo.value,
+        hasError: unfrozen.hasError,
+        updated: unfrozen.time
       },
       custody: {
         token: "CELO",
@@ -100,7 +137,7 @@ export default async function getHoldings(): Promise<HoldingsApi> {
   }
 }
 
-function toToken(label: string, tokenData: Consensus, rate?: Consensus): TokenModel {
+function toToken(label: Tokens, tokenData: Duel, rate?: Duel): TokenModel {
   return {
     token: label,
     units: tokenData.value,

@@ -42,14 +42,9 @@ export async function set<T extends Cachable>(key: string, fetcher: () => Promis
   }
 }
 
-export async function refresh<T>(key: string, interval: number, fetcher: () => Promise<T>) {
+export async function refresh<T extends Cachable>(key: string, interval: number, fetcher: () => Promise<T>) {
   const setData = async () => {
     set<T>(key, fetcher)
   }
   return setInterval(setData,interval)
 }
-
-export const SECOND = 1000
-
-export const MINUTE = 60 * SECOND
-export const HOUR = 60 * MINUTE

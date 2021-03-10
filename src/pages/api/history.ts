@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import getHoldings from "src/service/holdings"
+import {getHistory} from "src/providers/airtable"
 
 export default async function(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
       const start = Date.now()
-      const holdings = await getHoldings()
+      const holdings = await getHistory()
       res.setHeader("Server-Timing", `ms;dur=${Date.now() - start}`)
       res.json(holdings)
     } else {

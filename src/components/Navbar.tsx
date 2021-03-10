@@ -6,7 +6,7 @@ export default function NavBar() {
   return (
     <nav css={navStyle}>
       <a css={linkStyle} href="/">
-       <img  src={"assets/cr-wordmark.svg"}   alt="Home" width={110} height={19}/>
+        <img  src={"/assets/cr-wordmark.svg"}   alt="Home" width={110} height={19}/>
       </a>
       <div css={navLinksStyle}></div>
     </nav>

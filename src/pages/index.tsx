@@ -2,15 +2,15 @@ import { css } from '@emotion/core'
 import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'
-import Holdings, { Ratios, StableTokens } from 'src/components/Holdings'
+import Holdings from 'src/components/Holdings'
+import { StableTokens } from "src/components/StableTokens"
+import { Ratios } from "src/components/Ratios"
 import NavBar from 'src/components/Navbar'
 import ReserveAddresses from 'src/components/ReserveAddresses'
 import Section from 'src/components/Section'
 import { flexCol } from 'src/components/styles'
 import PieChart, {INITAL_TARGET} from 'src/components/PieChart'
-import Table from 'src/components/Table'
-import { Updated } from 'src/components/Updated'
-import { Address, HoldingsData } from 'src/service/Data'
+import { Address } from 'src/service/Data'
 
 interface ContentShape {
   title: string
@@ -26,7 +26,7 @@ interface Props {
   addresses: Address[]
 }
 
-export default function Home(props: HoldingsData & Props) {
+export default function Home(props: Props) {
   return (
     <>
       <Head />
@@ -35,17 +35,12 @@ export default function Home(props: HoldingsData & Props) {
           <NavBar />
           <main css={mainStyle}>
             <Section title={props.INTRO.attributes.title} content={props.INTRO.body} />
-            <Section
-              title={'Current Reserve Holdings'}
-              subHeading={<Updated date={props.updatedDate} />}
-            >
               <Holdings  />
-            </Section>
             <Section title="Stable Value Assets">
               <StableTokens  />
             </Section>
             <Section title="Reserve Ratio">
-              <Ratios total={props.ratio} unfrozen={props.unFrozenRatio} />
+              <Ratios />
             </Section>
             <Section title={'Reserve Addresses'}>
               <ReserveAddresses addresses={props.addresses}  />

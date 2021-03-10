@@ -1,6 +1,8 @@
 import normalizeBTCvalue from "src/utils/normalizeBTCValue"
 import ProviderSource, {Providers, errorResult} from "./ProviderSource"
 
+// Usage Limits 1 req every 10 seconds
+
 type BalanceReponse = Record<string,{
   final_balance: number
   n_tx: number

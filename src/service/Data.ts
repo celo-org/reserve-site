@@ -1,27 +1,25 @@
-export interface HoldingsData {
-  updatedDate: string
-  unfrozen: number
-  frozen: number
-  inCustody: number
-  BTC: number
-  ETH: number
-  DAI: number
-  cUSD: number
-  ratio: number
-  unFrozenRatio: number
-}
-
+export type Tokens =  "BTC" | "DAI" | "ETH" | "CELO" | "cUSD" | "cEUR"
 export interface Address {
   address: string
   label: string
+  token: Tokens
   status?: "active" | "inactive"
-  link?: string
 }
 
+
 export interface TokenModel {
-  token: string
+  token: Tokens
   units: number
   value: number
   updated: number
   hasError: boolean
+}
+
+export interface Rebalancing {
+  "Period" : string
+  "CELO Delta": number
+  "BTC Delta": number
+  "ETH Delta": number
+  "DAI Delta": number
+  "Dollar Start Value": number
 }

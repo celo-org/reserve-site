@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
 import getStableValueTokens, {getTotalStableValueInUSD} from "src/service/stables"
+
 export default async function(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {

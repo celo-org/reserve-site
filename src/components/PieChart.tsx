@@ -1,6 +1,8 @@
-import {Fragment, useMemo} from "react"
+import {Fragment} from "react"
 import { css } from '@emotion/core'
 import colors from 'src/components/colors'
+
+
 export const INITAL_TARGET: ChartData[] = [
   {  token: 'CELO', percent: 50 },
   {  token: 'BTC', percent: 30 },
@@ -41,7 +43,7 @@ export default function PieChart({slices,label,showFinePrint, isLoading}: Props)
   return (
     <figure css={rootStyle}>
       <figcaption css={legendStyle}>
-        <h4>{label}</h4>
+        <h3 css={labelStyle}>{label}</h3>
         {slices.map(({token, percent }) => (
           <ChartKey key={token} token={token} percent={percent} />
         ))}
@@ -50,7 +52,7 @@ export default function PieChart({slices,label,showFinePrint, isLoading}: Props)
         </small>}
       </figcaption>
       <div css={pieStyle}>
-        <svg viewBox="-25 -25 50 50" transform="rotate(-90)" width="100%" height="100%">
+        <svg viewBox="-25 -25 50 40" transform="rotate(-90)" width="100%" height="100%">
           {dataWithOffsets.map(({ percent, offset, token }) => {
             return (
               <Fragment key={token}>
@@ -60,7 +62,7 @@ export default function PieChart({slices,label,showFinePrint, isLoading}: Props)
                   opacity={0.8}
                   r={radius}
                   fill="transparent"
-                  stroke={TokenColor[token]}
+                  stroke={isLoading ? colors.gray : TokenColor[token]}
                   strokeWidth="9"
                   strokeDasharray={`${circumfrance * (percent / 100)} ${circumfrance *
                     (1 - percent / 100)}`}
@@ -89,10 +91,18 @@ const legendStyle = css({
   flex: 2,
 })
 
+const labelStyle = css({
+  marginBottom: 24,
+  fontSize: 28,
+  lineHeight: "48px",
+  display: "block",
+  width: "100%",
+})
+
 const pieStyle = css({ display: 'flex', flex: 3, minWidth: 250 })
 
 const rootStyle = css({
-  paddingTop: 36,
+  paddingTop: 48,
   margin: 0,
   display: 'flex',
   flexWrap: 'wrap',
@@ -109,7 +119,7 @@ function ChartKey({token, percent }: ChartData) {
   return (
     <div css={chartKeyStyle}>
       <div css={css(squareStyle, { backgroundColor: TokenColor[token]})} />
-      <span css={percentStyle}>{ isNaN(percent) ? 0 : percent.toPrecision(2)}%</span>
+      <span css={percentStyle}>{ isNaN(percent) ? "" : percent.toPrecision(2)}%</span>
       <span>{token}</span>
     </div>
   )
