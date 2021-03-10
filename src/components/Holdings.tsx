@@ -4,8 +4,8 @@ import useSWR from "swr"
 import Amount from 'src/components/Amount'
 import Heading from 'src/components/Heading'
 import { BreakPoints } from 'src/components/styles'
-import PieChart,{ChartData} from 'src/components/PieChart'
-import { HoldingsApi} from "src/service/holdings"
+import PieChart,{ ChartData } from 'src/components/PieChart'
+import { HoldingsApi } from "src/service/holdings"
 import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
 import Head from 'next/head'
 
