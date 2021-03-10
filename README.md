@@ -27,9 +27,8 @@ The following is where the numbers displayed on celoreserve.org comes from. Thes
 
 For Celo on chain balances, an instance of `@celo/contractKit` is connected to a node at `forno.celo.org`. See [src/providers/Celo.ts](src/providers/Celo.ts) for how this works.
 
-For ETH and BTC balances we use 2 data providers each: blockchain.com and [blockstreams's esplora](https://github.com/Blockstream/esplora/blob/master/API.md) for BTC and ethscan and Infura for Ethereum.
+For ETH and BTC balances we use 2 data providers each: blockchain.com and [blockstreams's esplora](https://github.com/Blockstream/esplora/blob/master/API.md) for BTC and etherscan and ethplorer for Ethereum.
 
-*Holdings change rarely and as such these are only updated every few hours*
 
 #### For Asset Prices
 
