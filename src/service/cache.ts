@@ -1,4 +1,5 @@
 import Cache from "node-cache"
+import { MINUTE } from "src/utils/TIME"
 
 const CACHE = new Cache()
 
@@ -10,6 +11,9 @@ export function getOrSave<T extends Cachable>(key: string, fetcher: () => Promis
 
 export function get<T>(key:string) {
   const data = CACHE.get<T>(key)
+  if (!data) {
+    console.info("missed", key)
+  }
   return data
 }
 
@@ -51,3 +55,5 @@ export async function refresh<T extends Cachable>(key: string, interval: number,
   }
   return setInterval(setData,interval)
 }
+
+setInterval(() => console.info(CACHE.getStats()), 30 * MINUTE)
