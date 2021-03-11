@@ -3,9 +3,10 @@ import useSWR from 'swr'
 import { fetcher } from 'src/utils/fetcher'
 import { HoldingsApi } from 'src/service/holdings'
 export default function Table(){
-    const holdings = useSWR<HoldingsApi>('/api/holdings', fetcher)
+    const holdings = useSWR<HoldingsApi>("/api/holdings", fetcher);
 
-    const renderBody = () =>{
+    function renderBody(){
+
         return (
             <tr>
                 <td></td>
