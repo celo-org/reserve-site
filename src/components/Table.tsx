@@ -1,26 +1,17 @@
 import { css } from '@emotion/core'
 import useSWR from 'swr'
 import { fetcher } from 'src/utils/fetcher'
-import { HoldingsApi } from 'src/service/holdings'
+import { Rebalancing } from 'src/service/Data'
+
+
 export default function Table(){
-    const holdings = useSWR<HoldingsApi>("/api/holdings", fetcher);
+    const { data }= useSWR<{value:Rebalancing[]}>("/api/history", fetcher);
 
-    function renderBody(){
-
-        return (
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        )
-    }
     
     let arrayHeader = ["Quarter / Period", "BTC Δ", "CELO Δ", "ETH Δ", "DAI Δ", "Dollar Value"]
     
     return(
-        <div>
+        <div css={root}>
             <table css={table}>
                 <thead css={headerDiv}>
                     {arrayHeader.map((key, index) =>{    
@@ -30,14 +21,33 @@ export default function Table(){
                 })}
                 </thead>
 
-                <tbody css={bodyDiv}>
-                    {renderBody()}
+                <tbody>
+                    {data?.value?.map((el) => {                
+                        return(
+                        <tr css={tableBody}>
+                            <td css={tableData}>{el['Period']}</td>
+                            <td css={tableData}>{el['BTC Delta']}</td>
+                            <td css={tableData}>{el['CELO Delta']}</td>
+                            <td css={tableData}>{el['ETH Delta']}</td>
+                            <td css={tableData}>{el['DAI Delta']}</td>
+                            <td css={tableData}>{el['Dollar Start Value']}</td>
+                        </tr>
+                        )
+                    })}
                 </tbody>
 
             </table>
         </div>
     )
     }
+
+    const root = css({
+        '@media (max-width: 590px)': {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }
+    })
 
     const table = css ({
         borderSpacing: 0
@@ -47,12 +57,20 @@ export default function Table(){
         fontFamily: 'EB Garamond',
         backgroundColor: '#D5EBF5',
         fontWeight: 'bold',
-        height: 10
+        height: 8
+    })
+
+    const tableBody = css({
+        textAlign: 'center',
+        background: '#F0F0F0'
+
     })
     
-    const bodyDiv = css({
+    const tableData = css({
+        border: '1px solid white',
+        padding: 10
     })
-    
+
     const label = css({
         border: '1px solid white',
         padding: 10
