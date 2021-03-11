@@ -22,17 +22,23 @@ export default function Table(){
                 </thead>
 
                 <tbody>
-                    {data?.value?.map((el) => {                
-                        return(
-                        <tr css={tableBody}>
-                            <td css={tableData}>{el['Period']}</td>
-                            <td css={tableData}>{el['BTC Delta']}</td>
-                            <td css={tableData}>{el['CELO Delta']}</td>
-                            <td css={tableData}>{el['ETH Delta']}</td>
-                            <td css={tableData}>{el['DAI Delta']}</td>
-                            <td css={tableData}>{el['Dollar Start Value']}</td>
-                        </tr>
-                        )
+                    {data?.value?.map((el) => {   
+                        debugger
+                        if(Object.keys(el).length === 0){
+                            return null
+                        }else{
+                            return (
+                                <tr key={el.Period} css={tableBody}>
+                                <td css={tableData}>{el['Period']}</td>
+                                <td css={tableData}>{el['BTC Delta']}</td>
+                                <td css={tableData}>{el['CELO Delta']}</td>
+                                <td css={tableData}>{el['ETH Delta']}</td>
+                                <td css={tableData}>{el['DAI Delta']}</td>
+                                <td css={tableData}>{el['Dollar Value Start']}</td>
+                            </tr>
+                        )  
+                    }
+                        
                     })}
                 </tbody>
 

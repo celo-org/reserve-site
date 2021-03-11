@@ -21,5 +21,5 @@ export interface Rebalancing {
   "BTC Delta": number
   "ETH Delta": number
   "DAI Delta": number
-  "Dollar Start Value": number
+  "Dollar Value Start": number
 }
