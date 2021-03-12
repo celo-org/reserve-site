@@ -2,6 +2,13 @@ import { css } from '@emotion/core'
 import useSWR from 'swr'
 import { fetcher } from 'src/utils/fetcher'
 import { Rebalancing } from 'src/service/Data'
+import DollarDisplay from 'src/components/Amount'
+{/* <DollarDisplay loading={isLoading} label="Liquidity" value={sumTotalHoldings(data)} /> */}
+// new Intl.NumberFormat("en-US", {
+//     style: "percent",
+//     signDisplay: "exceptZero"
+// }).format(0.55);
+// // → '+55%'
 
 
 export default function Table(){
@@ -15,15 +22,16 @@ export default function Table(){
             <table css={table}>
                 <thead css={headerDiv}>
                     {arrayHeader.map((key, index) =>{    
-                return (
-                    <th css={label}  key={index}>{key.toUpperCase()}</th>
-                )
-                })}
+                        return (
+                            <th css={label}  key={index}>{key.toUpperCase()}</th>
+                            )
+                        })}
                 </thead>
 
                 <tbody>
-                    {data?.value?.map((el) => {   
-                        debugger
+                    {data?.value?.map((el) => {
+
+                        const celo = new Intl.NumberFormat('default').format(el['CELO Delta'])
                         if(Object.keys(el).length === 0){
                             return null
                         }else{
@@ -31,10 +39,10 @@ export default function Table(){
                                 <tr key={el.Period} css={tableBody}>
                                 <td css={tableData}>{el['Period']}</td>
                                 <td css={tableData}>{el['BTC Delta']}</td>
-                                <td css={tableData}>{el['CELO Delta']}</td>
+                                <td css={tableData}>{celo}</td>
                                 <td css={tableData}>{el['ETH Delta']}</td>
                                 <td css={tableData}>{el['DAI Delta']}</td>
-                                <td css={tableData}>{el['Dollar Value Start']}</td>
+                                <td css={tableData}>{`$${Math.round(el['Dollar Value Start']).toLocaleString()}`}</td>
                             </tr>
                         )  
                     }
@@ -48,15 +56,12 @@ export default function Table(){
     }
 
     const root = css({
-        '@media (max-width: 590px)': {
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-        }
+            width: 'fit-content'
     })
 
     const table = css ({
-        borderSpacing: 0
+        borderSpacing: 0,
     })
 
     const headerDiv = css({
@@ -74,10 +79,10 @@ export default function Table(){
     
     const tableData = css({
         border: '1px solid white',
-        padding: 10
+        padding: 8
     })
 
     const label = css({
         border: '1px solid white',
-        padding: 10
+        padding: 8
     })
