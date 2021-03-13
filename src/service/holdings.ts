@@ -4,7 +4,7 @@ import { getFrozenBalance, getInCustodyBalance, getUnFrozenBalance } from 'src/p
 import * as etherscan from 'src/providers/Etherscan'
 import * as ethplorer from 'src/providers/Ethplorerer'
 import duel, { Duel, sumMerge } from './duel'
-import getRates from "./rates"
+import getRates, { celoPrice } from "./rates"
 import {refresh, getOrSave} from "src/service/cache"
 import { MINUTE } from "src/utils/TIME"
 import { TokenModel, Tokens } from './Data'
@@ -92,6 +92,61 @@ export interface HoldingsApi {
   otherAssets: TokenModel[]
 }
 
+export async function getHoldingsCelo() {
+  const [celoRate, celoCustodied, frozen, unfrozen] = await Promise.all([
+    celoPrice(),
+    celoCustodiedBalance(),
+    celoFrozenBalance(),
+    celoUnfrozenBalance(),
+  ])
+
+
+  return {celo: toCeloShape(frozen, celoRate, unfrozen, celoCustodied)}
+}
+
+function toCeloShape(frozen: ProviderSource, celoRate: Duel, unfrozen: ProviderSource, celoCustodied: ProviderSource) {
+  return {
+      frozen: {
+        token: "CELO",
+        units: frozen.value,
+        value: frozen.value * celoRate.value,
+        hasError: frozen.hasError,
+        updated: frozen.time
+      },
+      unfrozen: {
+        token: "CELO",
+        units: unfrozen.value,
+        value: unfrozen.value * celoRate.value,
+        hasError: unfrozen.hasError,
+        updated: unfrozen.time
+      },
+      custody: {
+        token: "CELO",
+        units: celoCustodied.value,
+        value: celoCustodied.value * celoRate.value,
+        hasError: celoCustodied.hasError,
+        updated: celoCustodied.time
+      }
+    } as const
+}
+
+export async function  getHoldingsOther() {
+  const [rates, btcHeld, ethHeld, daiHeld] = await Promise.all([
+    getRates(),
+    btcBalance(),
+    ethBalance(),
+    daiBalance(),
+  ])
+
+  const otherAssets: TokenModel[] = [
+    toToken("BTC", btcHeld, rates.btc),
+    toToken("ETH", ethHeld, rates.eth),
+    toToken("DAI", daiHeld),
+  ]
+
+  return {otherAssets}
+}
+
 export default async function getHoldings(): Promise<HoldingsApi> {
   const [rates, btcHeld, ethHeld, daiHeld, celoCustodied, frozen, unfrozen] = await Promise.all([
     getRates(),
@@ -110,29 +165,7 @@ export default async function getHoldings(): Promise<HoldingsApi> {
   ]
 
   return {
-    celo: {
-      frozen: {
-        token: "CELO",
-        units: frozen.value,
-        value: frozen.value * rates.celo.value,
-        hasError: frozen.hasError,
-        updated: frozen.time
-      },
-      unfrozen: {
-        token: "CELO",
-        units: unfrozen.value,
-        value: unfrozen.value * rates.celo.value,
-        hasError: unfrozen.hasError,
-        updated: unfrozen.time
-      },
-      custody: {
-        token: "CELO",
-        units: celoCustodied.value,
-        value: celoCustodied.value * rates.celo.value,
-        hasError: celoCustodied.hasError,
-        updated: celoCustodied.time
-      }
-    },
+    celo: toCeloShape(frozen, rates.celo, unfrozen, celoCustodied),
     otherAssets
   }
 }

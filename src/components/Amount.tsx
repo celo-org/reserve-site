@@ -1,6 +1,7 @@
-import { css, keyframes } from '@emotion/react'
+import { css } from '@emotion/react'
 import { BreakPoints } from 'src/components/styles'
 import colors from './colors'
+import { loadingStyle } from './loadingKeyframes'
 interface AmountProps {
   label: string
   units: number
@@ -20,7 +21,7 @@ export default function Amount({iconSrc, label, units, gridArea, context, value,
         {iconSrc && <img width={30} height={30} src={iconSrc} css={iconStyle} alt="" />}
         <p id={id} css={labelCss}><abbr css={abbrCSS} title={context}>{label}</abbr></p>
       </div>
-      <span aria-labelledby={id} css={css(!loading && value ? secondaryNumberStyle : numberStyle, loading && loadingStyle )}>{display}</span>
+      <span aria-labelledby={id} css={css(!loading && value ? secondaryNumberStyle : numberStyle, loading && amountLoadingStyle )}>{display}</span>
       <DollarDisplay css={primaryNumberStyle} value={value} loading={loading} label={label}  />
     </div>
   )
@@ -36,7 +37,7 @@ interface DollarDisplayProps {
 export function DollarDisplay({value, loading, label, className}: DollarDisplayProps) {
   const displayValue = value && Math.round(value).toLocaleString()
 
-  return  <span className={className} aria-label={`Value of ${label} in USD`} css={css(dollarValueStyle, loading && loadingStyle)}>
+  return  <span className={className} aria-label={`Value of ${label} in USD`} css={css(dollarValueStyle, loading && amountLoadingStyle)}>
   {loading ? " ": !!value && `$${displayValue}`}
 </span>
 }
@@ -46,28 +47,13 @@ const abbrCSS = css({
   cursor: "help"
 })
 
-const loadingKeyframes = keyframes`
-    from {
-      opacity: 0.15
-    }
-
-    to {opacity: 0.40}
-`
-
-const loadingStyle = css({
-  color: "transparent",
+const amountLoadingStyle = css(loadingStyle, {
   backgroundColor: colors.gray,
   borderTopRightRadius: 6,
-  opacity: 0,
+  color: "transparent",
   minHeight: "1.1em",
-  animationDirection: "alternate-reverse",
-  animationDuration: '1.4s',
-  animationDelay: "20ms",
-  animationFillMode: "none",
-  animationIterationCount: 'infinite',
-  animationTimingFunction: "ease-in-out",
-  animationName: loadingKeyframes
 })
+
 
 const labelCss = css({
   textAlign: "left",
