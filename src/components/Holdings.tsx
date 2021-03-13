@@ -22,13 +22,25 @@ const initalToken = {
   updated: 0
 }
 
+const initalOtherToken = {
+  value: 1,
+  units: 1,
+  hasError: false,
+  token: "BTC",
+  updated: 0
+} as const
+
 const INITAL_DATA: HoldingsApi = {
   celo: {
     custody: initalToken,
     unfrozen: initalToken,
     frozen: initalToken
   },
-  otherAssets: []
+  otherAssets: [
+    initalOtherToken,
+    {...initalOtherToken, token: "ETH" },
+    {...initalOtherToken, token: "DAI"}
+  ]
 }
 
 
@@ -72,7 +84,7 @@ function findOldestValueUpdatedAt(data?: HoldingsApi): number {
 export default function Holdings() {
   const {data} = useSWR<HoldingsApi>("/api/holdings", fetcher, {initialData: INITAL_DATA, revalidateOnMount: true})
   const percentages = getPercents(data)
-  const isLoading = data.otherAssets.length === 0
+  const isLoading = data.celo.frozen.updated  === 0 || data.celo.unfrozen.updated  === 0
   const celo = data.celo
   const oldestUpdate = findOldestValueUpdatedAt(data)
   return (
@@ -106,12 +118,14 @@ const rootStyle = css({
   display: 'grid',
   gridColumnGap: 20,
   gridRowGap: 12,
+  gridAutoColumns: "1fr 1fr 1fr",
   gridTemplateAreas: `"celo celo celo"
                     "frozen unfrozen unfrozen"
                     "crypto crypto crypto"
                     "btc eth dai"
                     `,
   [BreakPoints.tablet]: {
+    gridAutoColumns: "1fr",
     gridTemplateAreas: `"celo"
                         "frozen"
                         "unfrozen"
