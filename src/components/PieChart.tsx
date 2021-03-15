@@ -1,6 +1,7 @@
 import {Fragment} from "react"
 import { css } from '@emotion/react'
 import colors from 'src/components/colors'
+import { loadingStyle } from './loadingKeyframes'
 
 
 export const INITAL_TARGET: ChartData[] = [
@@ -51,7 +52,7 @@ export default function PieChart({slices,label,showFinePrint, isLoading}: Props)
           *Crypto Assets with low volatility. Candidates are decentralised stablecoins e.g. DAI
         </small>}
       </figcaption>
-      <div css={pieStyle}>
+      <div css={css(pieStyle, isLoading && loadingStyle)}>
         <svg viewBox="-25 -25 50 40" transform="rotate(-90)" width="100%" height="100%">
           {dataWithOffsets.map(({ percent, offset, token }) => {
             return (

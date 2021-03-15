@@ -40,11 +40,20 @@ module.exports = {
         ],
       },
       {
+        source: '/api/holdings/:kind',
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public; max-age=30, stale-while-revalidate=360",
+          },
+        ],
+      },
+      {
         source: '/api/:any',
         headers: [
           {
             key: "Cache-Control",
-            value: "public; max-age=10, stale-while-revalidate=20",
+            value: "public; max-age=5, stale-while-revalidate=20",
           },
         ],
       },
