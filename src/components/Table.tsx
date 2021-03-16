@@ -2,7 +2,6 @@ import { css } from '@emotion/core'
 import useSWR from 'swr'
 import { fetcher } from 'src/utils/fetcher'
 import { Rebalancing } from 'src/service/Data'
-import DollarDisplay from 'src/components/Amount'
 
 
 export default function Table(){
