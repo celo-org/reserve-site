@@ -3,12 +3,6 @@ import useSWR from 'swr'
 import { fetcher } from 'src/utils/fetcher'
 import { Rebalancing } from 'src/service/Data'
 import DollarDisplay from 'src/components/Amount'
-{/* <DollarDisplay loading={isLoading} label="Liquidity" value={sumTotalHoldings(data)} /> */}
-// new Intl.NumberFormat("en-US", {
-//     style: "percent",
-//     signDisplay: "exceptZero"
-// }).format(0.55);
-// // → '+55%'
 
 
 export default function Table(){
