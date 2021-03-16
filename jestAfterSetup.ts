@@ -1,14 +1,7 @@
 import { server } from 'src/mocks/server'
-import fetch from "node-fetch"
 import MockDate from "mockdate"
 import AirtableAPI from 'airtable'
 
-// import '@testing-library/jest-dom'
-// import { createSerializer } from "@emotion/jest"
-// import "@testing-library/jest-dom/extend-expect"
-// @ts-ignore
-global.fetch = fetch
-// expect.addSnapshotSerializer(createSerializer())
 AirtableAPI.apiKey = "TEST_AIRTABLE_KEY"
 // Establish API mocking before all tests.
 beforeAll(() => {
