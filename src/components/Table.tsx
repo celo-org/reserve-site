@@ -30,8 +30,6 @@ export default function Table(){
 
                 <tbody>
                     {data?.value?.map((el) => {
-
-                        const celo = new Intl.NumberFormat('default').format(el['CELO Delta'])
                         if(Object.keys(el).length === 0){
                             return null
                         }else{
@@ -39,7 +37,7 @@ export default function Table(){
                                 <tr key={el.Period} css={tableBody}>
                                 <td css={tableData}>{el['Period']}</td>
                                 <td css={tableData}>{el['BTC Delta']}</td>
-                                <td css={tableData}>{celo}</td>
+                                <td css={tableData}>{el['CELO Delta']}</td>
                                 <td css={tableData}>{el['ETH Delta']}</td>
                                 <td css={tableData}>{el['DAI Delta']}</td>
                                 <td css={tableData}>{`$${Math.round(el['Dollar Value Start']).toLocaleString()}`}</td>
@@ -56,8 +54,9 @@ export default function Table(){
     }
 
     const root = css({
-            display: 'flex',
-            width: 'fit-content'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     })
 
     const table = css ({
