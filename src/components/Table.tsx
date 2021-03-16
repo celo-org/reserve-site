@@ -1,7 +1,8 @@
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import useSWR from 'swr'
 import { fetcher } from 'src/utils/fetcher'
 import { Rebalancing } from 'src/service/Data'
+import colors from './colors'
 
 
 export default function Table(){
@@ -16,7 +17,7 @@ export default function Table(){
                 <thead css={headerDiv}>
                     {arrayHeader.map((key, index) =>{    
                         return (
-                            <th css={label}  key={index}>{key.toUpperCase()}</th>
+                            <th css={tableData}  key={index}>{key.toUpperCase()}</th>
                             )
                         })}
                 </thead>
@@ -58,23 +59,18 @@ export default function Table(){
 
     const headerDiv = css({
         fontFamily: 'EB Garamond',
-        backgroundColor: '#D5EBF5',
+        backgroundColor: colors.columbiaBlue,
         fontWeight: 'bold',
         height: 8
     })
 
     const tableBody = css({
         textAlign: 'center',
-        background: '#F0F0F0'
+        background: colors.cultured
 
     })
     
     const tableData = css({
-        border: '1px solid white',
-        padding: 8
-    })
-
-    const label = css({
         border: '1px solid white',
         padding: 8
     })

@@ -1,5 +1,5 @@
 
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import colors from 'src/components/colors'
 
 export default function NavBar() {

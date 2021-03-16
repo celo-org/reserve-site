@@ -1,16 +1,16 @@
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import useSWR from "swr"
 import Amount from 'src/components/Amount'
 import { BreakPoints } from 'src/components/styles'
-import { HoldingsApi } from "src/service/holdings"
 import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
 import { fetcher } from "src/utils/fetcher"
 import { sumLiquidHoldings } from './sumLiquidHoldings'
 import { sumTotalHoldings } from './sumTotalHoldings'
+import useHoldings from 'src/hooks/useHoldings'
 
 export function Ratios() {
   const stables = useSWR<StableValueTokensAPI>("/api/stable-value-tokens", fetcher)
-  const holdings = useSWR<HoldingsApi>("/api/holdings", fetcher)
+  const holdings = useHoldings()
   const isLoading = !holdings.data || !stables.data
 
   const outstanding = stables.data?.totalStableValueInUSD || 1

@@ -1,5 +1,5 @@
 
-import { css, jsx } from '@emotion/core'
+import { css } from '@emotion/react'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'
 import NavBar from 'src/components/Navbar'

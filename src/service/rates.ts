@@ -51,10 +51,10 @@ export async function celoPrice() {
 }
 
 export default async function rates() {
-  const [btc, eth, euro, celo] = await Promise.all([btcPrice(), ethPrice(), euroPrice(), celoPrice()])
+  const [btc, eth, celo] = await Promise.all([btcPrice(), ethPrice(),  celoPrice()])
 
   return {
-    btc, eth, celo, euro
+    btc, eth, celo
   }
 }
 

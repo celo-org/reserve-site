@@ -1,5 +1,5 @@
 
-import { css, jsx } from '@emotion/core'
+import { css  } from '@emotion/react'
 
 export default function ChangeStory() {
   return (

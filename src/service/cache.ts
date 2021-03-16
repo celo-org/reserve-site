@@ -1,4 +1,5 @@
 import Cache from "node-cache"
+import { MINUTE } from "src/utils/TIME"
 
 const CACHE = new Cache()
 
@@ -10,6 +11,9 @@ export function getOrSave<T extends Cachable>(key: string, fetcher: () => Promis
 
 export function get<T>(key:string) {
   const data = CACHE.get<T>(key)
+  if (!data) {
+    console.info("missed", key)
+  }
   return data
 }
 
@@ -22,9 +26,12 @@ export async function set<T extends Cachable>(key: string, fetcher: () => Promis
   if (IN_TRANSIT[key]) {
     return IN_TRANSIT[key] as Promise<T>
   } else {
+    const unique = `fetch-${key}-${Math.random()}`
     // set the pending promise
+    console.time(unique)
     IN_TRANSIT[key] = fetcher()
     const data = await IN_TRANSIT[key]
+    console.timeEnd(unique)
 
     // dont save bad data
     if (data.hasError || data.hasOwnProperty("value") && data.value === null) {
@@ -48,3 +55,5 @@ export async function refresh<T extends Cachable>(key: string, interval: number,
   }
   return setInterval(setData,interval)
 }
+
+setInterval(() => console.info(CACHE.getStats()), 30 * MINUTE)
