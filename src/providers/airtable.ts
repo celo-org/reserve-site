@@ -13,7 +13,7 @@ export async function getNonCeloAddresses() {
 export async function getHistory() {
   return getOrSave<{value:Rebalancing[]| null}>("rebalance-history", fetchHistory)
 }
-refresh("rebalance-history",  12 * MINUTE, fetchHistory)
+ refresh("rebalance-history", 3 * MINUTE, fetchHistory)
 
 async function fetchNonCeloAddresses() {
   try {
