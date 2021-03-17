@@ -49,8 +49,9 @@ export default function Table(){
 
     const root = css({
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'start',
         alignItems: 'center',
+        
     })
 
     const table = css ({
