@@ -9,7 +9,7 @@ export default function Table(){
     const { data }= useSWR<{value:Rebalancing[]}>("/api/history", fetcher);
 
     
-    let arrayHeader = ["Quarter / Period", "BTC Δ", "CELO Δ", "ETH Δ", "DAI Δ", "Dollar Value"]
+    let arrayHeader = ["Period", "BTC Δ", "CELO Δ", "ETH Δ", "DAI Δ", "$ Value"]
     
     return(
         <div css={root}>
