@@ -44,9 +44,13 @@ const AddressDisplay = React.memo(function AddressDisplay({ label, hex, token }:
 
   return (
     <div css={rootStyle}>
-      <h5 css={labelStyle}><a href={generatelink(token, hex)} target="_blank" rel="noopener">{label}</a></h5>
-      <span onClick={onPress} css={iconStyle}>
-        {hex} <CopyIcon /> <span className="info">{justCopied ? 'Copied' : 'Copy'}</span>
+      <h5 css={labelStyle}>{label}</h5>
+      <span>
+        <a css={addressStyle} href={generatelink(token, hex)} target="_blank" rel="noopener">{hex}</a>
+        <span  css={iconStyle} onClick={onPress}>
+          <CopyIcon />
+          <span className="info">{justCopied ? 'Copied' : 'Copy'}</span>
+        </span>
       </span>
     </div>
   )
@@ -69,6 +73,8 @@ async function onCopy(text: string) {
   await navigator.clipboard.writeText(text)
 }
 
+const clickable = css({ cursor: 'pointer'})
+
 const labelStyle = css({
   marginBottom: 5,
   marginTop: 10,
@@ -77,15 +83,21 @@ const labelStyle = css({
   }
 })
 
-const iconStyle = css({
+const addressStyle = css({
   wordWrap: 'break-word',
-  cursor: 'pointer',
+  textDecoration: "none"
+})
+
+const iconStyle = css(clickable,{
+  marginLeft: "0.5em",
+  padding: 1,
   '&:active': {
     svg: {
       transform: 'scale(1.1)',
     },
   },
   '.info': {
+    marginLeft: 3,
     opacity: 0,
     transitionProperty: 'opacity',
     transitionDuration: '400ms',
