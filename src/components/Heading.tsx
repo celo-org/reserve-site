@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+import { css } from '@emotion/react'
+import bottomBorder from 'src/styles/bottomBorder'
 
 interface HeadingProps {
   title: string
@@ -9,22 +9,22 @@ interface HeadingProps {
 }
 export default function Heading({ title, gridArea, iconSrc, marginTop }: HeadingProps) {
   return (
-    <div css={css(headingStyle, { gridArea, marginTop })}>
-      <h4 css={headingTextStyle}>
-        {iconSrc && <img src={iconSrc} css={iconStyle} alt={`${title} token icon`} />}
+    <div css={css(bottomBorder, { gridArea, marginTop })}>
+      <h2 css={headingTextStyle}>
+        {iconSrc && <img src={iconSrc} width={30} height={30} css={iconStyle} alt={`${title} token icon`} />}
         {title}
-      </h4>
+      </h2>
     </div>
   )
 }
+
 const headingTextStyle = css({
   display: 'inline-flex',
   alignItems: 'center',
   marginBottom: 16,
+  fontWeight: "normal",
+  fontSize: 28,
+  lineHeight: "36px"
 })
-const headingStyle = css({
-  borderBottom: 1,
-  borderBottomColor: 'rgba(46, 51, 56, 0.3)',
-  borderBottomStyle: 'solid',
-})
-const iconStyle = css({ height: 29, width: 29, marginRight: 8 })
+
+const iconStyle = css({ height: 30, width: 30, marginRight: 8 })

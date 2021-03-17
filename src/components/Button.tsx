@@ -1,6 +1,6 @@
-/** @jsx jsx */
 
-import { css, jsx } from '@emotion/core'
+
+import { css } from '@emotion/react'
 import Chevron from './Chevron'
 import colors from './colors'
 
