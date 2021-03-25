@@ -18,5 +18,6 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "babel-jest",
   },
+  setupFiles: ['./jestSetup.js'],
   setupFilesAfterEnv: ["./jestAfterSetup.ts"],
 }

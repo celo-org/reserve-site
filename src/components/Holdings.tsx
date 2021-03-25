@@ -1,4 +1,3 @@
-
 import { css } from '@emotion/react'
 import Amount, { DollarDisplay } from 'src/components/Amount'
 import Heading from 'src/components/Heading'
@@ -16,19 +15,15 @@ export function sumCeloTotal(holdings: HoldingsApi) {
   const { custody, frozen, unfrozen } = holdings.celo
   return custody.value + unfrozen.value + frozen.value
 }
-
 export function sumNonCelo({otherAssets}: HoldingsApi) {
   return otherAssets.reduce((prev, current) => (current.value + prev), 0)
 }
-
 function  getPercents(holdings: HoldingsApi): ChartData[] {
   const celoTotal =  sumCeloTotal(holdings)
   const total = celoTotal + sumNonCelo(holdings)
-
   function toPercent(value: number) {
     return (value / total) * 100
   }
-
   return [{token: "CELO", percent: toPercent(celoTotal) }].concat(holdings.otherAssets.map((asset) => {
     return {
       token: asset.token,
@@ -36,19 +31,16 @@ function  getPercents(holdings: HoldingsApi): ChartData[] {
     }
   }))
 }
-
 function findOldestValueUpdatedAt(data?: HoldingsApi): number {
   if (!data) {
     return 0
   }
-
   return Math.min(...data.otherAssets.map((token) => token.updated).concat([
     data.celo.custody.updated,
     data.celo.frozen.updated,
     data.celo.unfrozen.updated
   ]))
 }
-
 export default function Holdings() {
   const {data} =  useHoldings()
   const percentages = getPercents(data)
@@ -83,7 +75,6 @@ export default function Holdings() {
     </Section>
   )
 }
-
 const rootStyle = css({
   display: 'grid',
   gridColumnGap: 20,
@@ -105,4 +96,3 @@ const rootStyle = css({
                         "dai"`,
   },
 })
-

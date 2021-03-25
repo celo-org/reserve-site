@@ -3,6 +3,7 @@ import { FrontMatterResult } from 'front-matter'
 import Footer from 'src/components/Footer'
 import Head from 'src/components/Head'
 import Holdings from 'src/components/Holdings'
+import Table from 'src/components/Table'
 import { StableTokens } from "src/components/StableTokens"
 import { Ratios } from "src/components/Ratios"
 import NavBar from 'src/components/Navbar'
@@ -21,6 +22,7 @@ interface Props {
   INITIAL_TARGET: FrontMatterResult<ContentShape>
   ABOUT: FrontMatterResult<ContentShape>
   ATTESTATIONS: FrontMatterResult<ContentShape>
+  RESERVE_TABLE: FrontMatterResult<ContentShape>
   year: string
   addresses: Address[]
 }
@@ -50,8 +52,10 @@ export default function Home(props: Props) {
             >
               <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true}/>
             </Section>
-
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
+            <Section title={props.RESERVE_TABLE.attributes.title} content={props.RESERVE_TABLE.body}>
+              <Table />
+              </Section>
             <Section
               title={props.ATTESTATIONS.attributes.title}
               content={props.ATTESTATIONS.body}
@@ -63,6 +67,7 @@ export default function Home(props: Props) {
     </>
   )
 }
+
 
 const rootStyle = css({
   display: 'flex',
@@ -78,6 +83,8 @@ const mainStyle = css({
   maxWidth: 960,
 })
 
+
+
 const containerStyle = css(flexCol, { flex: 1, width: '100%', alignItems: 'center' })
 
 export async function getStaticProps() {
@@ -86,6 +93,7 @@ export async function getStaticProps() {
       about,
       attestations,
       initialTarget,
+      reserveTable,
       intro,
       matter,
       fetchAddresses,
@@ -93,6 +101,7 @@ export async function getStaticProps() {
       import('src/content/home/about.md').then((mod) => mod.default),
       import('src/content/home/attestations.md').then((mod) => mod.default),
       import('src/content/home/initial-target.md').then((mod) => mod.default),
+      import('src/content/home/reserve-table.md').then((mod) => mod.default),
       import('src/content/home/intro.md').then((mod) => mod.default),
       import('front-matter').then((mod) => mod.default),
       import('src/service/addresses').then((mod) => mod.default)
@@ -103,6 +112,7 @@ export async function getStaticProps() {
     const INITIAL_TARGET = matter<ContentShape>(initialTarget)
     const ABOUT = matter<ContentShape>(about)
     const ATTESTATIONS = matter<ContentShape>(attestations)
+    const RESERVE_TABLE = matter<ContentShape>(reserveTable)
     return {
       props: {
         addresses: addresses,
@@ -110,6 +120,7 @@ export async function getStaticProps() {
         INITIAL_TARGET,
         ABOUT,
         ATTESTATIONS,
+        RESERVE_TABLE,
         year: new Date().getFullYear(),
       },
     }

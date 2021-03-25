@@ -14,3 +14,12 @@ export interface TokenModel {
   updated: number
   hasError: boolean
 }
+
+export interface Rebalancing {
+  "Period" : string
+  "CELO Delta": number
+  "BTC Delta": number
+  "ETH Delta": number
+  "DAI Delta": number
+  "Dollar Value Start": number
+}
