@@ -21,6 +21,7 @@ interface Props {
   INITIAL_TARGET: FrontMatterResult<ContentShape>
   ABOUT: FrontMatterResult<ContentShape>
   ATTESTATIONS: FrontMatterResult<ContentShape>
+  RFP: FrontMatterResult<ContentShape>
   year: string
   addresses: Address[]
 }
@@ -52,6 +53,11 @@ export default function Home(props: Props) {
             </Section>
 
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
+
+            <Section
+              title={props.RFP.attributes.title}
+              content={props.RFP.body}
+            />
             <Section
               title={props.ATTESTATIONS.attributes.title}
               content={props.ATTESTATIONS.body}
@@ -85,6 +91,7 @@ export async function getStaticProps() {
     const [
       about,
       attestations,
+      rfp,
       initialTarget,
       intro,
       matter,
@@ -92,6 +99,7 @@ export async function getStaticProps() {
     ] = await Promise.all([
       import('src/content/home/about.md').then((mod) => mod.default),
       import('src/content/home/attestations.md').then((mod) => mod.default),
+      import('src/content/home/rfp.md').then((mod) => mod.default),
       import('src/content/home/initial-target.md').then((mod) => mod.default),
       import('src/content/home/intro.md').then((mod) => mod.default),
       import('front-matter').then((mod) => mod.default),
@@ -103,6 +111,7 @@ export async function getStaticProps() {
     const INITIAL_TARGET = matter<ContentShape>(initialTarget)
     const ABOUT = matter<ContentShape>(about)
     const ATTESTATIONS = matter<ContentShape>(attestations)
+    const RFP = matter<ContentShape>(rfp)
     return {
       props: {
         addresses: addresses,
@@ -110,6 +119,7 @@ export async function getStaticProps() {
         INITIAL_TARGET,
         ABOUT,
         ATTESTATIONS,
+        RFP,
         year: new Date().getFullYear(),
       },
     }
