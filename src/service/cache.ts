@@ -1,7 +1,9 @@
 import Cache from "node-cache"
 import { MINUTE } from "src/utils/TIME"
 
-const CACHE = new Cache()
+const DAY = 60 * 60 * 24
+
+const CACHE = new Cache({stdTTL: DAY})
 
 interface Cachable  {value: number | null | Array<any>, hasError?: boolean}
 
@@ -51,7 +53,11 @@ export async function set<T extends Cachable>(key: string, fetcher: () => Promis
 
 export async function refresh<T extends Cachable>(key: string, interval: number, fetcher: () => Promise<T>) {
   const setData = async () => {
-    set<T>(key, fetcher)
+    try {
+      set<T>(key, fetcher)
+    } catch (e) {
+      console.error('refresh failed',key, e)
+    }
   }
   return setInterval(setData,interval)
 }
