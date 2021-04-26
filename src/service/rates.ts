@@ -34,10 +34,10 @@ async function fetchEuroPrice() {
   return rate
 }
 
-refresh("euro-price", 4 * HOUR, fetchEuroPrice)
+refresh("euro-price", 8 * HOUR, fetchEuroPrice)
 
 export async function euroPrice() {
-  return getOrSave<Duel>("euro-price",fetchEuroPrice, 2 * HOUR)
+  return getOrSave<Duel>("euro-price",fetchEuroPrice, 6 * HOUR)
 }
 
 async function fetchCELOPrice() {
