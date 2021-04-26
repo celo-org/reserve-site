@@ -1,12 +1,13 @@
 import AirtableAPI from 'airtable'
 import { getOrSave } from 'src/service/cache'
 import { Address } from 'src/service/Data'
+import { MINUTE } from 'src/utils/TIME'
 
 const IS_LIVE = 'Status="active"'
 const AIRTABLE_TABLE_ID = 'appFFSLHqjejvZgYM'
 
 export async function getNonCeloAddresses() {
-  return getOrSave<{value:Address[]| null}>("offchain-addresses", fetchNonCeloAddresses)
+  return getOrSave<{value:Address[]| null}>("offchain-addresses", fetchNonCeloAddresses, 5 * MINUTE)
 }
 
 async function fetchNonCeloAddresses() {

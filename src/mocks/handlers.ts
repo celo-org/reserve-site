@@ -77,8 +77,8 @@ export const handlers = [
       )
     )
   }),
-  rest.get("https://api.exchangeratesapi.io/latest", (req, res, ctx) => {
-  return res(
+  rest.get("http://api.exchangeratesapi.io/v1/latest", (req, res, ctx) => {
+    return res(
     ctx.json({
       "base": "EUR",
       "date": "2021-02-25",

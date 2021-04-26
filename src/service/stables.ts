@@ -3,19 +3,19 @@ import { getcEURSupply, getcUSDSupply } from "src/providers/Celo"
 import { euroPrice } from "src/service/rates"
 import {TokenModel} from "src/service/Data"
 import {refresh, getOrSave} from "src/service/cache"
-import { SECOND } from "src/utils/TIME"
+import { MINUTE, SECOND } from "src/utils/TIME"
 
 async function cUSDSupply() {
-  return getOrSave("cUSD-supply", getcUSDSupply)
+  return getOrSave("cUSD-supply", getcUSDSupply, 2.5 * SECOND)
 }
 
-refresh('cUSD-supply', 20 * SECOND, getcUSDSupply)
+refresh('cUSD-supply', 5 * MINUTE, getcUSDSupply)
 
 async function cEURSupply() {
-  return getOrSave("cEURO-supply", getcEURSupply)
+  return getOrSave("cEURO-supply", getcEURSupply, 2.5 * SECOND)
 }
 
-refresh('cEURO-supply', 20 * SECOND, getcEURSupply)
+refresh('cEURO-supply', 5 * MINUTE, getcEURSupply)
 
 export default async function stables(): Promise<TokenModel[]> {
   const [cUSD, cEUR, cEURValueInUSD] = await Promise.all([cUSDSupply(), cEURSupply(), totalCeloEuroValueInUSD()])
