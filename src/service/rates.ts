@@ -16,7 +16,7 @@ async function fetchBTCPrice() {
 refresh("btc-price", 5 * MINUTE, fetchBTCPrice)
 
 export async function btcPrice() {
-  return getOrSave<Duel>("btc-price", fetchBTCPrice)
+  return getOrSave<Duel>("btc-price", fetchBTCPrice, 2 * MINUTE)
 }
 
 async function fetchETHPrice() {
@@ -26,7 +26,7 @@ async function fetchETHPrice() {
 refresh("eth-price", 5 * MINUTE, fetchETHPrice)
 
 export async function ethPrice() {
-  return getOrSave<Duel>("eth-price",fetchETHPrice)
+  return getOrSave<Duel>("eth-price",fetchETHPrice, 2 * MINUTE)
 }
 
 async function fetchEuroPrice() {
@@ -37,7 +37,7 @@ async function fetchEuroPrice() {
 refresh("euro-price", 4 * HOUR, fetchEuroPrice)
 
 export async function euroPrice() {
-  return getOrSave<Duel>("euro-price",fetchEuroPrice)
+  return getOrSave<Duel>("euro-price",fetchEuroPrice, 2 * HOUR)
 }
 
 async function fetchCELOPrice() {
@@ -47,7 +47,7 @@ async function fetchCELOPrice() {
 refresh("celo-price", 5 * MINUTE, fetchCELOPrice)
 
 export async function celoPrice() {
-  return getOrSave<Duel>("celo-price",fetchCELOPrice)
+  return getOrSave<Duel>("celo-price",fetchCELOPrice, 1 * MINUTE)
 }
 
 export default async function rates() {

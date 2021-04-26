@@ -37,7 +37,7 @@ async function getSumBalance(token:Tokens, balanceFetcher: (address: string) => 
 refresh("btc-balance", 30 * MINUTE, fetchBTCBalance)
 
 export async function btcBalance() {
-  return getOrSave<Duel>("btc-balance", fetchBTCBalance)
+  return getOrSave<Duel>("btc-balance", fetchBTCBalance, 10 * MINUTE)
 }
 
 async function fetchETHBalance() {
@@ -48,7 +48,7 @@ async function fetchETHBalance() {
 refresh("eth-balance", 30 * MINUTE, fetchETHBalance)
 
 export async function ethBalance() {
-  return getOrSave<Duel>("eth-balance", fetchETHBalance)
+  return getOrSave<Duel>("eth-balance", fetchETHBalance, 10 * MINUTE)
 }
 
 function fetchDaiBalance() {
@@ -59,26 +59,26 @@ function fetchDaiBalance() {
 refresh("dai-balance", 30 * MINUTE, fetchDaiBalance)
 
 export async function daiBalance() {
-  return getOrSave<Duel>("dai-balance", fetchDaiBalance)
+  return getOrSave<Duel>("dai-balance", fetchDaiBalance, 10 * MINUTE)
 }
 
 
 export async function celoCustodiedBalance() {
-  return getOrSave<ProviderSource>("celo-custody-balance", getInCustodyBalance)
+  return getOrSave<ProviderSource>("celo-custody-balance", getInCustodyBalance, 5 * MINUTE)
 }
 
 refresh("celo-custody-balance", 30 * MINUTE, getInCustodyBalance)
 
 
 export async function celoFrozenBalance() {
-  return getOrSave<ProviderSource>("celo-frozen-balance", getFrozenBalance)
+  return getOrSave<ProviderSource>("celo-frozen-balance", getFrozenBalance, 5 * MINUTE)
 }
 
 refresh("celo-frozen-balance", 30 * MINUTE, getFrozenBalance)
 
 
 export async function celoUnfrozenBalance() {
-  return getOrSave<ProviderSource>("celo-unfrozen-balance", getUnFrozenBalance)
+  return getOrSave<ProviderSource>("celo-unfrozen-balance", getUnFrozenBalance, 2 * MINUTE)
 }
 
 refresh("celo-unfrozen-balance", 5 * MINUTE, getUnFrozenBalance)

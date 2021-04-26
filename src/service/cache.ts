@@ -5,18 +5,29 @@ const DAY = 60 * 60 * 24
 
 const CACHE = new Cache({stdTTL: DAY})
 
-interface Cachable  {value: number | null | Array<any>, hasError?: boolean}
+interface Cachable  {value: number | null | Array<any>, hasError?: boolean, updatedAt?: number}
 
-export function getOrSave<T extends Cachable>(key: string, fetcher: () => Promise<T>) {
-  return get<T>(key) || set<T>(key,fetcher)
+export function getOrSave<T extends Cachable>(key: string, fetcher: () => Promise<T>, maxStale: number) {
+  return get<T>(key, fetcher, maxStale) || set<T>(key,fetcher)
 }
 
-export function get<T>(key:string) {
+function get<T extends Cachable>(key:string, fetcher: () => Promise<T>, maxStale: number) {
   const data = CACHE.get<T>(key)
   if (!data) {
     console.info("missed", key)
+  } else if (shouldRevalidate(data, maxStale))  {
+    console.info("revalidating", key)
+    setTimeout(() => set(key, fetcher), 1)
   }
   return data
+}
+
+function shouldRevalidate(data: Cachable, maxStale: number): boolean {
+  if (!data.updatedAt) {
+    return true
+  }
+  const currentTime = Date.now()
+  return currentTime - data.updatedAt > maxStale
 }
 
 const IN_TRANSIT: Record<string, Promise<Cachable>> = {}
@@ -39,8 +50,10 @@ export async function set<T extends Cachable>(key: string, fetcher: () => Promis
     if (data.hasError || data.hasOwnProperty("value") && data.value === null) {
       return data as T
     }
+    const updatedAt = Date.now()
+    const dataWithTimeStamp = {updatedAt, ...data}
 
-    CACHE.set(key,data)
+    CACHE.set(key,dataWithTimeStamp)
 
     // wait a moment to delete
     setTimeout((() => {
