@@ -18,6 +18,6 @@ export default interface ProviderSource {
 }
 
 export function errorResult(error: any, source: Providers) {
-  console.error(source, error)
+  console.info("ERROR", source, error)
   return { hasError: true, source, value: 0, time: 0 }
 }
