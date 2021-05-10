@@ -6,13 +6,13 @@ import {refresh, getOrSave} from "src/service/cache"
 import { MINUTE, SECOND } from "src/utils/TIME"
 
 async function cUSDSupply() {
-  return getOrSave("cUSD-supply", getcUSDSupply, 2.5 * SECOND)
+  return getOrSave("cUSD-supply", getcUSDSupply, 5 * SECOND)
 }
 
 refresh('cUSD-supply', 5 * MINUTE, getcUSDSupply)
 
 async function cEURSupply() {
-  return getOrSave("cEURO-supply", getcEURSupply, 2.5 * SECOND)
+  return getOrSave("cEURO-supply", getcEURSupply, 5 * SECOND)
 }
 
 refresh('cEURO-supply', 5 * MINUTE, getcEURSupply)

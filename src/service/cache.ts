@@ -39,28 +39,35 @@ export async function set<T extends Cachable>(key: string, fetcher: () => Promis
   if (IN_TRANSIT[key]) {
     return IN_TRANSIT[key] as Promise<T>
   } else {
-    const unique = `fetch-${key}-${Math.random()}`
-    // set the pending promise
-    console.time(unique)
-    IN_TRANSIT[key] = fetcher()
-    const data = await IN_TRANSIT[key]
-    console.timeEnd(unique)
+    try {
+      const unique = `fetch-${key}-${Math.random()}`
+      // set the pending promise
+      console.time(unique)
+      IN_TRANSIT[key] = fetcher()
+      const data = await IN_TRANSIT[key]
+      console.timeEnd(unique)
 
-    // dont save bad data
-    if (data.hasError || data.hasOwnProperty("value") && data.value === null) {
+      // dont save bad data
+      if (data.hasError || data.hasOwnProperty("value") && data.value === null) {
+        // be sure to clear the promise
+        IN_TRANSIT[key] = null
+        return data as T
+      }
+      const updatedAt = Date.now()
+      const dataWithTimeStamp = {updatedAt, ...data}
+
+      CACHE.set(key,dataWithTimeStamp)
+
+      // wait a moment to delete
+      setTimeout((() => {
+        IN_TRANSIT[key] = null
+      }),100)
+
       return data as T
-    }
-    const updatedAt = Date.now()
-    const dataWithTimeStamp = {updatedAt, ...data}
-
-    CACHE.set(key,dataWithTimeStamp)
-
-    // wait a moment to delete
-    setTimeout((() => {
+    } catch (error) {
       IN_TRANSIT[key] = null
-    }),100)
-
-    return data as T
+      console.info("ERROR:clearing", key, error)
+    }
   }
 }
 
