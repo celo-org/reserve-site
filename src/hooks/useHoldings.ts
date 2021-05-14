@@ -8,7 +8,7 @@ const initalToken = {
   units: NaN,
   hasError: false,
   token: "CELO" as Tokens,
-  updated: 0
+    updated: 0
 }
 
 const initalOtherToken = {
