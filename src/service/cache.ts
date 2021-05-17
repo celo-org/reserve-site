@@ -3,19 +3,27 @@ import { MINUTE } from "src/utils/TIME"
 
 const DAY = 60 * 60 * 24
 
-const CACHE = new Cache({stdTTL: DAY})
+const CACHE = new Cache({ stdTTL: DAY })
 
-interface Cachable  {value: number | null | Array<any>, hasError?: boolean, updatedAt?: number}
-
-export function getOrSave<T extends Cachable>(key: string, fetcher: () => Promise<T>, maxStale: number) {
-  return get<T>(key, fetcher, maxStale) || set<T>(key,fetcher)
+interface Cachable {
+  value: number | null | Array<any>
+  hasError?: boolean
+  updatedAt?: number
 }
 
-function get<T extends Cachable>(key:string, fetcher: () => Promise<T>, maxStale: number) {
+export function getOrSave<T extends Cachable>(
+  key: string,
+  fetcher: () => Promise<T>,
+  maxStale: number
+) {
+  return get<T>(key, fetcher, maxStale) || set<T>(key, fetcher)
+}
+
+function get<T extends Cachable>(key: string, fetcher: () => Promise<T>, maxStale: number) {
   const data = CACHE.get<T>(key)
   if (!data) {
     console.info("missed", key)
-  } else if (shouldRevalidate(data, maxStale))  {
+  } else if (shouldRevalidate(data, maxStale)) {
     console.info("revalidating", key)
     setTimeout(() => set(key, fetcher), 1)
   }
@@ -48,20 +56,20 @@ export async function set<T extends Cachable>(key: string, fetcher: () => Promis
       console.timeEnd(unique)
 
       // dont save bad data
-      if (data.hasError || data.hasOwnProperty("value") && data.value === null) {
+      if (data.hasError || (data.hasOwnProperty("value") && data.value === null)) {
         // be sure to clear the promise
         IN_TRANSIT[key] = null
         return data as T
       }
       const updatedAt = Date.now()
-      const dataWithTimeStamp = {updatedAt, ...data}
+      const dataWithTimeStamp = { updatedAt, ...data }
 
-      CACHE.set(key,dataWithTimeStamp)
+      CACHE.set(key, dataWithTimeStamp)
 
       // wait a moment to delete
-      setTimeout((() => {
+      setTimeout(() => {
         IN_TRANSIT[key] = null
-      }),100)
+      }, 100)
 
       return data as T
     } catch (error) {
@@ -71,15 +79,19 @@ export async function set<T extends Cachable>(key: string, fetcher: () => Promis
   }
 }
 
-export async function refresh<T extends Cachable>(key: string, interval: number, fetcher: () => Promise<T>) {
+export async function refresh<T extends Cachable>(
+  key: string,
+  interval: number,
+  fetcher: () => Promise<T>
+) {
   const setData = async () => {
     try {
       set<T>(key, fetcher)
     } catch (e) {
-      console.error('refresh failed',key, e)
+      console.error("refresh failed", key, e)
     }
   }
-  return setInterval(setData,interval)
+  return setInterval(setData, interval)
 }
 
 setInterval(() => console.info(CACHE.getStats()), 30 * MINUTE)

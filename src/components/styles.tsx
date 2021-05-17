@@ -1,8 +1,8 @@
-import { css } from '@emotion/react'
+import { css } from "@emotion/react"
 
 export const flexCol = css({
-  display: 'flex',
-  flexDirection: 'column',
+  display: "flex",
+  flexDirection: "column",
 })
 
 export const fineStyle = css({
@@ -11,23 +11,23 @@ export const fineStyle = css({
 })
 
 export enum BreakPoints {
-  smallPhone = '@media (max-width: 320px)',
-  mediumPhone = '@media (max-width: 420px)',
-  phablet = '@media (max-width: 500px)',
-  smallTablet = '@media (max-width: 590px)',
-  tablet = '@media (max-width: 890px)',
+  smallPhone = "@media (max-width: 320px)",
+  mediumPhone = "@media (max-width: 420px)",
+  phablet = "@media (max-width: 500px)",
+  smallTablet = "@media (max-width: 590px)",
+  tablet = "@media (max-width: 890px)",
 }
 
 export const rootStyle = css({
-  display: 'flex',
-  flexDirection: 'column',
-  minHeight: '100vh',
+  display: "flex",
+  flexDirection: "column",
+  minHeight: "100vh",
   flex: 1,
-  alignItems: 'center',
-  justifyContent: ' space-between',
+  alignItems: "center",
+  justifyContent: " space-between",
 })
 
 export const mainStyle = css({
-  width: '100%',
+  width: "100%",
   maxWidth: 960,
 })

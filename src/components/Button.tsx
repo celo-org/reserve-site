@@ -1,8 +1,6 @@
-
-
-import { css } from '@emotion/react'
-import Chevron from './Chevron'
-import colors from './colors'
+import { css } from "@emotion/react"
+import Chevron from "./Chevron"
+import colors from "./colors"
 
 export default function Button({ children, href }) {
   return (
@@ -18,26 +16,26 @@ export default function Button({ children, href }) {
 const rootStyle = css({
   fontSize: 20,
   color: colors.dark,
-  textDecoration: 'none',
-  display: 'block',
-  fontWeight: 'bold',
+  textDecoration: "none",
+  display: "block",
+  fontWeight: "bold",
   marginTop: 8,
   marginBottom: 12,
   span: {
-    display: 'inline-block',
+    display: "inline-block",
     paddingLeft: 4,
-    transitionProperty: 'transform, opacity',
-    transitionDuration: '300ms',
+    transitionProperty: "transform, opacity",
+    transitionDuration: "300ms",
   },
-  '&:hover': {
+  "&:hover": {
     span: {
-      transform: 'translateX(15%)',
+      transform: "translateX(15%)",
       opacity: 0.85,
     },
   },
-  '&:active': {
+  "&:active": {
     span: {
-      transform: 'translateX(50%)',
+      transform: "translateX(50%)",
       opacity: 0.65,
     },
   },

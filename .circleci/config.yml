@@ -24,6 +24,9 @@ workflows:
       - test:
           requires:
             - install
+      - lint:
+          requires:
+            - install
 
 jobs:
 
@@ -62,3 +65,9 @@ jobs:
       - *CHECKOUT-WORKSPACE
       - run: yarn build:next
 
+  lint:
+    <<: *NODE
+    steps:
+      - checkout
+      - *CHECKOUT-WORKSPACE
+      - run: yarn lint

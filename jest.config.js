@@ -9,8 +9,7 @@ module.exports = {
     },
   },
   moduleNameMapper: {
-    "\\.(png|jpg|jpeg|gif|svg)(\\?[a-z]+)?$":
-      "<rootDir>/src/__mocks__/ImageStub.ts",
+    "\\.(png|jpg|jpeg|gif|svg)(\\?[a-z]+)?$": "<rootDir>/src/__mocks__/ImageStub.ts",
     "\\.(css|scss)$": "<rootDir>/src/__mocks__/ImageStub.ts",
     "^src/(.*)$": "<rootDir>/src/$1",
     "^public/(.*)$": "<rootDir>/public/$1",

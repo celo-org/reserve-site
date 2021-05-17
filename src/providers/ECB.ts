@@ -1,10 +1,10 @@
-import xml2js  from 'xml2js'
-import ProviderSource, { errorResult, Providers } from './ProviderSource'
+import xml2js from "xml2js"
+import ProviderSource, { errorResult, Providers } from "./ProviderSource"
 
-const xmlParser = new xml2js.Parser();
+const xmlParser = new xml2js.Parser()
 
 interface RateCube {
-  "$": {
+  $: {
     currency: string
     rate: "string"
   }
@@ -18,7 +18,12 @@ export async function euroToUSD(): Promise<ProviderSource> {
     const cube = data["gesmes:Envelope"].Cube[0].Cube[0]
     const date = cube["$"].time
     const rate = cube.Cube.find((c: RateCube) => c["$"].currency === "USD")["$"].rate
-    return {hasError: false, value: Number(rate), source: Providers.ecb, time: new Date(date).valueOf()}
+    return {
+      hasError: false,
+      value: Number(rate),
+      source: Providers.ecb,
+      time: new Date(date).valueOf(),
+    }
   } catch (error) {
     return errorResult(error, Providers.ecb)
   }

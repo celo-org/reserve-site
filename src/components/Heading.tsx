@@ -1,5 +1,5 @@
-import { css } from '@emotion/react'
-import bottomBorder from 'src/styles/bottomBorder'
+import { css } from "@emotion/react"
+import bottomBorder from "src/styles/bottomBorder"
 
 interface HeadingProps {
   title: string
@@ -11,7 +11,9 @@ export default function Heading({ title, gridArea, iconSrc, marginTop }: Heading
   return (
     <div css={css(bottomBorder, { gridArea, marginTop })}>
       <h2 css={headingTextStyle}>
-        {iconSrc && <img src={iconSrc} width={30} height={30} css={iconStyle} alt={`${title} token icon`} />}
+        {iconSrc && (
+          <img src={iconSrc} width={30} height={30} css={iconStyle} alt={`${title} token icon`} />
+        )}
         {title}
       </h2>
     </div>
@@ -19,12 +21,12 @@ export default function Heading({ title, gridArea, iconSrc, marginTop }: Heading
 }
 
 const headingTextStyle = css({
-  display: 'inline-flex',
-  alignItems: 'center',
+  display: "inline-flex",
+  alignItems: "center",
   marginBottom: 16,
   fontWeight: "normal",
   fontSize: 28,
-  lineHeight: "36px"
+  lineHeight: "36px",
 })
 
 const iconStyle = css({ height: 30, width: 30, marginRight: 8 })

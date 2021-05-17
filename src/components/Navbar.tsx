@@ -1,12 +1,11 @@
-
-import { css } from '@emotion/react'
-import colors from 'src/components/colors'
+import { css } from "@emotion/react"
+import colors from "src/components/colors"
 
 export default function NavBar() {
   return (
     <nav css={navStyle}>
       <a css={linkStyle} href="/">
-        <img  src={"/assets/cr-wordmark.svg"}   alt="Home" width={110} height={19}/>
+        <img src={"/assets/cr-wordmark.svg"} alt="Home" width={110} height={19} />
       </a>
       <div css={navLinksStyle}></div>
     </nav>
@@ -14,25 +13,25 @@ export default function NavBar() {
 }
 
 const navLinksStyle = css({
-  alignItems: 'center',
-  alignContent: 'center',
-  display: 'flex',
-  label: 'links',
+  alignItems: "center",
+  alignContent: "center",
+  display: "flex",
+  label: "links",
 })
 
 const navStyle = css({
-  boxSizing: 'border-box',
+  boxSizing: "border-box",
   maxWidth: 1280,
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'cemter',
-  alignSelf: 'center',
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "cemter",
+  alignSelf: "center",
   paddingLeft: 20,
   paddingRight: 20,
   paddingTop: 10,
   paddingBottom: 10,
-  '@media (max-width: 500px)': {
+  "@media (max-width: 500px)": {
     paddingLeft: 0,
   },
 })
@@ -43,23 +42,23 @@ const linkStyle = {
   padding: 10,
   paddingLeft: 5,
   fontSize: 24,
-  letterSpacing: '-0.02em',
+  letterSpacing: "-0.02em",
   fontWeight: 500,
   color: colors.dark,
-  cursor: 'pointer',
-  textDecoration: 'none',
+  cursor: "pointer",
+  textDecoration: "none",
   span: {
-    transitionProperty: 'transform',
-    transitionDuration: '300ms',
-    display: 'inline-block',
-    width: '100%',
+    transitionProperty: "transform",
+    transitionDuration: "300ms",
+    display: "inline-block",
+    width: "100%",
     height: 1,
     backgroundColor: colors.dark,
-    transform: 'scale(0)',
+    transform: "scale(0)",
   },
-  '&:hover': {
+  "&:hover": {
     span: {
-      transform: 'scale(1)',
+      transform: "scale(1)",
     },
   },
 }

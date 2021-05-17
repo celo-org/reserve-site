@@ -1,11 +1,11 @@
-import { css } from '@emotion/react'
-import { GetStaticPaths } from 'next'
-import Footer from 'src/components/Footer'
-import Head from 'src/components/Head'
-import NavBar from 'src/components/Navbar'
-import Section from 'src/components/Section'
-import { flexCol, mainStyle, rootStyle } from 'src/components/styles'
-import { Updated } from 'src/components/Updated'
+import { css } from "@emotion/react"
+import { GetStaticPaths } from "next"
+import Footer from "src/components/Footer"
+import Head from "src/components/Head"
+import NavBar from "src/components/Navbar"
+import Section from "src/components/Section"
+import { flexCol, mainStyle, rootStyle } from "src/components/styles"
+import { Updated } from "src/components/Updated"
 
 interface Props {
   body: string
@@ -35,11 +35,11 @@ export default function Page(props: Props) {
   )
 }
 
-const containerStyle = css(flexCol, { flex: 1, width: '100%', alignItems: 'center' })
+const containerStyle = css(flexCol, { flex: 1, width: "100%", alignItems: "center" })
 
 export async function getStaticProps({ params }) {
   const doc = await import(`src/content/legal/${params.doc}.md`).then((mod) => mod.default)
-  const matter = await import('front-matter').then((mod) => mod.default)
+  const matter = await import("front-matter").then((mod) => mod.default)
   const document = matter<{ title: string; updated: string }>(doc)
   return {
     props: {
@@ -53,7 +53,7 @@ export async function getStaticProps({ params }) {
 
 export const getStaticPaths: GetStaticPaths = async function getStaticPaths() {
   return {
-    paths: [{ params: { doc: 'privacy' } }, { params: { doc: 'terms' } }],
+    paths: [{ params: { doc: "privacy" } }, { params: { doc: "terms" } }],
     fallback: false,
   }
 }

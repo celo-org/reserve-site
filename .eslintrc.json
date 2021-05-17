@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@emotion", "prettier", "@typescript-eslint"],
+  "env": {
+    "browser": true,
+    "amd": true,
+    "node": true
+  },
+  "rules": {
+    "@emotion/jsx-import": "off",
+    "prettier/prettier": "warn",
+    "no-useless-escape": "off",
+    "no-prototype-builtins": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"]
+}

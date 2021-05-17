@@ -4,13 +4,13 @@ module.exports = {
     modern: true,
     scss: false,
   },
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+  webpack: (config) => {
     // Important: return the modified config
     config.module.rules.push({
       test: /\.md$/,
       use: [
         {
-          loader: 'raw-loader',
+          loader: "raw-loader",
           options: {
             esModule: false,
           },
@@ -22,7 +22,7 @@ module.exports = {
   async headers() {
     return [
       {
-        source: '/',
+        source: "/",
         headers: [
           {
             key: "Cache-Control",
@@ -31,7 +31,7 @@ module.exports = {
         ],
       },
       {
-        source: '/:other',
+        source: "/:other",
         headers: [
           {
             key: "Cache-Control",
@@ -40,7 +40,7 @@ module.exports = {
         ],
       },
       {
-        source: '/api/holdings/:kind',
+        source: "/api/holdings/:kind",
         headers: [
           {
             key: "Cache-Control",
@@ -49,7 +49,7 @@ module.exports = {
         ],
       },
       {
-        source: '/api/:any',
+        source: "/api/:any",
         headers: [
           {
             key: "Cache-Control",
@@ -58,5 +58,5 @@ module.exports = {
         ],
       },
     ]
-  }
+  },
 }

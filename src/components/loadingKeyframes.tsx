@@ -1,4 +1,4 @@
-import { css, keyframes } from '@emotion/react'
+import { css, keyframes } from "@emotion/react"
 
 const loadingKeyframes = keyframes`
     from {
@@ -10,10 +10,10 @@ const loadingKeyframes = keyframes`
 export const loadingStyle = css({
   opacity: 0,
   animationDirection: "alternate-reverse",
-  animationDuration: '1.4s',
+  animationDuration: "1.4s",
   animationDelay: "20ms",
   animationFillMode: "none",
-  animationIterationCount: 'infinite',
+  animationIterationCount: "infinite",
   animationTimingFunction: "ease-in-out",
-  animationName: loadingKeyframes
+  animationName: loadingKeyframes,
 })

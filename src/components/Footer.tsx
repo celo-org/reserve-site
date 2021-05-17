@@ -1,7 +1,6 @@
-
-import { css } from '@emotion/react'
-import ChangeStory from './ChangeStory'
-import { fineStyle } from './styles'
+import { css } from "@emotion/react"
+import ChangeStory from "./ChangeStory"
+import { fineStyle } from "./styles"
 
 export default function Footer({ year }) {
   return (
@@ -15,7 +14,7 @@ export default function Footer({ year }) {
         <div css={copyRightStyle}>© {year} AP Reserve Foundation</div>
       </div>
       <div>
-      <a css={navStyle} href="https://github.com/celo-org/reserve-site">
+        <a css={navStyle} href="https://github.com/celo-org/reserve-site">
           Source
         </a>
         <a css={navStyle} href="/legal/terms">
@@ -35,16 +34,16 @@ const copyRightStyle = css(fineStyle, {
 })
 
 const rootStyle = css({
-  boxSizing: 'border-box',
-  display: 'flex',
+  boxSizing: "border-box",
+  display: "flex",
   maxWidth: 1280,
-  width: '100%',
+  width: "100%",
   paddingLeft: 16,
   paddingRight: 16,
   paddingBottom: 24,
-  justifyContent: 'space-between',
-  alignItems: 'flex-end',
-  flexWrap: 'wrap',
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+  flexWrap: "wrap",
 })
 
 const wordMark = css({

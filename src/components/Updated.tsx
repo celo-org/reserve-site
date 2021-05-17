@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css } from "@emotion/react"
 
 interface Props {
   date?: string | number
@@ -11,13 +11,13 @@ export function Updated({ date, humanDate }: Props) {
       <strong>Updated </strong>
 
       {date
-        ? new Date(date).toLocaleDateString('default', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
+        ? new Date(date).toLocaleDateString("default", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
           })
         : humanDate}
     </small>
   )
 }
-const dateStyle = css({ marginBottom: 36, display: 'block' })
+const dateStyle = css({ marginBottom: 36, display: "block" })
