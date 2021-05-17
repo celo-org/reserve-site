@@ -1,5 +1,3 @@
-
-
 import BigNumber from "bignumber.js"
 
 export default function normalizeBTCvalue(value: number) {

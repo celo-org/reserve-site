@@ -1,4 +1,3 @@
-
 export enum Providers {
   coinbase = "coinbase",
   blockstream = "blockstream",
@@ -7,7 +6,7 @@ export enum Providers {
   ethplorer = "ethplorer",
   forno = "forno.celo.org",
   ecb = "ecb.europa.eu",
-  exchangeRates = "exchangeratesapi.io"
+  exchangeRates = "exchangeratesapi.io",
 }
 
 export default interface ProviderSource {

@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from "next"
 import getHoldings from "src/service/holdings"
 
-export default async function(req: NextApiRequest, res: NextApiResponse) {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const start = Date.now()
       const holdings = await getHoldings()
       res.setHeader("Server-Timing", `ms;dur=${Date.now() - start}`)
@@ -12,6 +12,6 @@ export default async function(req: NextApiRequest, res: NextApiResponse) {
       res.status(405)
     }
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message || 'unknownError' })
+    res.status(error.statusCode || 500).json({ message: error.message || "unknownError" })
   }
 }

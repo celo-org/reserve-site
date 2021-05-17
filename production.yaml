@@ -4,8 +4,8 @@ service: default
 instance_class: F4
 default_expiration: 366d
 env_variables:
-  NODE_ENV: 'production'
-  DEPLOY_ENV: 'production'
+  NODE_ENV: "production"
+  DEPLOY_ENV: "production"
 
 handlers:
   - url: /_next/static

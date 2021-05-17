@@ -1,15 +1,15 @@
-import { getBTCBalance as getBlockChainBTCBalance } from 'src/providers/BlockchainDotCom'
-import getBlockStreemBTCBalance from 'src/providers/Blockstream'
-import { getFrozenBalance, getInCustodyBalance, getUnFrozenBalance } from 'src/providers/Celo'
-import * as etherscan from 'src/providers/Etherscan'
-import * as ethplorer from 'src/providers/Ethplorerer'
-import duel, { Duel, sumMerge } from './duel'
+import { getBTCBalance as getBlockChainBTCBalance } from "src/providers/BlockchainDotCom"
+import getBlockStreemBTCBalance from "src/providers/Blockstream"
+import { getFrozenBalance, getInCustodyBalance, getUnFrozenBalance } from "src/providers/Celo"
+import * as etherscan from "src/providers/Etherscan"
+import * as ethplorer from "src/providers/Ethplorerer"
+import duel, { Duel, sumMerge } from "./duel"
 import getRates, { celoPrice } from "./rates"
-import {refresh, getOrSave} from "src/service/cache"
+import { refresh, getOrSave } from "src/service/cache"
 import { MINUTE } from "src/utils/TIME"
-import { TokenModel, Tokens } from './Data'
-import ProviderSource from 'src/providers/ProviderSource'
-import {getNonCeloAddresses} from "src/providers/airtable"
+import { TokenModel, Tokens } from "./Data"
+import ProviderSource from "src/providers/ProviderSource"
+import { getNonCeloAddresses } from "src/providers/airtable"
 
 async function getGroupedNonCeloAddresses() {
   const addresses = await getNonCeloAddresses()
@@ -23,12 +23,12 @@ async function getGroupedNonCeloAddresses() {
 }
 
 async function fetchBTCBalance() {
-  return getSumBalance("BTC", address => {
+  return getSumBalance("BTC", (address) => {
     return duel(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
   })
 }
 
-async function getSumBalance(token:Tokens, balanceFetcher: (address: string) => Promise<Duel>) {
+async function getSumBalance(token: Tokens, balanceFetcher: (address: string) => Promise<Duel>) {
   const addresses = await getGroupedNonCeloAddresses()
   const balances = await Promise.all(addresses[token].map(balanceFetcher))
   return balances.reduce(sumMerge)
@@ -41,7 +41,7 @@ export async function btcBalance() {
 }
 
 async function fetchETHBalance() {
-  return getSumBalance("ETH", address => {
+  return getSumBalance("ETH", (address) => {
     return duel(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
   })
 }
@@ -52,7 +52,7 @@ export async function ethBalance() {
 }
 
 function fetchDaiBalance() {
-  return getSumBalance("DAI", address => {
+  return getSumBalance("DAI", (address) => {
     return duel(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
   })
 }
@@ -62,20 +62,17 @@ export async function daiBalance() {
   return getOrSave<Duel>("dai-balance", fetchDaiBalance, 10 * MINUTE)
 }
 
-
 export async function celoCustodiedBalance() {
   return getOrSave<ProviderSource>("celo-custody-balance", getInCustodyBalance, 5 * MINUTE)
 }
 
 refresh("celo-custody-balance", 30 * MINUTE, getInCustodyBalance)
 
-
 export async function celoFrozenBalance() {
   return getOrSave<ProviderSource>("celo-frozen-balance", getFrozenBalance, 5 * MINUTE)
 }
 
 refresh("celo-frozen-balance", 30 * MINUTE, getFrozenBalance)
-
 
 export async function celoUnfrozenBalance() {
   return getOrSave<ProviderSource>("celo-unfrozen-balance", getUnFrozenBalance, 2 * MINUTE)
@@ -100,37 +97,41 @@ export async function getHoldingsCelo() {
     celoUnfrozenBalance(),
   ])
 
-
-  return {celo: toCeloShape(frozen, celoRate, unfrozen, celoCustodied)}
+  return { celo: toCeloShape(frozen, celoRate, unfrozen, celoCustodied) }
 }
 
-function toCeloShape(frozen: ProviderSource, celoRate: Duel, unfrozen: ProviderSource, celoCustodied: ProviderSource) {
+function toCeloShape(
+  frozen: ProviderSource,
+  celoRate: Duel,
+  unfrozen: ProviderSource,
+  celoCustodied: ProviderSource
+) {
   return {
-      frozen: {
-        token: "CELO",
-        units: frozen.value,
-        value: frozen.value * celoRate.value,
-        hasError: frozen.hasError,
-        updated: frozen.time
-      },
-      unfrozen: {
-        token: "CELO",
-        units: unfrozen.value,
-        value: unfrozen.value * celoRate.value,
-        hasError: unfrozen.hasError,
-        updated: unfrozen.time
-      },
-      custody: {
-        token: "CELO",
-        units: celoCustodied.value,
-        value: celoCustodied.value * celoRate.value,
-        hasError: celoCustodied.hasError,
-        updated: celoCustodied.time
-      }
-    } as const
+    frozen: {
+      token: "CELO",
+      units: frozen.value,
+      value: frozen.value * celoRate.value,
+      hasError: frozen.hasError,
+      updated: frozen.time,
+    },
+    unfrozen: {
+      token: "CELO",
+      units: unfrozen.value,
+      value: unfrozen.value * celoRate.value,
+      hasError: unfrozen.hasError,
+      updated: unfrozen.time,
+    },
+    custody: {
+      token: "CELO",
+      units: celoCustodied.value,
+      value: celoCustodied.value * celoRate.value,
+      hasError: celoCustodied.hasError,
+      updated: celoCustodied.time,
+    },
+  } as const
 }
 
-export async function  getHoldingsOther() {
+export async function getHoldingsOther() {
   const [rates, btcHeld, ethHeld, daiHeld] = await Promise.all([
     getRates(),
     btcBalance(),
@@ -144,7 +145,7 @@ export async function  getHoldingsOther() {
     toToken("DAI", daiHeld),
   ]
 
-  return {otherAssets}
+  return { otherAssets }
 }
 
 export default async function getHoldings(): Promise<HoldingsApi> {
@@ -166,7 +167,7 @@ export default async function getHoldings(): Promise<HoldingsApi> {
 
   return {
     celo: toCeloShape(frozen, rates.celo, unfrozen, celoCustodied),
-    otherAssets
+    otherAssets,
   }
 }
 
@@ -174,8 +175,8 @@ function toToken(label: Tokens, tokenData: Duel, rate?: Duel): TokenModel {
   return {
     token: label,
     units: tokenData.value,
-    value: ( tokenData.value || 0) * (rate?.value ||1),
+    value: (tokenData.value || 0) * (rate?.value || 1),
     hasError: !tokenData.value,
-    updated: tokenData.time
+    updated: tokenData.time,
   }
 }

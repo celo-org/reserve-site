@@ -1,13 +1,17 @@
-import AirtableAPI from 'airtable'
-import { getOrSave } from 'src/service/cache'
-import { Address } from 'src/service/Data'
-import { MINUTE } from 'src/utils/TIME'
+import AirtableAPI from "airtable"
+import { getOrSave } from "src/service/cache"
+import { Address } from "src/service/Data"
+import { MINUTE } from "src/utils/TIME"
 
 const IS_LIVE = 'Status="active"'
-const AIRTABLE_TABLE_ID = 'appFFSLHqjejvZgYM'
+const AIRTABLE_TABLE_ID = "appFFSLHqjejvZgYM"
 
 export async function getNonCeloAddresses() {
-  return getOrSave<{value:Address[]| null}>("offchain-addresses", fetchNonCeloAddresses, 5 * MINUTE)
+  return getOrSave<{ value: Address[] | null }>(
+    "offchain-addresses",
+    fetchNonCeloAddresses,
+    5 * MINUTE
+  )
 }
 
 async function fetchNonCeloAddresses() {
@@ -17,13 +21,12 @@ async function fetchNonCeloAddresses() {
         filterByFormula: IS_LIVE,
       })
       .firstPage()) as Record<Address>[]
-    return {value: records.map((record) => record.fields)}
+    return { value: records.map((record) => record.fields) }
   } catch (e) {
     console.error("could not fetch addresses", e)
-    return {value: null}
+    return { value: null }
   }
 }
-
 
 let airTableSingleton: AirtableAPI
 
@@ -39,8 +42,8 @@ export default function getAirtable(name: TableNames) {
 }
 
 export enum TableNames {
-  ReserveHoldings = 'Reserve Holdings',
-  ReserveAddresses = 'Off Chain Addresses',
+  ReserveHoldings = "Reserve Holdings",
+  ReserveAddresses = "Off Chain Addresses",
 }
 
 export interface Record<Fields> {
