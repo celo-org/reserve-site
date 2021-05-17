@@ -19,15 +19,25 @@ export function Ratios() {
 
   return (
     <div css={ratiosSectionStyle}>
-      <Amount loading={isLoading} label="Total" units={totalReserveValue / outstanding} gridArea="ratio" />
-      <Amount loading={isLoading} label="Unfrozen" units={unfrozenReserveValue / outstanding} gridArea="unfrozen" />
+      <Amount
+        loading={isLoading}
+        label="Total"
+        units={totalReserveValue / outstanding}
+        gridArea="ratio"
+      />
+      <Amount
+        loading={isLoading}
+        label="Unfrozen"
+        units={unfrozenReserveValue / outstanding}
+        gridArea="unfrozen"
+      />
 
       <div css={infoStyle}>
         <div css={finePrintStyle}>
           <small>
-            Ratios of the value of the reserve in USD (for total and for unfrozen) to the value of
-            all outstanding cUSD (as well as other future stabilized tokens supported by the
-            reserve)
+            Ratios of the value of the reserve in USD (for total and for
+            unfrozen) to the value of all outstanding stable assets (cUSD, cEUR,
+            as well as other future stabilized tokens supported by the reserve)
           </small>
         </div>
       </div>
