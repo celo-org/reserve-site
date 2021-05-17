@@ -17,12 +17,8 @@
     "keys:encrypt": "bash scripts/key_placer.sh encrypt",
     "start": "next start -p $PORT",
     "test": "jest",
-    "pretty": "prettier --config .prettierrc 'src/**/*.{ts, tsx}' '*.yaml' --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn pretty"
-    }
+    "pretty": "prettier --config .prettierrc 'src/**/*.{ts, tsx}' '*.yaml' --write",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@celo/contractkit": "1.1.0-beta.1",
@@ -57,6 +53,7 @@
     "jest": "^26.6.3",
     "jest-circus": "^26.6.3",
     "jest-snapshot": "^26.1.0",
+    "lint-staged": ">=10",
     "msw": "^0.27.0",
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.0",
@@ -68,5 +65,8 @@
   },
   "engines": {
     "node": "14"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,md,yaml}": "prettier --write"
   }
 }
