@@ -1,6 +1,6 @@
-import { css } from '@emotion/react'
-import * as React from 'react'
-import Markdown from 'src/components/Markdown'
+import { css } from "@emotion/react"
+import * as React from "react"
+import Markdown from "src/components/Markdown"
 
 interface Props {
   title: string
@@ -25,8 +25,8 @@ export default function Section({ title, content, children, subHeading }: Props)
 }
 
 const rootStyle = css({
-  display: 'flex',
-  flexWrap: 'wrap',
+  display: "flex",
+  flexWrap: "wrap",
   flex: 1,
   paddingLeft: 16,
   paddingRight: 16,
@@ -42,13 +42,13 @@ const headingAreaStyle = css({
 const contentAreaStyle = css({
   flex: 1,
   minWidth: 320,
-  '@media (max-width: 320px)': {
-    minWidth: '100%',
+  "@media (max-width: 320px)": {
+    minWidth: "100%",
   },
 })
 
 const titleCSS = css({
-  '@media (max-width: 590px)': {
+  "@media (max-width: 590px)": {
     fontSize: 26,
     lineHeight: 1.5,
   },

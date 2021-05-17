@@ -1,5 +1,4 @@
-
-import { css  } from '@emotion/react'
+import { css } from "@emotion/react"
 
 export default function ChangeStory() {
   return (
@@ -14,12 +13,12 @@ export default function ChangeStory() {
 const pipeStyle = css({ marginLeft: 8, marginRight: 8 })
 
 const rootStyle = css({
-  display: 'flex',
+  display: "flex",
   marginTop: 16,
 })
 
 const textStyle = css({
-  fontStyle: 'italic',
+  fontStyle: "italic",
   fontSize: 16,
 })
 

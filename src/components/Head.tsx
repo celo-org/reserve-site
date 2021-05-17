@@ -1,21 +1,26 @@
-import { css, Global } from '@emotion/react'
-import NextHead from 'next/head'
-import colors from 'src/components/colors'
-import description from 'src/content/meta-description.md'
+import { css, Global } from "@emotion/react"
+import NextHead from "next/head"
+import colors from "src/components/colors"
+import description from "src/content/meta-description.md"
 
-const garamond = 'EB Garamond, eb-garamond, Garamond, serif'
+const garamond = "EB Garamond, eb-garamond, Garamond, serif"
 
-const globalStyles = css`x
-  * {
+const globalStyles = css`
+  x * {
     box-sizing: border-box;
-    font-family: '${garamond}';
+    font-family: "${garamond}";
   }
 
-  h1, h2, h3, h4, p, a {
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  a {
     margin-top: 0;
     color: ${colors.dark};
-    font-family: '${garamond}';
-    font-display: 'swap';
+    font-family: "${garamond}";
+    font-display: "swap";
   }
 
   h1 {
@@ -37,7 +42,7 @@ const globalStyles = css`x
     line-height: 32px;
     &:first-child {
       margin-top: 0;
-      color: 'red';
+      color: "red";
     }
   }
 
@@ -76,10 +81,10 @@ const globalStyles = css`x
   body {
     margin: 0;
     padding: 0;
-    font-family: '${garamond}';
-    font-display: 'swap';
+    font-family: "${garamond}";
+    font-display: "swap";
     display: flex;
-    justify-content: 'center';
+    justify-content: "center";
   }
 
   img {
@@ -88,14 +93,13 @@ const globalStyles = css`x
   }
 
   table {
-    border-spacing: 12px
+    border-spacing: 12px;
   }
-
 `
 
 export default function Head() {
-  const title = 'CeloReserve.org'
-  const metaImage = '/assets/open-graph.png'
+  const title = "CeloReserve.org"
+  const metaImage = "/assets/open-graph.png"
   return (
     <>
       <Global styles={globalStyles} />
@@ -117,7 +121,7 @@ export default function Head() {
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={metaImage} />
-        <meta name="twitter:site" content={'@celoOrg'} />
+        <meta name="twitter:site" content={"@celoOrg"} />
         <meta name="twitter:card" content="summary_large_image" />
       </NextHead>
     </>

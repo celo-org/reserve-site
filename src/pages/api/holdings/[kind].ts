@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import getHoldings, { getHoldingsCelo, getHoldingsOther } from "src/service/holdings"
+import { getHoldingsCelo, getHoldingsOther } from "src/service/holdings"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {

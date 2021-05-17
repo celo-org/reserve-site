@@ -1,5 +1,5 @@
 import { HoldingsApi } from "src/service/holdings"
-import { sumNonCelo } from './Holdings'
+import { sumNonCelo } from "./Holdings"
 
 export function sumLiquidHoldings(holdings: HoldingsApi) {
   const { custody, unfrozen } = holdings.celo

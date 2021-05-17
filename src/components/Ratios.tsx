@@ -1,12 +1,12 @@
-import { css } from '@emotion/react'
+import { css } from "@emotion/react"
 import useSWR from "swr"
-import Amount from 'src/components/Amount'
-import { BreakPoints } from 'src/components/styles'
-import StableValueTokensAPI from 'src/interfaces/stable-value-tokens'
+import Amount from "src/components/Amount"
+import { BreakPoints } from "src/components/styles"
+import StableValueTokensAPI from "src/interfaces/stable-value-tokens"
 import { fetcher } from "src/utils/fetcher"
-import { sumLiquidHoldings } from './sumLiquidHoldings'
-import { sumTotalHoldings } from './sumTotalHoldings'
-import useHoldings from 'src/hooks/useHoldings'
+import { sumLiquidHoldings } from "./sumLiquidHoldings"
+import { sumTotalHoldings } from "./sumTotalHoldings"
+import useHoldings from "src/hooks/useHoldings"
 
 export function Ratios() {
   const stables = useSWR<StableValueTokensAPI>("/api/stable-value-tokens", fetcher)
@@ -19,8 +19,18 @@ export function Ratios() {
 
   return (
     <div css={ratiosSectionStyle}>
-      <Amount loading={isLoading} label="Total" units={totalReserveValue / outstanding} gridArea="ratio" />
-      <Amount loading={isLoading} label="Unfrozen" units={unfrozenReserveValue / outstanding} gridArea="unfrozen" />
+      <Amount
+        loading={isLoading}
+        label="Total"
+        units={totalReserveValue / outstanding}
+        gridArea="ratio"
+      />
+      <Amount
+        loading={isLoading}
+        label="Unfrozen"
+        units={unfrozenReserveValue / outstanding}
+        gridArea="unfrozen"
+      />
 
       <div css={infoStyle}>
         <div css={finePrintStyle}>
@@ -35,8 +45,8 @@ export function Ratios() {
   )
 }
 const ratiosSectionStyle = css({
-  display: 'grid',
-  gridAutoColumns: '1fr',
+  display: "grid",
+  gridAutoColumns: "1fr",
   gridColumnGap: 20,
   gridRowGap: 12,
   gridTemplateAreas: `
@@ -55,5 +65,5 @@ const finePrintStyle = css({
   paddingBottom: 24,
 })
 const infoStyle = css({
-  gridArea: 'info',
+  gridArea: "info",
 })

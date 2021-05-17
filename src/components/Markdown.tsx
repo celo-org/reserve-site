@@ -1,6 +1,6 @@
-import { css } from '@emotion/react'
-import MarkdownJSX from 'markdown-to-jsx'
-import Button from './Button'
+import { css } from "@emotion/react"
+import MarkdownJSX from "markdown-to-jsx"
+import Button from "./Button"
 
 export interface Attributes {
   title: string
