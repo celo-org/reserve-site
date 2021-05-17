@@ -22,7 +22,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@celo/contractkit": "1.1.0-beta.1",
+    "@celo/contractkit": "^1.2.0",
     "@emotion/eslint-plugin": "^11.2.0",
     "@emotion/react": "^11.1.5",
     "airtable": "^0.8.1",
