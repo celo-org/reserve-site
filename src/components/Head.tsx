@@ -8,7 +8,7 @@ const garamond = "EB Garamond, eb-garamond, Garamond, serif"
 const globalStyles = css`
   x * {
     box-sizing: border-box;
-    font-family: "${garamond}";
+    font-family: ${garamond};
   }
 
   h1,
@@ -19,7 +19,7 @@ const globalStyles = css`
   a {
     margin-top: 0;
     color: ${colors.dark};
-    font-family: "${garamond}";
+    font-family: ${garamond};
     font-display: "swap";
   }
 
@@ -81,7 +81,7 @@ const globalStyles = css`
   body {
     margin: 0;
     padding: 0;
-    font-family: "${garamond}";
+    font-family: ${garamond};
     font-display: "swap";
     display: flex;
     justify-content: "center";
