@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { server } from "src/mocks/server"
 import fetch from "node-fetch"
 import MockDate from "mockdate"
-import AirtableAPI from "airtable"
 
 // import '@testing-library/jest-dom'
 // import { createSerializer } from "@emotion/jest"
 // import "@testing-library/jest-dom/extend-expect"
 // @ts-nocheck
-global.fetch = fetch
-// expect.addSnapshotSerializer(createSerializer())
+global.fetch = window.fetch = fetch
+global.Request = window.Request = fetch.Request
+global.Response = window.Response = fetch.Response
+// must require not import airtable so that the global fetch lines above run first
+const AirtableAPI = require("airtable")
 AirtableAPI.apiKey = "TEST_AIRTABLE_KEY"
 // Establish API mocking before all tests.
 beforeAll(() => {
