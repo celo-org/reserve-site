@@ -16,12 +16,12 @@ export async function getNonCeloAddresses() {
 
 async function fetchNonCeloAddresses() {
   try {
-    const records = (await getAirtable(TableNames.ReserveAddresses)
+    const records = await getAirtable(TableNames.ReserveAddresses)
       .select({
         filterByFormula: IS_LIVE,
       })
-      .firstPage()) as Record<Address>[]
-    return { value: records.map((record) => record.fields) }
+      .firstPage()
+    return { value: records.map((record) => record.fields as unknown as Address) }
   } catch (e) {
     console.error("could not fetch addresses", e)
     return { value: null }
