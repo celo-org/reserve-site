@@ -7,6 +7,7 @@ export enum Providers {
   forno = "forno.celo.org",
   ecb = "ecb.europa.eu",
   exchangeRates = "exchangeratesapi.io",
+  ubeswap = "ubeswap",
 }
 
 export default interface ProviderSource {

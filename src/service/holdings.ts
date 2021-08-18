@@ -68,6 +68,10 @@ export async function celoCustodiedBalance() {
 
 refresh("celo-custody-balance", 30 * MINUTE, getInCustodyBalance)
 
+export async function cMC02Balance() {
+  return getOrSave<ProviderSource>("cmc02-balance", getInCustodyBalance, 10 * MINUTE)
+}
+
 export async function celoFrozenBalance() {
   return getOrSave<ProviderSource>("celo-frozen-balance", getFrozenBalance, 5 * MINUTE)
 }

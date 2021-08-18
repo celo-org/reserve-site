@@ -49,7 +49,7 @@ export default function Home(props: Props) {
               title={props.INITIAL_TARGET.attributes.title}
               content={props.INITIAL_TARGET.body}
             >
-              <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true} />
+              <PieChart label={"Target Allocation"} slices={INITAL_TARGET} showFinePrint={true} />
             </Section>
 
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
