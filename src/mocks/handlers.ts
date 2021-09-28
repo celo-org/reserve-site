@@ -3,7 +3,9 @@ import { rest } from "msw"
 export const handlers = [
   rest.post("https://api.thegraph.com/subgraphs/name/ubeswap/ubeswap", (req, res, ctx) => {
     return res(
-      ctx.json({ data: { token: { id: req.id, symbol: "CMCO2", derivedCUSD: 6.262838068638402 } } })
+      ctx.json({
+        data: { token: { id: req.id, symbol: "CMCO2", derivedCUSD: 12.262838068638402 } },
+      })
     )
   }),
   rest.get("https://api.coinbase.com/v2/prices/BTC-USD/spot", (req, res, ctx) => {

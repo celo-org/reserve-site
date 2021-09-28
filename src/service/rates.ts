@@ -7,6 +7,16 @@ import { getEthPrice } from "src/providers/Etherscan"
 import { refresh, getOrSave } from "src/service/cache"
 import { HOUR, MINUTE } from "src/utils/TIME"
 import duel, { Duel } from "./duel"
+import { getCMC02Price } from "src/providers/UbeSwapGraph"
+
+async function fetchCMCO2price(): Promise<Duel> {
+  const cmco2 = await getCMC02Price()
+  return { value: cmco2.value, sources: [cmco2.source], time: cmco2.time }
+}
+
+export async function CMC02Price() {
+  return getOrSave<Duel>("cmco2-price", fetchCMCO2price, 1 * MINUTE)
+}
 
 async function fetchBTCPrice() {
   const price = await duel(coinbase.getBTCInUSD(), getBTCPrice())
@@ -51,11 +61,17 @@ export async function celoPrice() {
 }
 
 export default async function rates() {
-  const [btc, eth, celo] = await Promise.all([btcPrice(), ethPrice(), celoPrice()])
+  const [btc, eth, celo, cmco2] = await Promise.all([
+    btcPrice(),
+    ethPrice(),
+    celoPrice(),
+    CMC02Price(),
+  ])
 
   return {
     btc,
     eth,
     celo,
+    cmco2,
   }
 }

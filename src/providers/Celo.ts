@@ -1,7 +1,23 @@
 import { newKit, StableToken } from "@celo/contractkit"
 import BigNumber from "bignumber.js"
 import { Address, Tokens } from "src/service/Data"
+import { CMCO2_ADDRESS, RESERVE_CMCO2_ADDRESS } from "src/contract-addresses"
+
 import ProviderSource, { errorResult, Providers } from "./ProviderSource"
+const MIN_ABI_FOR_GET_BALANCE = [
+  // balanceOf
+  {
+    constant: true,
+
+    inputs: [{ name: "_owner", type: "address" }],
+
+    name: "balanceOf",
+
+    outputs: [{ name: "balance", type: "uint256" }],
+
+    type: "function" as const,
+  },
+]
 
 const kit = newKit("https://forno.celo.org")
 
@@ -47,6 +63,28 @@ export async function getUnFrozenBalance() {
     const time = Date.now()
     return { hasError: false, value: formatNumber(balance), source: Providers.forno, time }
   } catch (error) {
+    return errorResult(error, Providers.forno)
+  }
+}
+
+export async function getcMC02Balance() {
+  return getERC20Balance(CMCO2_ADDRESS, RESERVE_CMCO2_ADDRESS)
+}
+
+async function getERC20Balance(contractAddress: string, walletAddress: string) {
+  try {
+    const erc20 = new kit.web3.eth.Contract(MIN_ABI_FOR_GET_BALANCE, contractAddress)
+
+    const balance: string = await erc20.methods.balanceOf(walletAddress).call()
+
+    return {
+      hasError: false,
+      value: formatNumber(new BigNumber(balance)),
+      source: Providers.forno,
+      time: Date.now(),
+    }
+  } catch (error) {
+    console.error(error)
     return errorResult(error, Providers.forno)
   }
 }

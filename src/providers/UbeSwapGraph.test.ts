@@ -6,7 +6,7 @@ describe("getCMC02Price", () => {
     expect(price).toEqual({
       source: "ubeswap",
       time: 1587686400000,
-      value: 6.262838068638402,
+      value: 12.262838068638402,
       hasError: false,
     })
   })

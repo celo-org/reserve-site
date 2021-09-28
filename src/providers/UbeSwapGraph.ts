@@ -1,7 +1,6 @@
 import { request, gql } from "graphql-request"
+import { CMCO2_ADDRESS } from "src/contract-addresses"
 import ProviderSource, { errorResult, Providers } from "./ProviderSource"
-
-const CMCO2_ADDRESS = "0x32a9fe697a32135bfd313a6ac28792dae4d9979d"
 
 const query = gql`
 {
@@ -26,7 +25,6 @@ export async function getCMC02Price(): Promise<ProviderSource> {
       "https://api.thegraph.com/subgraphs/name/ubeswap/ubeswap",
       query
     )
-    console.log(token)
     return {
       hasError: false,
       source: Providers.ubeswap,
@@ -34,6 +32,7 @@ export async function getCMC02Price(): Promise<ProviderSource> {
       time: Date.now(),
     }
   } catch (error) {
+    console.error(error)
     return errorResult(error, Providers.ubeswap)
   }
 }

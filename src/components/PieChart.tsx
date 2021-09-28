@@ -14,8 +14,9 @@ enum TokenColor {
   BTC = colors.blue,
   ETH = colors.red,
   CELO = colors.gold,
-  DAI = colors.green,
-  "Stable value portfolio*" = colors.green,
+  DAI = colors.violet,
+  cMCO2 = colors.green,
+  "Stable value portfolio*" = colors.violet,
 }
 
 interface Props {
@@ -25,10 +26,10 @@ interface Props {
   isLoading?: boolean
 }
 
-export default function PieChart({ slices, label, showFinePrint, isLoading }: Props) {
-  const radius = 10
-  const circumfrance = Math.PI * 2 * radius
+const RADIUS = 10
+const CIRCUMFERENCE = Math.PI * 2 * RADIUS
 
+export default function PieChart({ slices, label, showFinePrint, isLoading }: Props) {
   const dataWithOffsets = slices.map((data, index) => {
     let offset = 0
     let i = index - 1
@@ -56,18 +57,19 @@ export default function PieChart({ slices, label, showFinePrint, isLoading }: Pr
       <div css={css(pieStyle, isLoading && loadingStyle)}>
         <svg viewBox="-25 -25 50 40" transform="rotate(-90)" width="100%" height="100%">
           {dataWithOffsets.map(({ percent, offset, token }) => {
+            const displayedPercent = percent < 0.1 ? 0.1 : percent
             return (
               <Fragment key={token}>
                 <circle
                   cx="0"
                   cy="0"
                   opacity={0.8}
-                  r={radius}
+                  r={RADIUS}
                   fill="transparent"
                   stroke={isLoading ? colors.gray : TokenColor[token]}
-                  strokeWidth="9"
-                  strokeDasharray={`${circumfrance * (percent / 100)} ${
-                    circumfrance * (1 - percent / 100)
+                  strokeWidth={RADIUS - 1}
+                  strokeDasharray={`${CIRCUMFERENCE * (displayedPercent / 100)} ${
+                    CIRCUMFERENCE * (1 - displayedPercent / 100)
                   }`}
                   transform={`rotate(${(offset * 360) / 100})`}
                 />
@@ -77,7 +79,7 @@ export default function PieChart({ slices, label, showFinePrint, isLoading }: Pr
                   y1="0"
                   y2="11"
                   stroke="white"
-                  strokeWidth="0.25"
+                  strokeWidth="0.1"
                   transform={`rotate(${((offset - 12.5) * 360) / 100})`}
                 />
               </Fragment>
