@@ -4,6 +4,7 @@ import {
   getcUSDSupply,
   getUnFrozenBalance,
   getFrozenBalance,
+  getTargetAllocations,
 } from "./Celo"
 
 import { newKit } from "@celo/contractkit"
@@ -11,6 +12,19 @@ import { newKit } from "@celo/contractkit"
 describe("celo", () => {
   it("uses contractKit", () => {
     expect(newKit).toHaveBeenCalledWith("https://forno.celo.org")
+  })
+})
+
+describe("getTargetAllocation", () => {
+  it("returns array of symbols with weights", async () => {
+    const allocations = await getTargetAllocations()
+    expect(allocations).toEqual([
+      { token: "CELO", percent: 50 },
+      { token: "BTC", percent: 29.5 },
+      { token: "ETH", percent: 15 },
+      { token: "DAI", percent: 5 },
+      { token: "cMCO2", percent: 0.5 },
+    ])
   })
 })
 

@@ -36,7 +36,7 @@ export default async function duel(alef: ProviderPromise, bet: ProviderPromise):
 
   if (sourceA.value !== sourceB.value) {
     const recent = sourceA.time > sourceB.time ? sourceA : sourceB
-    if (percentDif(sourceA.value, sourceB.value) > 0.1) {
+    if (percentDif(sourceA.value, sourceB.value) > 0.3) {
       console.info(
         `Sources: ${sourceA.source} (${sourceA.value}) differs from ${sourceB.source} (${
           sourceB.value

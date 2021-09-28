@@ -153,6 +153,37 @@ export async function getAddresses(): Promise<{ value: Address[] | null }> {
   }
 }
 
+interface Allocation {
+  percent: number
+  token: string
+}
+
+export async function getTargetAllocations(): Promise<ProviderSource<Allocation[]>> {
+  try {
+    const reserve = await kit.contracts.getReserve()
+
+    const [symbols, weights]: [string[], BigNumber[]] = await Promise.all([
+      reserve.getAssetAllocationSymbols(),
+      reserve.getAssetAllocationWeights(),
+    ])
+
+    const value = symbols.map((symbol, index) => {
+      // remove non unicode chars like \u0000 which was showing up
+
+      const token = symbol.replace(/[^\x20-\x7E]/g, "")
+      return {
+        token: token === "cGLD" ? "CELO" : token,
+        // show weight as number; 50 means 50%
+        percent: weights[index].dividedBy(WEI_PER * 10000).toNumber(),
+      }
+    })
+
+    return { value, source: Providers.forno, time: Date.now(), hasError: false }
+  } catch (error) {
+    return { hasError: true, source: Providers.forno, value: [], time: 0 }
+  }
+}
+
 export const WEI_PER = 1_000_000_000_000_000_000
 
 function formatNumber(value: BigNumber) {
