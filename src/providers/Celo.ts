@@ -2,7 +2,7 @@ import { newKit, StableToken } from "@celo/contractkit"
 import BigNumber from "bignumber.js"
 import { Address, Tokens } from "src/service/Data"
 import { CMCO2_ADDRESS, RESERVE_CMCO2_ADDRESS } from "src/contract-addresses"
-
+import Allocation, { AssetTypes } from "src/interfaces/allocation"
 import ProviderSource, { errorResult, Providers } from "./ProviderSource"
 const MIN_ABI_FOR_GET_BALANCE = [
   // balanceOf
@@ -153,11 +153,6 @@ export async function getAddresses(): Promise<{ value: Address[] | null }> {
   }
 }
 
-interface Allocation {
-  percent: number
-  token: string
-}
-
 export async function getTargetAllocations(): Promise<ProviderSource<Allocation[]>> {
   try {
     const reserve = await kit.contracts.getReserve()
@@ -175,6 +170,7 @@ export async function getTargetAllocations(): Promise<ProviderSource<Allocation[
         token: token === "cGLD" ? "CELO" : token,
         // show weight as number; 50 means 50%
         percent: weights[index].dividedBy(WEI_PER * 10000).toNumber(),
+        type: getType(token),
       }
     })
 
@@ -188,4 +184,17 @@ export const WEI_PER = 1_000_000_000_000_000_000
 
 function formatNumber(value: BigNumber) {
   return value.dividedBy(WEI_PER).toNumber()
+}
+
+function getType(symbol: string): AssetTypes {
+  switch (symbol) {
+    case "DAI":
+      return "stable-value"
+    case "cMCO2":
+      return "natural-capital"
+    case "cGLD":
+      return "celo-native-asset"
+    default:
+      return "other-crypto-assets"
+  }
 }

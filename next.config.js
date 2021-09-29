@@ -49,6 +49,15 @@ module.exports = {
         ],
       },
       {
+        source: "/api/targets",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public; max-age=90, stale-while-revalidate=360",
+          },
+        ],
+      },
+      {
         source: "/api/:any",
         headers: [
           {
