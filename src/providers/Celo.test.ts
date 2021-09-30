@@ -18,13 +18,18 @@ describe("celo", () => {
 describe("getTargetAllocation", () => {
   it("returns array of symbols with weights", async () => {
     const allocations = await getTargetAllocations()
-    expect(allocations).toEqual([
-      { token: "CELO", percent: 50 },
-      { token: "BTC", percent: 29.5 },
-      { token: "ETH", percent: 15 },
-      { token: "DAI", percent: 5 },
-      { token: "cMCO2", percent: 0.5 },
-    ])
+    expect(allocations).toEqual({
+      hasError: false,
+      source: "forno.celo.org",
+      time: 1587686400000,
+      value: [
+        { percent: 50, token: "CELO", type: "celo-native-asset" },
+        { percent: 29.5, token: "BTC", type: "other-crypto-assets" },
+        { percent: 15, token: "ETH", type: "other-crypto-assets" },
+        { percent: 5, token: "DAI", type: "stable-value" },
+        { percent: 0.5, token: "cMCO2", type: "natural-capital" },
+      ],
+    })
   })
 })
 
