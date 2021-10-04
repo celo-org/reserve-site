@@ -8,10 +8,11 @@ import { refresh, getOrSave } from "src/service/cache"
 import { HOUR, MINUTE } from "src/utils/TIME"
 import duel, { Duel } from "./duel"
 import { getCMC02Price } from "src/providers/UbeSwapGraph"
+import getCoinMarketCapPrice from "src/providers/CoinMarketCap"
 
 async function fetchCMCO2price(): Promise<Duel> {
-  const cmco2 = await getCMC02Price()
-  return { value: cmco2.value, sources: [cmco2.source], time: cmco2.time }
+  const cmco2 = await duel(getCMC02Price(), getCoinMarketCapPrice("MCO2"))
+  return cmco2
 }
 
 export async function CMC02Price() {

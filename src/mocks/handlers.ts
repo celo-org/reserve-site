@@ -1,6 +1,65 @@
 import { rest } from "msw"
 
 export const handlers = [
+  rest.post(
+    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest",
+    (req, res, ctx) => {
+      const symbol = req.url.searchParams.get("symbol")
+      return res(
+        ctx.json({
+          status: {
+            timestamp: "2021-10-04T21:36:33.278Z",
+            error_code: 0,
+            error_message: null,
+            elapsed: 8,
+            credit_count: 1,
+            notice: null,
+          },
+          data: {
+            [symbol]: {
+              id: 8826,
+              name: "Moss Carbon Credit",
+              symbol: symbol,
+              slug: "moss-carbon-credit",
+              num_market_pairs: 8,
+              date_added: "2021-03-16T00:00:00.000Z",
+              tags: [],
+              max_supply: 1930269,
+              circulating_supply: 0,
+              total_supply: 0,
+              platform: {
+                id: 1027,
+                name: "Ethereum",
+                symbol: "ETH",
+                slug: "ethereum",
+                token_address: "0xfc98e825a2264d890f9a1e68ed50e1526abccacd",
+              },
+              is_active: 1,
+              cmc_rank: 3614,
+              is_fiat: 0,
+              last_updated: "2021-10-04T21:35:07.000Z",
+              quote: {
+                USD: {
+                  price: 12.78684525683156,
+                  volume_24h: 141886.9455234,
+                  percent_change_1h: 1.06488522,
+                  percent_change_24h: 1.56037461,
+                  percent_change_7d: -1.79004442,
+                  percent_change_30d: 78.16734785,
+                  percent_change_60d: 100.226614,
+                  percent_change_90d: 122.45884997,
+                  market_cap: 0,
+                  market_cap_dominance: 0,
+                  fully_diluted_market_cap: 24682051.01,
+                  last_updated: "2021-10-04T21:35:07.000Z",
+                },
+              },
+            },
+          },
+        })
+      )
+    }
+  ),
   rest.post("https://api.thegraph.com/subgraphs/name/ubeswap/ubeswap", (req, res, ctx) => {
     return res(
       ctx.json({

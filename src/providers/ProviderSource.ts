@@ -1,5 +1,6 @@
 export enum Providers {
   coinbase = "coinbase",
+  coinmarketcap = "coinmarketcap",
   blockstream = "blockstream",
   blockchainDotCom = "blockchain.com",
   etherscan = "etherscan",
