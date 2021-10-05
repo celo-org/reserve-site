@@ -5,8 +5,8 @@ describe("getCoinMarketCapPrice", () => {
     const price = await getCoinMarketCapPrice("MCO2")
     expect(price).toEqual({
       source: "coinmarketcap",
-      time: 1633383847000,
-      value: 12.80890942238266,
+      time: 1633383307000,
+      value: 12.78684525683156,
       hasError: false,
     })
   })
