@@ -26,7 +26,7 @@ export default async function getBTCBalance(address: string): Promise<ProviderSo
     const time = Date.now()
     const data = (await response.json()) as BlockstreamAddress
     return {
-      hasError: false,
+      hasError: !data.chain_stats.funded_txo_sum,
       source: Providers.blockstream,
       value: normalizeBTCvalue(data.chain_stats.funded_txo_sum),
       time,

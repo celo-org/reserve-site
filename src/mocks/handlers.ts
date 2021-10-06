@@ -3,6 +3,57 @@ import { rest } from "msw"
 export const handlers = [
   rest.get("https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest", (req, res, ctx) => {
     const symbol = req.url.searchParams.get("symbol")
+
+    if (symbol === "BTC") {
+      return res(
+        ctx.json({
+          status: {
+            timestamp: "2021-10-06T22:16:47.540Z",
+            error_code: 0,
+            error_message: null,
+            elapsed: 18,
+            credit_count: 1,
+            notice: null,
+          },
+          data: {
+            BTC: {
+              id: 1,
+              name: "Bitcoin",
+              symbol: "BTC",
+              slug: "bitcoin",
+              num_market_pairs: 8523,
+              date_added: "2013-04-28T00:00:00.000Z",
+              tags: [Array],
+              max_supply: 21000000,
+              circulating_supply: 18836712,
+              total_supply: 18836712,
+              is_active: 1,
+              platform: null,
+              cmc_rank: 1,
+              is_fiat: 0,
+              last_updated: "2021-10-06T22:16:02.000Z",
+              quote: {
+                USD: {
+                  price: 56200.0,
+                  volume_24h: 141886.9455234,
+                  percent_change_1h: 1.06488522,
+                  percent_change_24h: 1.56037461,
+                  percent_change_7d: -1.79004442,
+                  percent_change_30d: 78.16734785,
+                  percent_change_60d: 100.226614,
+                  percent_change_90d: 122.45884997,
+                  market_cap: 0,
+                  market_cap_dominance: 0,
+                  fully_diluted_market_cap: 24682051.01,
+                  last_updated: "2021-10-04T21:35:07.000Z",
+                },
+              },
+            },
+          },
+        })
+      )
+    }
+
     return res(
       ctx.json({
         status: {

@@ -17,7 +17,7 @@ export async function getBTCBalance(address: string): Promise<ProviderSource> {
     const response = await fetch(`https://blockchain.info/balance?active=${address}`)
     const data = (await response.json()) as BalanceReponse
     return {
-      hasError: false,
+      hasError: !data[address].final_balance,
       source: Providers.blockchainDotCom,
       value: normalizeBTCvalue(data[address].final_balance),
       time: Date.now(),
@@ -39,7 +39,7 @@ export async function getBTCPrice(): Promise<ProviderSource> {
     const response = await fetch(`https://api.blockchain.com/v3/exchange/tickers/BTC-USD`)
     const data = (await response.json()) as PriceResponse
     return {
-      hasError: false,
+      hasError: !data.last_trade_price,
       source: Providers.blockchainDotCom,
       value: data.last_trade_price,
       time: Date.now(),

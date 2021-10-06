@@ -10,7 +10,8 @@ export async function getBTCInUSD(): Promise<ProviderSource> {
     const response = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
     const time = Date.now()
     const data = (await response.json()) as CBResponse
-    return { hasError: false, source: Providers.coinbase, value: Number(data.data.amount), time }
+    const value = Number(data.data.amount)
+    return { hasError: !value, source: Providers.coinbase, value, time }
   } catch (error) {
     return errorResult(error, Providers.coinbase)
   }
@@ -21,7 +22,8 @@ export async function getETHInUSD(): Promise<ProviderSource> {
     const response = await fetch("https://api.coinbase.com/v2/prices/ETH-USD/spot")
     const time = Date.now()
     const data = (await response.json()) as CBResponse
-    return { hasError: false, source: Providers.coinbase, value: Number(data.data.amount), time }
+    const value = Number(data.data.amount)
+    return { hasError: !value, source: Providers.coinbase, value, time }
   } catch (error) {
     return errorResult(error, Providers.coinbase)
   }
@@ -32,7 +34,8 @@ export async function getCELOPrice(): Promise<ProviderSource> {
     const response = await fetch("https://api.coinbase.com/v2/prices/CGLD-USD/spot")
     const time = Date.now()
     const data = (await response.json()) as CBResponse
-    return { hasError: false, source: Providers.coinbase, value: Number(data.data.amount), time }
+    const value = Number(data.data.amount)
+    return { hasError: !value, source: Providers.coinbase, value, time }
   } catch (error) {
     return errorResult(error, Providers.coinbase)
   }
