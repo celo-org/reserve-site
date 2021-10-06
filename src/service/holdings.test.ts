@@ -58,6 +58,13 @@ describe("getHoldings", () => {
           updated: 1587686400000,
           value: 2095536.31747404,
         },
+        {
+          hasError: false,
+          token: "cMCO2",
+          units: 500000,
+          updated: 1587686400000,
+          value: 6393422.62841578,
+        },
       ],
     })
   })

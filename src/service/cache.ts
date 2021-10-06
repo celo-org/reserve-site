@@ -24,7 +24,6 @@ function get<T extends Cachable>(key: string, fetcher: () => Promise<T>, maxStal
   if (!data) {
     console.info("missed", key)
   } else if (shouldRevalidate(data, maxStale)) {
-    console.info("revalidating", key)
     setTimeout(() => set(key, fetcher), 1)
   }
   return data

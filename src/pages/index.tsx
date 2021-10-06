@@ -9,8 +9,10 @@ import NavBar from "src/components/Navbar"
 import ReserveAddresses from "src/components/ReserveAddresses"
 import Section from "src/components/Section"
 import { flexCol } from "src/components/styles"
-import PieChart, { INITAL_TARGET } from "src/components/PieChart"
+import PieChart from "src/components/PieChart"
 import { Address } from "src/service/Data"
+import useTargets from "src/hooks/useTargets"
+import NextHead from "next/head"
 
 interface ContentShape {
   title: string
@@ -49,7 +51,7 @@ export default function Home(props: Props) {
               title={props.INITIAL_TARGET.attributes.title}
               content={props.INITIAL_TARGET.body}
             >
-              <PieChart label={"Initial Target"} slices={INITAL_TARGET} showFinePrint={true} />
+              <Allocation />
             </Section>
 
             <Section title={props.ABOUT.attributes.title} content={props.ABOUT.body} />
@@ -63,6 +65,20 @@ export default function Home(props: Props) {
         </div>
         <Footer year={props.year} />
       </div>
+    </>
+  )
+}
+
+function Allocation() {
+  const targets = useTargets()
+  return (
+    <>
+      <PieChart
+        label={"Target Allocation"}
+        slices={targets.data}
+        showFinePrint={true}
+        isLoading={targets.isLoading}
+      />
     </>
   )
 }

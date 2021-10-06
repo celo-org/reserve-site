@@ -36,11 +36,13 @@ export default async function duel(alef: ProviderPromise, bet: ProviderPromise):
 
   if (sourceA.value !== sourceB.value) {
     const recent = sourceA.time > sourceB.time ? sourceA : sourceB
-    console.info(
-      `Sources: ${sourceA.source} (${sourceA.value}) differs from ${sourceB.source} (${
-        sourceB.value
-      }) ${percentDif(sourceA.value, sourceB.value)}%`
-    )
+    if (percentDif(sourceA.value, sourceB.value) > 0.6) {
+      console.info(
+        `Sources: ${sourceA.source} (${sourceA.value}) differs from ${sourceB.source} (${
+          sourceB.value
+        }) ${percentDif(sourceA.value, sourceB.value).toPrecision(5)}%`
+      )
+    }
     return { value: recent.value, time: recent.time, sources: [recent.source] }
   }
 }
@@ -50,5 +52,5 @@ export function sumMerge(acc: Duel, current: Duel) {
 }
 
 function percentDif(x: number, y: number) {
-  return Math.abs((1 - x / y) * 100).toPrecision(5)
+  return Math.abs((1 - x / y) * 100)
 }

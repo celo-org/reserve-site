@@ -1,5 +1,6 @@
 export enum Providers {
   coinbase = "coinbase",
+  coinmarketcap = "coinmarketcap",
   blockstream = "blockstream",
   blockchainDotCom = "blockchain.com",
   etherscan = "etherscan",
@@ -7,16 +8,17 @@ export enum Providers {
   forno = "forno.celo.org",
   ecb = "ecb.europa.eu",
   exchangeRates = "exchangeratesapi.io",
+  ubeswap = "ubeswap",
 }
 
-export default interface ProviderSource {
-  value: number
+export default interface ProviderSource<T = number> {
+  value: T
   source: Providers
   time: number
   hasError: boolean
 }
 
-export function errorResult(error: any, source: Providers) {
+export function errorResult(error: any, source: Providers, value = 0) {
   console.info("ERROR", source, error)
-  return { hasError: true, source, value: 0, time: 0 }
+  return { hasError: true, source, value, time: 0 }
 }

@@ -1,4 +1,4 @@
-export type Tokens = "BTC" | "DAI" | "ETH" | "CELO" | "cUSD" | "cEUR"
+export type Tokens = "BTC" | "DAI" | "ETH" | "CELO" | "cUSD" | "cEUR" | "cMCO2"
 export interface Address {
   address: string
   label: string

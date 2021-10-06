@@ -58,61 +58,63 @@ export default function Holdings() {
   const oldestUpdate = findOldestValueUpdatedAt(data)
   const celo = data.celo
   return (
-    <Section
-      title={"Current Reserve Holdings"}
-      subHeading={
-        <>
-          <DollarDisplay
-            loading={isLoadingCelo || isLoadingOther}
-            label="Liquidity"
-            value={sumTotalHoldings(data)}
-          />
-          <Updated date={oldestUpdate} />
-        </>
-      }
-    >
+    <>
       <Head>
         <link rel="preload" href="/api/holdings/celo" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/api/holdings/other" as="fetch" crossOrigin="anonymous" />
       </Head>
-      <div css={rootStyle}>
-        <Heading title="CELO" gridArea="celo" />
-        <Amount
-          iconSrc={"/assets/tokens/CELO.svg"}
-          context="Funds frozen in on-chain Reserve contract"
-          loading={isLoadingCelo}
-          label="Frozen"
-          units={celo.frozen.units}
-          value={celo.frozen.value}
-          gridArea="frozen"
-        />
-        <Amount
-          iconSrc={"/assets/tokens/CELO.svg"}
-          context="Funds in on-chain Reserve contract and in custody"
-          loading={isLoadingCelo}
-          label="Unfrozen"
-          units={celo.unfrozen.units + celo.custody.units}
-          value={celo.unfrozen.value + celo.custody.value}
-          gridArea="unfrozen"
-        />
-        <Heading title="Non-CELO Crypto Assets" gridArea="crypto" marginTop={30} />
-        {data?.otherAssets?.filter(skipZeros)?.map((asset) => (
+      <Section
+        title={"Current Reserve Holdings"}
+        subHeading={
+          <>
+            <DollarDisplay
+              loading={isLoadingCelo || isLoadingOther}
+              label="Liquidity"
+              value={sumTotalHoldings(data)}
+            />
+            <Updated date={oldestUpdate} />
+          </>
+        }
+      >
+        <div css={rootStyle}>
+          <Heading title="CELO" gridArea="celo" />
           <Amount
-            key={asset.token}
-            loading={isLoadingOther}
-            label={asset.token}
-            units={asset.units}
-            value={asset.value}
-            gridArea={""}
+            iconSrc={"/assets/tokens/CELO.svg"}
+            context="Funds frozen in on-chain Reserve contract"
+            loading={isLoadingCelo}
+            label="Frozen"
+            units={celo.frozen.units}
+            value={celo.frozen.value}
+            gridArea="frozen"
           />
-        ))}
-      </div>
-      <PieChart
-        label={"Current Composition"}
-        slices={percentages}
-        isLoading={isLoadingCelo || isLoadingOther}
-      />
-    </Section>
+          <Amount
+            iconSrc={"/assets/tokens/CELO.svg"}
+            context="Funds in on-chain Reserve contract and in custody"
+            loading={isLoadingCelo}
+            label="Unfrozen"
+            units={celo.unfrozen.units + celo.custody.units}
+            value={celo.unfrozen.value + celo.custody.value}
+            gridArea="unfrozen"
+          />
+          <Heading title="Non-CELO Crypto Assets" gridArea="crypto" marginTop={30} />
+          {data?.otherAssets?.filter(skipZeros)?.map((asset) => (
+            <Amount
+              key={asset.token}
+              loading={isLoadingOther}
+              label={asset.token}
+              units={asset.units}
+              value={asset.value}
+              gridArea={""}
+            />
+          ))}
+        </div>
+        <PieChart
+          label={"Current Composition"}
+          slices={percentages}
+          isLoading={isLoadingCelo || isLoadingOther}
+        />
+      </Section>
+    </>
   )
 }
 
