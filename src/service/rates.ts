@@ -1,4 +1,3 @@
-import { getBTCPrice } from "src/providers/BlockchainDotCom"
 import * as coinbase from "src/providers/Coinbase"
 import { euroToUSD } from "src/providers/ECB"
 import euroToUSDRate from "src/providers/ExchangeRateAPI"
@@ -16,7 +15,7 @@ async function fetchCMCO2price(): Promise<Duel> {
 }
 
 export async function CMC02Price() {
-  return getOrSave<Duel>("cmco2-price", fetchCMCO2price, 5 * MINUTE)
+  return getOrSave<Duel>("cmco2-price", fetchCMCO2price, 10 * MINUTE)
 }
 
 async function fetchBTCPrice() {
@@ -24,20 +23,20 @@ async function fetchBTCPrice() {
   return price
 }
 
-refresh("btc-price", 5 * MINUTE, fetchBTCPrice)
+refresh("btc-price", 20 * MINUTE, fetchBTCPrice)
 
 export async function btcPrice() {
-  return getOrSave<Duel>("btc-price", fetchBTCPrice, 2 * MINUTE)
+  return getOrSave<Duel>("btc-price", fetchBTCPrice, 5 * MINUTE)
 }
 
 async function fetchETHPrice() {
   const price = await duel(coinbase.getETHInUSD(), getEthPrice())
   return price
 }
-refresh("eth-price", 5 * MINUTE, fetchETHPrice)
+refresh("eth-price", 20 * MINUTE, fetchETHPrice)
 
 export async function ethPrice() {
-  return getOrSave<Duel>("eth-price", fetchETHPrice, 2 * MINUTE)
+  return getOrSave<Duel>("eth-price", fetchETHPrice, 5 * MINUTE)
 }
 
 async function fetchEuroPrice() {
