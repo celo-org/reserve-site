@@ -12,6 +12,11 @@ interface AmountProps {
   iconSrc?: string
 }
 
+const formatter = new Intl.NumberFormat(undefined, {
+  style: "decimal",
+  maximumFractionDigits: 2,
+})
+
 export default function Amount({
   iconSrc,
   label,
@@ -21,8 +26,10 @@ export default function Amount({
   value,
   loading,
 }: AmountProps) {
-  const display = new Intl.NumberFormat("default").format(Math.round(units))
+  const display = formatter.format(units)
+
   const id = `a-${dasherize(label)}`
+
   return (
     <div css={css(amountStyle, { gridArea })}>
       <div css={labelAreaCss}>

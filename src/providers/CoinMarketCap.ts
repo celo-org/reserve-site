@@ -58,7 +58,7 @@ export default async function getCoinMarketCapPrice(symbol: string): Promise<Pro
     )
 
     const body = (await response.json()) as CMCQuote
-    console.info(body)
+
     if (body.data?.[symbol]) {
       const data = body.data[symbol].quote.USD
       return {
