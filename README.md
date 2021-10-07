@@ -34,9 +34,9 @@ For ETH and BTC balances we use 2 data providers each: blockchain.com and [block
 
 For CELO the on change exchange price (which itself is an aggregation of the price on several exchanges) is used again via `@celo/contractKit`
 
-For other crypto assets two data providers are used. These are simply averaged if both return correctly. If one provider fails to respond then the other is used and if both fail a cache of the last successful fetch is used until new data is fetched.
+For other crypto assets two data providers are used. If one provider fails to respond then the other is used and if both fail a cache of the last successful fetch is used until new data is fetched.
 For BTC thse are [blockchain.com's getAccountByTypeAndCurrency](https://api.blockchain.com/v3/#/payments/getAccountByTypeAndCurrency) and [Coinbase's Data Api spot price](https://developers.coinbase.com/api/v2#exchange-rates).
-For ETH these are [Etherscan.io ETHER Last Price](https://etherscan.io/apis#stats) and [Coinbase's Data Api spot price](https://developers.coinbase.com/api/v2#exchange-rates).
+For ETH these are [Etherscan.io ETHER Last Price](https://etherscan.io/apis#stats) and [Coinbase's Data Api spot price](https://developers.coinbase.com/api/v2#exchange-rates). For CMCO2, coinmarketcap api and ubeswaps subgrap are used for the price.
 
 ### Stable Assets Outstanding
 
