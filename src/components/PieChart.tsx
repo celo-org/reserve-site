@@ -124,7 +124,7 @@ export interface ChartData {
   percent: number
 }
 
-const formatter = new Intl.NumberFormat(undefined, { style: "decimal", maximumFractionDigits: 1 })
+const formatter = new Intl.NumberFormat(undefined, { style: "decimal", maximumFractionDigits: 2 })
 
 function ChartKey({ token, percent }: ChartData) {
   return (

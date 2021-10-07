@@ -20,7 +20,7 @@ export async function CMC02Price() {
 }
 
 async function fetchBTCPrice() {
-  const price = await duel(coinbase.getBTCInUSD(), getBTCPrice())
+  const price = await duel(coinbase.getBTCInUSD(), getCoinMarketCapPrice("BTC"))
   return price
 }
 
