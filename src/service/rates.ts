@@ -15,7 +15,7 @@ async function fetchCMCO2price(): Promise<Duel> {
 }
 
 export async function CMC02Price() {
-  return getOrSave<Duel>("cmco2-price", fetchCMCO2price, 10 * MINUTE)
+  return getOrSave<Duel>("cmco2-price", fetchCMCO2price, 5 * MINUTE)
 }
 
 async function fetchBTCPrice() {
@@ -23,7 +23,7 @@ async function fetchBTCPrice() {
   return price
 }
 
-refresh("btc-price", 20 * MINUTE, fetchBTCPrice)
+refresh("btc-price", 5 * MINUTE, fetchBTCPrice)
 
 export async function btcPrice() {
   return getOrSave<Duel>("btc-price", fetchBTCPrice, 5 * MINUTE)
