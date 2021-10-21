@@ -23,7 +23,7 @@ async function fetchBTCPrice() {
   return price
 }
 
-refresh("btc-price", 20 * MINUTE, fetchBTCPrice)
+refresh("btc-price", 5 * MINUTE, fetchBTCPrice)
 
 export async function btcPrice() {
   return getOrSave<Duel>("btc-price", fetchBTCPrice, 5 * MINUTE)
