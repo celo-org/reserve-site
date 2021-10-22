@@ -23,3 +23,6 @@ handlers:
   - url: /.*
     script: auto
     secure: always
+
+automatic_scaling:
+  max_instances: 2
