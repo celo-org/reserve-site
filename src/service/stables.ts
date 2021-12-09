@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js"
-import { getcEURSupply, getcUSDSupply } from "src/providers/Celo"
+import { getcEURSupply, getcUSDSupply, getcREALSupply } from "src/providers/Celo"
 import { euroPrice } from "src/service/rates"
 import { TokenModel } from "src/service/Data"
 import { refresh, getOrSave } from "src/service/cache"
@@ -15,13 +15,19 @@ async function cEURSupply() {
   return getOrSave("cEURO-supply", getcEURSupply, 5 * SECOND)
 }
 
+async function cREALSupply() {
+  return getOrSave("cREAL-supply", getcREALSupply, 5 * SECOND)
+}
+
 refresh("cEURO-supply", 5 * MINUTE, getcEURSupply)
 
 export default async function stables(): Promise<TokenModel[]> {
-  const [cUSD, cEUR, cEURValueInUSD] = await Promise.all([
+  const [cUSD, cEUR, cREAL, cEURValueInUSD, cREALValueInUSD] = await Promise.all([
     cUSDSupply(),
     cEURSupply(),
+    cREALSupply(),
     totalCeloEuroValueInUSD(),
+    totalCeloRealValueInUSD(),
   ])
   return [
     {
@@ -38,6 +44,13 @@ export default async function stables(): Promise<TokenModel[]> {
       updated: cEUR.time,
       hasError: cEUR.hasError,
     },
+    {
+      token: "cREAL",
+      units: cREAL.value,
+      value: cREALValueInUSD,
+      updated: cREAL.time,
+      hasError: cREAL.hasError,
+    },
   ]
 }
 
@@ -47,6 +60,12 @@ export async function getTotalStableValueInUSD() {
 }
 
 async function totalCeloEuroValueInUSD(): Promise<number> {
+  const [units, price] = await Promise.all([cEURSupply(), euroPrice()])
+  return price.value * units.value
+}
+
+// TODO get BRL REAL price not euro
+async function totalCeloRealValueInUSD(): Promise<number> {
   const [units, price] = await Promise.all([cEURSupply(), euroPrice()])
   return price.value * units.value
 }
