@@ -3,7 +3,7 @@ import getStables, { getTotalStableValueInUSD } from "./stables"
 describe(`totalStableValueInUSD()`, () => {
   it("returns value in USD of all the stable tokens backed by the reserve", async () => {
     const result = await getTotalStableValueInUSD()
-    expect(result).toEqual(92360595.75)
+    expect(result).toEqual(321842125.95)
   })
 })
 
@@ -25,7 +25,7 @@ describe(`getStables()`, () => {
       token: "cEUR",
       units: 41557073.455407046,
       updated: 1587686400000,
-      value: 50803522.29923511,
+      value: 47029142.65972122,
     })
   })
 })

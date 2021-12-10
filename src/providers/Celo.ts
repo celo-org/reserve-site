@@ -111,19 +111,7 @@ export async function getInCustodyBalance(): Promise<ProviderSource> {
   }
 }
 
-export async function getcUSDSupply(): Promise<ProviderSource> {
-  return getcStableSupply(StableToken.cUSD)
-}
-
-export async function getcEURSupply(): Promise<ProviderSource> {
-  return getcStableSupply(StableToken.cEUR)
-}
-
-export async function getcREALSupply(): Promise<ProviderSource> {
-  return getcStableSupply(StableToken.cEUR)
-}
-
-async function getcStableSupply(token: StableToken): Promise<ProviderSource> {
+export async function getCStableSupply(token: StableToken): Promise<ProviderSource> {
   try {
     const stableToken = await kit.contracts.getStableToken(token)
     const totalSupply = await stableToken.totalSupply()
