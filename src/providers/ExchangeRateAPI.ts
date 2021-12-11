@@ -188,12 +188,14 @@ interface CachedPricesOK {
   value: Record<ISO427SYMBOLS, number>
   hasError: false
   source: Providers.exchangeRates
+  time: number
 }
 
 interface CachedPricesError {
-  value: 0
+  value: number
   hasError: true
-  source: Providers.exchangeRates
+  source: Providers
+  time: number
 }
 
 export type CachedPrices = CachedPricesOK | CachedPricesError

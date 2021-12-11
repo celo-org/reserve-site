@@ -12,10 +12,14 @@ async function cStableSupply(token: StableToken) {
   return getOrSave(`cSTABLE-${token}-supply`, () => getCStableSupply(token), 5 * SECOND)
 }
 
-async function getCirculations(): Promise<
-  { units: ProviderSource<number>; symbol: StableToken; iso4217: ISO427SYMBOLS }[]
-> {
-  return Promise.all(
+interface Circulation {
+  units: ProviderSource<number>
+  symbol: StableToken
+  iso4217: ISO427SYMBOLS
+}
+
+async function getCirculations(): Promise<Circulation[]> {
+  return Promise.all<Circulation>(
     STABLES.map(async (stable) => {
       return new Promise((resolve, reject) => {
         cStableSupply(stable.symbol)

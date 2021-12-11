@@ -1,7 +1,7 @@
 import { StableToken } from "@celo/contractkit"
 import { ISO427SYMBOLS } from "src/interfaces/ISO427SYMBOLS"
 
-interface Stables {
+export interface Stables {
   symbol: StableToken
   iso4217: ISO427SYMBOLS
 }
