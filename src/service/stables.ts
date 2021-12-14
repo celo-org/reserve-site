@@ -1,52 +1,62 @@
-import BigNumber from "bignumber.js"
-import { getcEURSupply, getcUSDSupply } from "src/providers/Celo"
-import { euroPrice } from "src/service/rates"
+import { getCStableSupply } from "src/providers/Celo"
+import { fiatPrices } from "src/service/rates"
 import { TokenModel } from "src/service/Data"
-import { refresh, getOrSave } from "src/service/cache"
-import { MINUTE, SECOND } from "src/utils/TIME"
+import { getOrSave } from "src/service/cache"
+import { SECOND } from "src/utils/TIME"
+import { StableToken } from "@celo/contractkit"
+import { ISO427SYMBOLS } from "src/interfaces/ISO427SYMBOLS"
+import ProviderSource from "src/providers/ProviderSource"
+import { STABLES } from "../stables.config"
 
-async function cUSDSupply() {
-  return getOrSave("cUSD-supply", getcUSDSupply, 5 * SECOND)
+async function cStableSupply(token: StableToken) {
+  return getOrSave(`cSTABLE-${token}-supply`, () => getCStableSupply(token), 5 * SECOND)
 }
 
-refresh("cUSD-supply", 5 * MINUTE, getcUSDSupply)
-
-async function cEURSupply() {
-  return getOrSave("cEURO-supply", getcEURSupply, 5 * SECOND)
+interface Circulation {
+  units: ProviderSource<number>
+  symbol: StableToken
+  iso4217: ISO427SYMBOLS
 }
 
-refresh("cEURO-supply", 5 * MINUTE, getcEURSupply)
+async function getCirculations(): Promise<Circulation[]> {
+  return Promise.all<Circulation>(
+    STABLES.map(async (stable) => {
+      return new Promise((resolve, reject) => {
+        cStableSupply(stable.symbol)
+          .then((units) =>
+            resolve({
+              units: units,
+              symbol: stable.symbol,
+              iso4217: stable.iso4217,
+            })
+          )
+          .catch(reject)
+      })
+    })
+  )
+}
 
 export default async function stables(): Promise<TokenModel[]> {
-  const [cUSD, cEUR, cEURValueInUSD] = await Promise.all([
-    cUSDSupply(),
-    cEURSupply(),
-    totalCeloEuroValueInUSD(),
-  ])
-  return [
-    {
-      token: "cUSD",
-      units: cUSD.value,
-      value: cUSD.value,
-      updated: cUSD.time,
-      hasError: cUSD.hasError,
-    },
-    {
-      token: "cEUR",
-      units: cEUR.value,
-      value: cEURValueInUSD,
-      updated: cEUR.time,
-      hasError: cEUR.hasError,
-    },
-  ]
+  const [prices, circulations] = await Promise.all([fiatPrices(), getCirculations()])
+  return circulations.map((tokenData) => {
+    let value = 0
+
+    try {
+      value = prices.value[tokenData.iso4217] * tokenData.units.value
+    } catch (e) {
+      // for those times when there isnt any value yet
+    }
+    return {
+      token: tokenData.symbol,
+      units: tokenData.units.value || 0,
+      value,
+      updated: tokenData.units.time,
+      hasError: tokenData.units.hasError,
+    }
+  })
 }
 
 export async function getTotalStableValueInUSD() {
-  const [totalCUSD, cEURValue] = await Promise.all([cUSDSupply(), totalCeloEuroValueInUSD()])
-  return new BigNumber(totalCUSD.value + cEURValue).decimalPlaces(2).toNumber()
-}
-
-async function totalCeloEuroValueInUSD(): Promise<number> {
-  const [units, price] = await Promise.all([cEURSupply(), euroPrice()])
-  return price.value * units.value
+  const all = await stables()
+  return Number(all.reduce((sum, { value }) => sum + value, 0).toFixed(2))
 }

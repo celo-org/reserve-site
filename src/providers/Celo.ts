@@ -111,21 +111,9 @@ export async function getInCustodyBalance(): Promise<ProviderSource> {
   }
 }
 
-export async function getcUSDSupply(): Promise<ProviderSource> {
+export async function getCStableSupply(token: StableToken): Promise<ProviderSource> {
   try {
-    const stableToken = await kit.contracts.getStableToken(StableToken.cUSD)
-    const totalSupply = await stableToken.totalSupply()
-
-    const time = Date.now()
-    return { hasError: false, value: formatNumber(totalSupply), source: Providers.forno, time }
-  } catch (error) {
-    return errorResult(error, Providers.forno)
-  }
-}
-
-export async function getcEURSupply(): Promise<ProviderSource> {
-  try {
-    const stableToken = await kit.contracts.getStableToken(StableToken.cEUR)
+    const stableToken = await kit.contracts.getStableToken(token)
     const totalSupply = await stableToken.totalSupply()
     const time = Date.now()
     return { hasError: false, value: formatNumber(totalSupply), source: Providers.forno, time }

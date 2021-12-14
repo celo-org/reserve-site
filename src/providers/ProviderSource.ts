@@ -20,5 +20,5 @@ export default interface ProviderSource<T = number> {
 
 export function errorResult(error: any, source: Providers, value = 0) {
   console.info("ERROR", source, error)
-  return { hasError: true, source, value, time: 0 }
+  return { hasError: true as const, source, value, time: 0 }
 }

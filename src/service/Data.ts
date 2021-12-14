@@ -1,4 +1,6 @@
-export type Tokens = "BTC" | "DAI" | "ETH" | "CELO" | "cUSD" | "cEUR" | "cMCO2"
+import { StableToken, Token } from "@celo/contractkit"
+
+export type Tokens = "BTC" | "DAI" | "ETH" | "cMCO2" | StableToken | Token
 export interface Address {
   address: string
   label: string

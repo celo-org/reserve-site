@@ -1,13 +1,13 @@
 import {
   getCeloPrice,
   getInCustodyBalance,
-  getcUSDSupply,
+  getCStableSupply,
   getUnFrozenBalance,
   getFrozenBalance,
   getTargetAllocations,
 } from "./Celo"
 
-import { newKit } from "@celo/contractkit"
+import { newKit, StableToken } from "@celo/contractkit"
 
 describe("celo", () => {
   it("uses contractKit", () => {
@@ -45,9 +45,9 @@ describe("getCeloPrice", () => {
   })
 })
 
-describe("getcUSDSupply", () => {
+describe("getCStableSupply", () => {
   it("returns account balance of address", async () => {
-    const balance = await getcUSDSupply()
+    const balance = await getCStableSupply(StableToken.cUSD)
     expect(balance).toEqual({
       hasError: false,
       source: "forno.celo.org",

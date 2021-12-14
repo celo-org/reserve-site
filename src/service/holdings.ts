@@ -15,6 +15,7 @@ import { MINUTE } from "src/utils/TIME"
 import { TokenModel, Tokens } from "./Data"
 import ProviderSource from "src/providers/ProviderSource"
 import { getNonCeloAddresses } from "src/providers/airtable"
+import { Token } from "@celo/contractkit"
 
 async function getGroupedNonCeloAddresses() {
   const addresses = await getNonCeloAddresses()
@@ -117,21 +118,21 @@ function toCeloShape(
 ) {
   return {
     frozen: {
-      token: "CELO",
+      token: Token.CELO,
       units: frozen.value,
       value: frozen.value * celoRate.value,
       hasError: frozen.hasError,
       updated: frozen.time,
     },
     unfrozen: {
-      token: "CELO",
+      token: Token.CELO,
       units: unfrozen.value,
       value: unfrozen.value * celoRate.value,
       hasError: unfrozen.hasError,
       updated: unfrozen.time,
     },
     custody: {
-      token: "CELO",
+      token: Token.CELO,
       units: celoCustodied.value,
       value: celoCustodied.value * celoRate.value,
       hasError: celoCustodied.hasError,
