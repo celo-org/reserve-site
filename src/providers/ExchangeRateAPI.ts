@@ -200,7 +200,7 @@ interface CachedPricesError {
 
 export type CachedPrices = CachedPricesOK | CachedPricesError
 
-export default async function usdToFiat(): Promise<CachedPrices> {
+export default async function currencyInUSD(): Promise<CachedPrices> {
   try {
     const response = await fetch(
       `http://api.exchangeratesapi.io/v1/latest?access_key=${process.env.EXCHANGE_RATE_API}`
@@ -223,10 +223,21 @@ export default async function usdToFiat(): Promise<CachedPrices> {
 // Rates come in as EURO based, we want USD
 function inUSD(rates: ExchangeRatesResponse["rates"]): ExchangeRatesResponse["rates"] {
   const ratesDup = { ...rates }
-  const usd = rates.USD
+  const euroRateInUSd = rates.USD
   return Object.keys(ratesDup).reduce(
     (newRates, key) => {
-      newRates[key] = key === "EUR" ? usd : rates[key] / usd
+      switch (key) {
+        case "EUR":
+          newRates[key] = euroRateInUSd
+          break
+        case "USD": {
+          newRates[key] = 1
+          break
+        }
+        default:
+          newRates[key] = euroRateInUSd / rates[key]
+          break
+      }
       return newRates
     },
     { ...ratesDup }

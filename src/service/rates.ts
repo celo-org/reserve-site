@@ -1,6 +1,6 @@
 import * as coinbase from "src/providers/Coinbase"
 import { ISO427SYMBOLS } from "src/interfaces/ISO427SYMBOLS"
-import usdToFiat from "src/providers/ExchangeRateAPI"
+import currencyInUSD from "src/providers/ExchangeRateAPI"
 import { getCeloPrice } from "src/providers/Celo"
 import { getEthPrice } from "src/providers/Etherscan"
 import { refresh, getOrSave, Cachable } from "src/service/cache"
@@ -41,7 +41,7 @@ export async function ethPrice() {
 }
 
 export async function fiatPrices() {
-  return getOrSave<Cachable<ISO427SYMBOLS>>("fiat-prices", usdToFiat, 12 * HOUR)
+  return getOrSave<Cachable<ISO427SYMBOLS>>("fiat-prices", currencyInUSD, 12 * HOUR)
 }
 
 async function fetchCELOPrice() {
