@@ -57,6 +57,7 @@ export default function Holdings() {
   const isLoadingOther = !data.otherAssets.findIndex((coin) => coin.updated === 0)
   const oldestUpdate = findOldestValueUpdatedAt(data)
   const celo = data.celo
+
   return (
     <>
       <Head>
@@ -78,15 +79,19 @@ export default function Holdings() {
       >
         <div css={rootStyle}>
           <Heading title="CELO" gridArea="celo" />
-          <Amount
-            iconSrc={"/assets/tokens/CELO.svg"}
-            context="Funds frozen in on-chain Reserve contract"
-            loading={isLoadingCelo}
-            label="Frozen"
-            units={celo.frozen.units}
-            value={celo.frozen.value}
-            gridArea="frozen"
-          />
+          {celo.frozen.value > 0 ? (
+            <Amount
+              iconSrc={"/assets/tokens/CELO.svg"}
+              context="Funds frozen in on-chain Reserve contract"
+              loading={isLoadingCelo}
+              label="Frozen"
+              units={celo.frozen.units}
+              value={celo.frozen.value}
+              gridArea="frozen"
+            />
+          ) : (
+            <div css={hiddenFrozen}></div>
+          )}
           <Amount
             iconSrc={"/assets/tokens/CELO.svg"}
             context="Funds in on-chain Reserve contract and in custody"
@@ -124,18 +129,22 @@ const rootStyle = css({
   gridRowGap: 12,
   gridAutoColumns: "1fr 1fr 1fr",
   gridTemplateAreas: `"celo celo celo"
-                    "frozen unfrozen unfrozen"
+                    "unfrozen unfrozen frozen"
                     "crypto crypto crypto"
                     "btc eth dai"
                     `,
   [BreakPoints.tablet]: {
     gridAutoColumns: "1fr",
     gridTemplateAreas: `"celo"
-                        "frozen"
                         "unfrozen"
+                        "frozen"
                         "crypto"
                         "btc"
                         "eth"
                         "dai"`,
   },
+})
+
+const hiddenFrozen = css({
+  visibility: "hidden",
 })
