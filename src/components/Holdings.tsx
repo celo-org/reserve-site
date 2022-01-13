@@ -90,7 +90,7 @@ export default function Holdings() {
               gridArea="frozen"
             />
           ) : (
-            <div css={hiddenFrozen}></div>
+            <div css={hiddenFrozenAmount}></div>
           )}
           <Amount
             iconSrc={"/assets/tokens/CELO.svg"}
@@ -145,6 +145,6 @@ const rootStyle = css({
   },
 })
 
-const hiddenFrozen = css({
+const hiddenFrozenAmount = css({
   visibility: "hidden",
 })
