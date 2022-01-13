@@ -136,8 +136,8 @@ const rootStyle = css({
   [BreakPoints.tablet]: {
     gridAutoColumns: "1fr",
     gridTemplateAreas: `"celo"
-                        "unfrozen"
                         "frozen"
+                        "unfrozen"
                         "crypto"
                         "btc"
                         "eth"
