@@ -97,7 +97,7 @@ export default function Holdings() {
             iconSrc={"/assets/tokens/CELO.svg"}
             context="Funds in on-chain Reserve contract and in custody"
             loading={isLoadingCelo}
-            label="CELO"
+            label={celo.frozen.value > 0 ? "Unfrozen" : "CELO"}
             units={celo.unfrozen.units + celo.custody.units}
             value={celo.unfrozen.value + celo.custody.value}
             gridArea="unfrozen"
