@@ -90,17 +90,19 @@ export default function Holdings() {
               gridArea="frozen"
             />
           ) : (
-            <div css={hiddenFrozenAmount}></div>
+            <div css={hiddenCelo}></div>
           )}
+
           <Amount
             iconSrc={"/assets/tokens/CELO.svg"}
             context="Funds in on-chain Reserve contract and in custody"
             loading={isLoadingCelo}
-            label="Unfrozen"
+            label="CELO"
             units={celo.unfrozen.units + celo.custody.units}
             value={celo.unfrozen.value + celo.custody.value}
             gridArea="unfrozen"
           />
+
           <Heading title="Non-CELO Crypto Assets" gridArea="crypto" marginTop={30} />
           {data?.otherAssets?.filter(skipZeros)?.map((asset) => (
             <Amount
@@ -145,6 +147,7 @@ const rootStyle = css({
   },
 })
 
-const hiddenFrozenAmount = css({
+const hiddenCelo = css({
   visibility: "hidden",
+  margin: 50,
 })
