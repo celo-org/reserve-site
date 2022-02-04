@@ -11,7 +11,8 @@ _For more information about the Reserve itself please refer to:_
 ## Updating Reserve
 
 - To Add new cStables see [adding-stablecoins.md](./adding-stablecoins.md)
-- To Add or update Addresses see [adding-addresses.md](./adding-addresses.md)
+- To Add or update Addresses see [adding-addresses.md](/adding-addresses.md)
+- To Add new crypto tokens to the reserve see [adding-reserve-assets.md](src/adding-reserve-assets.md)
 
 ## Data Integrity
 
