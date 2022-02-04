@@ -1,4 +1,4 @@
-import getHoldings from "./holdings"
+import getHoldings, { getGroupedNonCeloAddresses } from "./holdings"
 
 describe("getHoldings", () => {
   let info
@@ -12,6 +12,7 @@ describe("getHoldings", () => {
   })
   it("shows all crypto in the reserve", async () => {
     const holdings = await getHoldings()
+    const addressData = await getGroupedNonCeloAddresses()
     expect(holdings).toEqual({
       celo: {
         custody: {
@@ -40,23 +41,23 @@ describe("getHoldings", () => {
         {
           hasError: false,
           token: "BTC",
-          units: 1407.98450548,
+          units: 1407.98450548 * addressData.BTC.length,
           updated: 1587686400000,
-          value: 79128729.207976,
+          value: 79128729.207976 * addressData.BTC.length,
         },
         {
           hasError: false,
           token: "ETH",
-          units: 23247.01826569,
+          units: 23247.01826569 * addressData.ETH.length,
           updated: 1587686400000,
-          value: 34870527.398535,
+          value: 34870527.398535 * addressData.ETH.length,
         },
         {
           hasError: false,
           token: "DAI",
           units: 2095536.31747404,
           updated: 1587686400000,
-          value: 2095536.31747404,
+          value: 2095536.31747404 * addressData.DAI.length,
         },
         {
           hasError: false,

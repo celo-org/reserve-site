@@ -11,8 +11,7 @@ global.fetch = window.fetch = fetch
 global.Request = window.Request = fetch.Request
 global.Response = window.Response = fetch.Response
 // must require not import airtable so that the global fetch lines above run first
-const AirtableAPI = require("airtable")
-AirtableAPI.apiKey = "TEST_AIRTABLE_KEY"
+
 // Establish API mocking before all tests.
 beforeAll(() => {
   MockDate.set("2020-04-24")

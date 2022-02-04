@@ -16,8 +16,9 @@ export async function getBTCBalance(address: string): Promise<ProviderSource> {
   try {
     const response = await fetch(`https://blockchain.info/balance?active=${address}`)
     const data = (await response.json()) as BalanceReponse
+
     return {
-      hasError: !data[address].final_balance,
+      hasError: !(typeof data[address]?.final_balance === "number"),
       source: Providers.blockchainDotCom,
       value: normalizeBTCvalue(data[address].final_balance),
       time: Date.now(),

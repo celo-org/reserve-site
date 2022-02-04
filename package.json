@@ -1,6 +1,6 @@
 {
   "name": "@celo/reserve-web",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -25,7 +25,6 @@
     "@celo/contractkit": "1.4.0-beta",
     "@emotion/eslint-plugin": "^11.2.0",
     "@emotion/react": "^11.7.1",
-    "airtable": "^0.11.1",
     "bignumber.js": "^9.0.1",
     "eslint-plugin-prettier": "^3.4.0",
     "fathom-client": "^3.2.0",

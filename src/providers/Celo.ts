@@ -1,9 +1,10 @@
 import { newKit, StableToken } from "@celo/contractkit"
 import BigNumber from "bignumber.js"
-import { Address, Tokens } from "src/service/Data"
+import { Tokens } from "src/service/Data"
 import { CMCO2_ADDRESS, RESERVE_CMCO2_ADDRESS } from "src/contract-addresses"
 import Allocation, { AssetTypes } from "src/interfaces/allocation"
 import ProviderSource, { errorResult, Providers } from "./ProviderSource"
+import { ReserveCrypto } from "src/addresses.config"
 const MIN_ABI_FOR_GET_BALANCE = [
   // balanceOf
   {
@@ -122,19 +123,16 @@ export async function getCStableSupply(token: StableToken): Promise<ProviderSour
   }
 }
 
-export async function getAddresses(): Promise<{ value: Address[] | null }> {
+export async function getAddresses(): Promise<{ value: ReserveCrypto[] | null }> {
   try {
     const reserve = await kit.contracts.getReserve()
     const addresses = await reserve.getOtherReserveAddresses()
 
     return {
-      value: [{ label: "Celo Reserve", token: "CELO" as Tokens, address: reserve.address }].concat(
-        addresses.map((address) => ({
-          address,
-          token: "CELO" as Tokens,
-          label: "CELO with Custodian",
-        }))
-      ),
+      value: [
+        { label: "Celo Reserve", token: "CELO" as Tokens, addresses: [reserve.address] },
+        { label: "CELO with Custodian", token: "CELO" as Tokens, addresses: addresses },
+      ],
     }
   } catch {
     return { value: null }
