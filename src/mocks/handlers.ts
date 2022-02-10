@@ -514,49 +514,4 @@ export const handlers = [
       )
     )
   }),
-  rest.get(
-    "https://api.airtable.com/v0/appFFSLHqjejvZgYM/Off%20Chain%20Addresses",
-    (req, res, ctx) => {
-      return res(
-        ctx.json({
-          records: [
-            {
-              id: "recxEh8qGvIbkXWjw",
-              fields: {
-                address: "38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL",
-                label: "BTC",
-                Status: "active",
-                link: "https://blockstream.info/address/38EPdP4SPshc5CiUCzKcLP9v7Vqo5u1HBL",
-                token: "BTC",
-              },
-              createdTime: "2021-03-03T17:00:12.000Z",
-            },
-            {
-              id: "rec0nykiF2uZj6kt6",
-              fields: {
-                address: "0xe1955eA2D14e60414eBF5D649699356D8baE98eE",
-                label: "ETH",
-                Status: "active",
-                link: "https://etherscan.io/address/0xe1955eA2D14e60414eBF5D649699356D8baE98eE",
-                token: "ETH",
-              },
-              createdTime: "2021-03-03T17:00:12.000Z",
-            },
-            {
-              id: "recilqoU1tYvv9Q0L",
-              fields: {
-                address: "0x16B34Ce9A6a6F7FC2DD25Ba59bf7308E7B38E186",
-                label: "DAI",
-                Status: "active",
-                link: "https://ethplorer.io/address/0x16b34ce9a6a6f7fc2dd25ba59bf7308e7b38e186",
-                token: "DAI",
-              },
-              createdTime: "2021-03-03T17:00:12.000Z",
-            },
-          ],
-          offset: "recilqoU1tYvv9Q0L",
-        })
-      )
-    }
-  ),
 ]

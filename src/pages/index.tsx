@@ -10,9 +10,8 @@ import ReserveAddresses from "src/components/ReserveAddresses"
 import Section from "src/components/Section"
 import { flexCol } from "src/components/styles"
 import PieChart from "src/components/PieChart"
-import { Address } from "src/service/Data"
 import useTargets from "src/hooks/useTargets"
-import NextHead from "next/head"
+import { ReserveCrypto } from "src/addresses.config"
 
 interface ContentShape {
   title: string
@@ -25,7 +24,7 @@ interface Props {
   ATTESTATIONS: FrontMatterResult<ContentShape>
   RFP: FrontMatterResult<ContentShape>
   year: string
-  addresses: Address[]
+  reserveCryptos: ReserveCrypto[]
 }
 
 export default function Home(props: Props) {
@@ -45,7 +44,7 @@ export default function Home(props: Props) {
               <Ratios />
             </Section>
             <Section title={"Reserve Addresses"}>
-              <ReserveAddresses addresses={props.addresses} />
+              <ReserveAddresses addresses={props.reserveCryptos} />
             </Section>
             <Section
               title={props.INITIAL_TARGET.attributes.title}
@@ -120,7 +119,7 @@ export async function getStaticProps() {
     const RFP = matter<ContentShape>(rfp)
     return {
       props: {
-        addresses: addresses,
+        reserveCryptos: addresses,
         INTRO,
         INITIAL_TARGET,
         ABOUT,

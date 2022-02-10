@@ -78,7 +78,7 @@ export default function Holdings() {
         }
       >
         <div css={rootStyle}>
-          <Heading title="CELO" gridArea="celo" />
+          <Heading title="Celo Assets" gridArea="celo" />
           {celo.frozen.value > 0 ? (
             <Amount
               iconSrc={"/assets/tokens/CELO.svg"}
@@ -103,7 +103,7 @@ export default function Holdings() {
             gridArea="unfrozen"
           />
 
-          <Heading title="Non-CELO Crypto Assets" gridArea="crypto" marginTop={30} />
+          <Heading title="Non-Celo Crypto Assets" gridArea="crypto" marginTop={30} />
           {data?.otherAssets?.filter(skipZeros)?.map((asset) => (
             <Amount
               key={asset.token}

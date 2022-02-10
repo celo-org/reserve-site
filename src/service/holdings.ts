@@ -1,5 +1,5 @@
 import { getBTCBalance as getBlockChainBTCBalance } from "src/providers/BlockchainDotCom"
-import getBlockStreemBTCBalance from "src/providers/Blockstream"
+import getBlockStreamBTCBalance from "src/providers/Blockstream"
 import {
   getFrozenBalance,
   getInCustodyBalance,
@@ -14,23 +14,20 @@ import { refresh, getOrSave } from "src/service/cache"
 import { MINUTE } from "src/utils/TIME"
 import { TokenModel, Tokens } from "./Data"
 import ProviderSource from "src/providers/ProviderSource"
-import { getNonCeloAddresses } from "src/providers/airtable"
 import { Token } from "@celo/contractkit"
+import addressesConfig from "src/addresses.config"
 
-async function getGroupedNonCeloAddresses() {
-  const addresses = await getNonCeloAddresses()
-  const groupedByToken = addresses.value.reduce((groups, current) => {
-    groups[current.token] = groups[current.token] || []
-    groups[current.token].push(current.address)
+export async function getGroupedNonCeloAddresses() {
+  const groupedByToken = addressesConfig.reduce((groups, current) => {
+    groups[current.token] = current.addresses
     return groups
   }, {})
-
   return groupedByToken as Record<Tokens, string[]>
 }
 
 async function fetchBTCBalance() {
   return getSumBalance("BTC", (address) => {
-    return duel(getBlockChainBTCBalance(address), getBlockStreemBTCBalance(address))
+    return duel(getBlockChainBTCBalance(address), getBlockStreamBTCBalance(address))
   })
 }
 
