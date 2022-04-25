@@ -22,7 +22,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@celo/contractkit": "1.4.0-beta",
+    "@celo/contractkit": "2.0.0-rc.2",
     "@emotion/eslint-plugin": "^11.7.0",
     "@emotion/react": "^11.7.1",
     "bignumber.js": "^9.0.2",
