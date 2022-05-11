@@ -16,7 +16,7 @@ async function fetchCMCO2price(): Promise<Duel> {
 }
 
 export async function CMC02Price() {
-  return getOrSave<Duel>("cmco2-price", fetchCMCO2price, 5 * MINUTE)
+  return getOrSave<Duel>("cmco2-price", fetchCMCO2price, 2 * MINUTE)
 }
 
 async function fetchBTCPrice() {
@@ -24,20 +24,20 @@ async function fetchBTCPrice() {
   return price
 }
 
-refresh("btc-price", 5 * MINUTE, fetchBTCPrice)
+refresh("btc-price", 2 * MINUTE, fetchBTCPrice)
 
 export async function btcPrice() {
-  return getOrSave<Duel>("btc-price", fetchBTCPrice, 5 * MINUTE)
+  return getOrSave<Duel>("btc-price", fetchBTCPrice, 2 * MINUTE)
 }
 
 async function fetchETHPrice() {
   const price = await duel(coinbase.getETHInUSD(), getEthPrice())
   return price
 }
-refresh("eth-price", 20 * MINUTE, fetchETHPrice)
+refresh("eth-price", 10 * MINUTE, fetchETHPrice)
 
 export async function ethPrice() {
-  return getOrSave<Duel>("eth-price", fetchETHPrice, 5 * MINUTE)
+  return getOrSave<Duel>("eth-price", fetchETHPrice, 2 * MINUTE)
 }
 
 export async function fiatPrices() {
@@ -48,7 +48,7 @@ async function fetchCELOPrice() {
   const price = await duel(getCeloPrice(), coinbase.getCELOPrice())
   return price
 }
-refresh("celo-price", 5 * MINUTE, fetchCELOPrice)
+refresh("celo-price", 2 * MINUTE, fetchCELOPrice)
 
 export async function celoPrice() {
   return getOrSave<Duel>("celo-price", fetchCELOPrice, 1 * MINUTE)
