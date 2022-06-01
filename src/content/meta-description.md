@@ -1,1 +1,1 @@
-A basket of cryptocurrencies enabling the Celo protocol to expand and contract the supply of Celo stable assets in-line with user demand.
+A basket of cryptocurrencies enabling the Mento protocol to expand and contract the supply of Mento stable assets in-line with user demand.

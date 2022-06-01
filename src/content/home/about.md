@@ -20,7 +20,7 @@ Reserve asset selection is done through governance by the community. At the mome
 
 ### Custodians
 
-CELO is held in the Reserve smart contract. The Mento Reserve ensures that non-CELO reserve assets are held safely through the use of approved, qualified and licensed custodians in a country that is not blacklisted by the Financial Action Task Force or subject to sanctions prohibitions. Custodians are required to make publicly available the assets they hold on behalf of the Celo Reserve to ensure that stakeholders and the broader community have full transparency with respect to reserve assets.
+CELO is held in the Reserve smart contract. The Mento Reserve ensures that non-CELO reserve assets are held safely through the use of approved, qualified and licensed custodians in a country that is not blacklisted by the Financial Action Task Force or subject to sanctions prohibitions. Custodians are required to make publicly available the assets they hold on behalf of the Mento Reserve to ensure that stakeholders and the broader community have full transparency with respect to reserve assets.
 
 <button href="https://medium.com/celoorg/the-celo-reserve-faqs-f3f7cbb1991f">
 Reserve FAQ
