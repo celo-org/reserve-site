@@ -1,9 +1,9 @@
 ---
-title: The Celo Reserve
+title: The Mento Reserve
 ---
 
-#### A diversified portfolio of cryptoassets supporting the ability of the Celo protocol to expand and contract the supply of Celo stable assets, in-line with user demand.
+#### A diversified portfolio of cryptoassets supporting the ability of the Mento protocol to expand and contract the supply of Mento stable assets, in-line with user demand.
 
 <button href="https://celo.org">
-Learn more about Celo
+Learn more about Mento
 </button>

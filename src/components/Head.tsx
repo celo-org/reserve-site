@@ -98,7 +98,7 @@ const globalStyles = css`
 `
 
 export default function Head() {
-  const title = "CeloReserve.org"
+  const title = "Mento Reserve"
   const metaImage = "/assets/open-graph.png"
   return (
     <>
@@ -121,7 +121,7 @@ export default function Head() {
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={metaImage} />
-        <meta name="twitter:site" content={"@celoOrg"} />
+        <meta name="twitter:site" content={"@MentoProtocol"} />
         <meta name="twitter:card" content="summary_large_image" />
       </NextHead>
     </>

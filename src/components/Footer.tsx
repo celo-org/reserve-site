@@ -6,7 +6,7 @@ export default function Footer({ year }) {
   return (
     <footer css={rootStyle}>
       <div css={contentStyle}>
-        <div css={wordMark}>Celo Reserve</div>
+        <div css={wordMark}>Mento Reserve</div>
         <div css={fineStyle}>
           <strong>Disclaimer</strong> Nothing herein constitutes an offer to sell, or the
           solicitation of an offer to buy, any securities or tokens.
