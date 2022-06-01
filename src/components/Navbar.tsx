@@ -5,7 +5,7 @@ export default function NavBar() {
   return (
     <nav css={navStyle}>
       <a css={linkStyle} href="/">
-        <img src={"assets/mento-logo.svg"} alt="Home" width={204} height={60} />
+        <img src={"/assets/mento-logo.svg"} alt="Home" width={204} height={60} />
       </a>
       <div css={navLinksStyle}></div>
     </nav>
