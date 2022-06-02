@@ -3,7 +3,7 @@ import { ISO427SYMBOLS } from "src/interfaces/ISO427SYMBOLS"
 import currencyInUSD from "src/providers/ExchangeRateAPI"
 import { getCeloPrice } from "src/providers/Celo"
 import { getEthPrice } from "src/providers/Etherscan"
-import { refresh, getOrSave, Cachable } from "src/service/cache"
+import { getOrSave, Cachable } from "src/service/cache"
 import { HOUR, MINUTE } from "src/utils/TIME"
 import duel, { Duel } from "./duel"
 import { getCMC02Price } from "src/providers/UbeSwapGraph"
@@ -24,20 +24,17 @@ async function fetchBTCPrice() {
   return price
 }
 
-refresh("btc-price", 2 * MINUTE, fetchBTCPrice)
-
 export async function btcPrice() {
-  return getOrSave<Duel>("btc-price", fetchBTCPrice, 2 * MINUTE)
+  return getOrSave<Duel>("btc-price", fetchBTCPrice, 4 * MINUTE)
 }
 
 async function fetchETHPrice() {
   const price = await duel(coinbase.getETHInUSD(), getEthPrice())
   return price
 }
-refresh("eth-price", 10 * MINUTE, fetchETHPrice)
 
 export async function ethPrice() {
-  return getOrSave<Duel>("eth-price", fetchETHPrice, 2 * MINUTE)
+  return getOrSave<Duel>("eth-price", fetchETHPrice, 4 * MINUTE)
 }
 
 export async function fiatPrices() {
@@ -48,7 +45,6 @@ async function fetchCELOPrice() {
   const price = await duel(getCeloPrice(), coinbase.getCELOPrice())
   return price
 }
-refresh("celo-price", 2 * MINUTE, fetchCELOPrice)
 
 export async function celoPrice() {
   return getOrSave<Duel>("celo-price", fetchCELOPrice, 1 * MINUTE)

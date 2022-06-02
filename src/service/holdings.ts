@@ -37,8 +37,6 @@ async function getSumBalance(token: Tokens, balanceFetcher: (address: string) =>
   return balances.reduce(sumMerge)
 }
 
-refresh("btc-balance", 5 * MINUTE, fetchBTCBalance)
-
 export async function btcBalance() {
   return getOrSave<Duel>("btc-balance", fetchBTCBalance, 10 * MINUTE)
 }
@@ -48,7 +46,6 @@ async function fetchETHBalance() {
     return duel(etherscan.getETHBalance(address), ethplorer.getETHBalance(address))
   })
 }
-refresh("eth-balance", 5 * MINUTE, fetchETHBalance)
 
 export async function ethBalance() {
   return getOrSave<Duel>("eth-balance", fetchETHBalance, 10 * MINUTE)
@@ -59,7 +56,6 @@ function fetchDaiBalance() {
     return duel(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
   })
 }
-refresh("dai-balance", 5 * MINUTE, fetchDaiBalance)
 
 export async function daiBalance() {
   return getOrSave<Duel>("dai-balance", fetchDaiBalance, 10 * MINUTE)
@@ -69,8 +65,6 @@ export async function celoCustodiedBalance() {
   return getOrSave<ProviderSource>("celo-custody-balance", getInCustodyBalance, 5 * MINUTE)
 }
 
-refresh("celo-custody-balance", 5 * MINUTE, getInCustodyBalance)
-
 export async function cMC02Balance() {
   return getOrSave<ProviderSource>("cmc02-balance", getcMC02Balance, 10 * MINUTE)
 }
@@ -79,13 +73,9 @@ export async function celoFrozenBalance() {
   return getOrSave<ProviderSource>("celo-frozen-balance", getFrozenBalance, 5 * MINUTE)
 }
 
-refresh("celo-frozen-balance", 5 * MINUTE, getFrozenBalance)
-
 export async function celoUnfrozenBalance() {
   return getOrSave<ProviderSource>("celo-unfrozen-balance", getUnFrozenBalance, 2 * MINUTE)
 }
-
-refresh("celo-unfrozen-balance", 5 * MINUTE, getUnFrozenBalance)
 
 export interface HoldingsApi {
   celo: {
