@@ -4,6 +4,7 @@ export interface ReserveCrypto {
   token: Tokens
   label: string
   addresses: string[]
+  tokenAddress?: string
 }
 
 const ADDRESSES: ReserveCrypto[] = [
@@ -24,6 +25,13 @@ const ADDRESSES: ReserveCrypto[] = [
     label: "DAI",
     token: "DAI",
     addresses: ["0x16B34Ce9A6a6F7FC2DD25Ba59bf7308E7B38E186"],
+    tokenAddress: "0x6b175474e89094c44da98b954eedeac495271d0f",
+  },
+  {
+    label: "USDC",
+    token: "USDC",
+    addresses: ["0x26ac3A7b8a675b741560098fff54F94909bE5E73"],
+    tokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
   },
 ]
 
@@ -37,6 +45,7 @@ export function generateLink(token: Tokens, address: string) {
       return `https://blockchain.info/address/${address}`
     case "ETH":
       return `https://etherscan.io/address/${address}`
+    case "USDC":
     case "DAI":
       return `https://etherscan.io/address/${address}`
   }

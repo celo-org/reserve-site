@@ -10,7 +10,7 @@ import * as etherscan from "src/providers/Etherscan"
 import * as ethplorer from "src/providers/Ethplorerer"
 import duel, { Duel, sumMerge } from "./duel"
 import getRates, { celoPrice } from "./rates"
-import { refresh, getOrSave } from "src/service/cache"
+import { getOrSave } from "src/service/cache"
 import { MINUTE } from "src/utils/TIME"
 import { TokenModel, Tokens } from "./Data"
 import ProviderSource from "src/providers/ProviderSource"
@@ -51,14 +51,18 @@ export async function ethBalance() {
   return getOrSave<Duel>("eth-balance", fetchETHBalance, 10 * MINUTE)
 }
 
-function fetchDaiBalance() {
-  return getSumBalance("DAI", (address) => {
-    return duel(etherscan.getDaiBalance(address), ethplorer.getDaiBalance(address))
+function fetchERC20OnEthereumBalance(token: Tokens) {
+  const tokenOnEthereum = addressesConfig.find((coin) => coin.token === token)
+  return getSumBalance(token, (address) => {
+    return duel(
+      etherscan.getERC20onEthereumMainnetBalance(tokenOnEthereum.tokenAddress, address),
+      ethplorer.getERC20OnEthereumBalance(tokenOnEthereum.tokenAddress, address)
+    )
   })
 }
 
-export async function daiBalance() {
-  return getOrSave<Duel>("dai-balance", fetchDaiBalance, 10 * MINUTE)
+export async function erc20OnEthereumBalance(token: Tokens) {
+  return getOrSave<Duel>(`${token}-balance`, () => fetchERC20OnEthereumBalance(token), 10 * MINUTE)
 }
 
 export async function celoCustodiedBalance() {
@@ -130,11 +134,12 @@ function toCeloShape(
 
 export async function getHoldingsOther() {
   try {
-    const [rates, btcHeld, ethHeld, daiHeld, cmco2Held] = await Promise.all([
+    const [rates, btcHeld, ethHeld, daiHeld, usdcHeld, cmco2Held] = await Promise.all([
       getRates(),
       btcBalance(),
       ethBalance(),
-      daiBalance(),
+      erc20OnEthereumBalance("DAI"),
+      erc20OnEthereumBalance("USDC"),
       cMC02Balance(),
     ])
 
@@ -142,6 +147,7 @@ export async function getHoldingsOther() {
       toToken("BTC", btcHeld, rates.btc),
       toToken("ETH", ethHeld, rates.eth),
       toToken("DAI", daiHeld),
+      toToken("USDC", usdcHeld),
       toToken("cMCO2", cmco2Held, rates.cmco2),
     ]
 
@@ -152,12 +158,13 @@ export async function getHoldingsOther() {
 }
 
 export default async function getHoldings(): Promise<HoldingsApi> {
-  const [rates, btcHeld, ethHeld, daiHeld, celoCustodied, frozen, unfrozen, cmco2Held] =
+  const [rates, btcHeld, ethHeld, daiHeld, usdcHeld, celoCustodied, frozen, unfrozen, cmco2Held] =
     await Promise.all([
       getRates(),
       btcBalance(),
       ethBalance(),
-      daiBalance(),
+      erc20OnEthereumBalance("DAI"),
+      erc20OnEthereumBalance("USDC"),
       celoCustodiedBalance(),
       celoFrozenBalance(),
       celoUnfrozenBalance(),
@@ -168,6 +175,7 @@ export default async function getHoldings(): Promise<HoldingsApi> {
     toToken("BTC", btcHeld, rates.btc),
     toToken("ETH", ethHeld, rates.eth),
     toToken("DAI", daiHeld),
+    toToken("USDC", usdcHeld),
     toToken("cMCO2", cmco2Held, rates.cmco2),
   ]
 

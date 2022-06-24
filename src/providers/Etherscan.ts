@@ -57,12 +57,13 @@ export async function getETHBalance(address: string): Promise<ProviderSource> {
   }
 }
 
-const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f"
-
-export async function getDaiBalance(address: string): Promise<ProviderSource> {
+export async function getERC20onEthereumMainnetBalance(
+  tokenAddress: string,
+  accountAddress: string
+) {
   try {
     const response = await fetch(
-      `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${DAI_TOKEN_ADDRESS}&address=${address}&tag=latest&apikey=${API_KEY}`
+      `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${tokenAddress}&address=${accountAddress}&tag=latest&apikey=${API_KEY}`
     )
     const time = Date.now()
     const data = await response.json()
