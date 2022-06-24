@@ -54,9 +54,15 @@ describe("getHoldings", () => {
     expect(holdings.otherAssets[2]).toHaveProperty("value")
 
     expect(holdings.otherAssets[3]).toHaveProperty("hasError", false)
-    expect(holdings.otherAssets[3]).toHaveProperty("token", "cMCO2")
+    expect(holdings.otherAssets[3]).toHaveProperty("token", "USDC")
     expect(holdings.otherAssets[3]).toHaveProperty("units")
     expect(holdings.otherAssets[3]).toHaveProperty("updated")
     expect(holdings.otherAssets[3]).toHaveProperty("value")
+
+    expect(holdings.otherAssets[4]).toHaveProperty("hasError", false)
+    expect(holdings.otherAssets[4]).toHaveProperty("token", "cMCO2")
+    expect(holdings.otherAssets[4]).toHaveProperty("units")
+    expect(holdings.otherAssets[4]).toHaveProperty("updated")
+    expect(holdings.otherAssets[4]).toHaveProperty("value")
   })
 })

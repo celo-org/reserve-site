@@ -1,4 +1,5 @@
-import { getEthPrice, getETHBalance, getDaiBalance } from "./Etherscan"
+import ADDRESSES from "src/addresses.config"
+import { getEthPrice, getETHBalance, getERC20onEthereumMainnetBalance } from "./Etherscan"
 
 describe("getEthPrice", () => {
   it("returns current price of Eth", async () => {
@@ -24,9 +25,13 @@ describe("getEthBalance", () => {
   })
 })
 
-describe("getDAIBalance", () => {
+describe("getERC20onEthereumMainnetBalance", () => {
   it("returns account balance of address", async () => {
-    const balance = await getDaiBalance("0x16B34Ce9A6a6F7FC2DD25Ba59bf7308E7B38E186")
+    const { tokenAddress } = ADDRESSES.find((token) => token.token === "DAI")
+    const balance = await getERC20onEthereumMainnetBalance(
+      tokenAddress,
+      "0x16B34Ce9A6a6F7FC2DD25Ba59bf7308E7B38E186"
+    )
     expect(balance).toEqual({
       hasError: false,
       source: "etherscan",
